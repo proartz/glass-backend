@@ -1,4 +1,4 @@
-package oncode.pl.glass.web.dto;
+package pl.oncode.glass.web.dto;
 
 import java.nio.file.Path;
 

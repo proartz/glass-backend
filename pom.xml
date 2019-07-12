@@ -15,6 +15,7 @@
     <description>Spring Boot Back-end application</description>
 
     <properties>
+        <mysql.version>8.0.16</mysql.version>
         <java.version>1.8</java.version>
     </properties>
 
@@ -23,10 +24,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>

@@ -1,0 +1,45 @@
+{
+  "id": "12345",
+  "externalOrderId": "wzx/rte/2019",
+  "customer": "TVN",
+  "itemsList": [
+    {
+      "id": "4567",
+      "orderId":  "12345",
+      "materialId": "234",
+      "operations": [
+        {"id":  "2345", "itemId":  "234", "name": "Drilling", "status": "waiting"},
+        {"id":  "2346", "itemId":  "234", "name": "Cutting", "status": "waiting"},
+        {"id":  "2347", "itemId":  "234", "name": "CNC", "status": "waiting"},
+        {"id":  "2348", "itemId":  "234", "name": "Smoothing", "status": "waiting"}
+      ],
+      "dimensions": {"width": "100", "height": "100", "depth":  "10"},
+      "quantity": "10",
+      "note": "This glass is for entertainment purpose only"
+    },
+    {
+      "id": "4568",
+      "orderId":  "12345",
+      "materialId": "235",
+      "operations": [
+        {"id":  "2355", "itemId":  "235", "name": "Drilling", "status": "waiting"},
+        {"id":  "2356", "itemId":  "235", "name": "Cutting", "status": "waiting"},
+        {"id":  "2357", "itemId":  "235", "name": "CNC", "status": "waiting"},
+        {"id":  "2358", "itemId":  "235", "name": "Smoothing", "status": "waiting"}
+      ],
+      "dimensions": {"width": "100", "height": "100", "depth":  "10"},
+      "quantity": "5",
+      "note": "This glass is for entertainment purpose only"
+    }
+
+  ],
+  "attachmentsList": [
+    {"id": "9876", "path": "/images/gthx.png", "orderId":  "12345"}
+  ],
+  "invoiceNumber": "FK/2019/07/12345",
+  "price": "2500.00",
+  "realisationDate": "2019-09-10",
+  "description": "Angels Sky Glassing",
+  "createDate": "2019-07-08",
+  "status": "created"
+}

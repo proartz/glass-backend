@@ -1,10 +1,10 @@
-package oncode.pl.glass.web.dto;
+package pl.oncode.glass.web.dto;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public class AddOrder extends ViewOrders {
+public class AddOrder {
 
     private Integer id;
     private String externalOrderId;

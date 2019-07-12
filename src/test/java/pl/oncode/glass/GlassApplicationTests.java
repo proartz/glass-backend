@@ -1,4 +1,4 @@
-package oncode.pl.glass;
+package pl.oncode.glass;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
