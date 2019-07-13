@@ -22,7 +22,7 @@ public class MainController {
 
     @PostMapping("/order")
     Order order(@PathVariable Integer id) {
-        return dbs.findOrder(id);
+        return dbs.getOrder(id);
     }
 
 

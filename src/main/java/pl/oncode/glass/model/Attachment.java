@@ -1,22 +1,22 @@
 package pl.oncode.glass.model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import java.nio.file.Path;
+import javax.persistence.*;
 
+@Entity
 public class Attachment {
 
     @Id @GeneratedValue
     private Integer id;
-    private Path path;
-    @ManyToOne
+    private String String;
+    @ManyToOne(targetEntity = Order.class)
     @JoinColumn(name = "order_id")
     private Integer orderId;
 
-    public Attachment(Path path, Integer orderId) {
-        this.path = path;
+    public Attachment() {
+    }
+
+    public Attachment(String String, Integer orderId) {
+        this.String = String;
         this.orderId = orderId;
     }
 
@@ -28,12 +28,12 @@ public class Attachment {
         this.id = id;
     }
 
-    public Path getPath() {
-        return path;
+    public String getString() {
+        return String;
     }
 
-    public void setPath(Path path) {
-        this.path = path;
+    public void setString(String String) {
+        this.String = String;
     }
 
     public Integer getOrderId() {

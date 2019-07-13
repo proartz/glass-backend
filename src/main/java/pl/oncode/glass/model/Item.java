@@ -11,17 +11,20 @@ public class Item {
     @Id
     @GeneratedValue
     private Integer id;
-    @ManyToOne
+    @ManyToOne(targetEntity = Order.class)
     @JoinColumn(name = "order_id")
     private Integer orderId;
     private Integer materialId;
-    @OneToMany(mappedBy = "itemId")
+    @OneToMany(mappedBy = "itemId", cascade = CascadeType.ALL)
     private List<Operation> operations;
     private Double width;
     private Double height;
     private Double depth;
     private Integer quantity;
     private String note;
+
+    public Item() {
+    }
 
     public Item(Integer orderId, Integer materialId, Double width, Double height,
                 Double depth, Integer quantity) {

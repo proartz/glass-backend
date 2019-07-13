@@ -5,13 +5,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class material {
+public class Material {
     @Id @GeneratedValue
     private Integer id;
     private String name;
     private String description;
 
-    public material(String name, String description) {
+    public Material() {
+    }
+
+    public Material(String name, String description) {
         this.name = name;
         this.description = description;
     }

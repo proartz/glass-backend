@@ -7,11 +7,14 @@ public class Operation {
 
     @Id @GeneratedValue
     private Integer id;
-    @ManyToOne
+    @ManyToOne(targetEntity = Item.class)
     @JoinColumn(name = "item_id")
     private Integer itemId;
     private String name;
     private String status;
+
+    public Operation() {
+    }
 
     public Operation(Integer itemId, String name) {
         this.itemId = itemId;

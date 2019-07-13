@@ -1,7 +1,7 @@
 package pl.oncode.glass.service;
 
 import org.springframework.stereotype.Service;
-import pl.oncode.glass.dao.OrderDAO;
+import pl.oncode.glass.dao.OrderDao;
 import pl.oncode.glass.model.Item;
 import pl.oncode.glass.model.Operation;
 import pl.oncode.glass.model.Order;
@@ -16,26 +16,27 @@ import java.util.List;
 @Service
 public class DatabaseService {
 
-    private OrderDAO dao;
+    private OrderDao dao;
 
-    public DatabaseService(OrderDAO dao) {
+    public DatabaseService(OrderDao dao) {
         this.dao = dao;
+        testDb();
     }
 
-    public Order findOrder(Integer id) {
-        return dao.findOne(id);
+    public Order getOrder(Integer id) {
+        return dao.get(id);
     }
 
     public List<Order> getAllOrders() {
-        return dao.findAll();
+        return dao.getAll();
     }
 
     public void updateOrder(Order order) {
         dao.update(order);
     }
 
-    public void createOrder(Order order) {
-        dao.create(order);
+    public void saveOrder(Order order) {
+        dao.save(order);
     }
 
     public void deleteOrder(Order Order) {
@@ -47,16 +48,15 @@ public class DatabaseService {
         createFakeOrder("Galeria Dominikańska");
         createFakeOrder("OVO");
         createFakeOrder("Arkady Wrocławskie");
-
     }
 
-    private Order createFakeOrder(String customer) {
+    private void createFakeOrder(String customer) {
         Order order = new Order("Order/2019/07/12/FZ/54321",
-                customer,
-                "54321",
-                BigDecimal.valueOf(50000.00),
-                Date.valueOf("2019-09-30"),
-                Date.valueOf(LocalDate.now()));
+                                customer,
+                                "54321",
+                                BigDecimal.valueOf(50000.00),
+                                Date.valueOf("2019-09-30"),
+                                Date.valueOf(LocalDate.now()));
         List<Item> items = new ArrayList<>();
         Item item1 = new Item(order.getId(), 1, 100.0, 100.0, 10.0, 10);
         Item item2 = new Item(order.getId(), 2, 200.0, 200.0, 10.0, 10);
@@ -84,7 +84,7 @@ public class DatabaseService {
         items.addAll(Arrays.asList(item1, item2, item3, item4));
         order.setItems(items);
 
-        return order;
+        saveOrder(order);
     }
 
 }
