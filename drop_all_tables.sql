@@ -1,0 +1,5 @@
+DROP TABLE IF EXISTS `attachment`;
+DROP TABLE IF EXISTS `item`;
+DROP TABLE IF EXISTS `material`;
+DROP TABLE IF EXISTS `operation`;
+DROP TABLE IF EXISTS `order`;

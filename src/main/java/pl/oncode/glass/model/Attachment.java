@@ -1,23 +1,25 @@
 package pl.oncode.glass.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
 public class Attachment {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String String;
+    private String Path;
+    @JsonIgnore
     @ManyToOne(targetEntity = Order.class)
     @JoinColumn(name = "order_id")
-    private Integer orderId;
+    private Order order;
 
     public Attachment() {
     }
 
-    public Attachment(String String, Integer orderId) {
-        this.String = String;
-        this.orderId = orderId;
+    public Attachment(String Path) {
+        this.Path = Path;
     }
 
     public Integer getId() {
@@ -28,19 +30,19 @@ public class Attachment {
         this.id = id;
     }
 
-    public String getString() {
-        return String;
+    public String getPath() {
+        return Path;
     }
 
-    public void setString(String String) {
-        this.String = String;
+    public void setPath(String String) {
+        this.Path = String;
     }
 
-    public Integer getOrderId() {
-        return orderId;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

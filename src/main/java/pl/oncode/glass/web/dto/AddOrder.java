@@ -9,8 +9,8 @@ public class AddOrder {
     private Integer id;
     private String externalOrderId;
     private String customer;
-    private List<Item> itemsList;
-    private List<Attachment> attachmentsList;
+    private List<ViewItem> itemsList;
+    private List<ViewAttachment> attachmentsList;
     private String invoice_number;
     private BigDecimal price;
     private Date realisationDate;

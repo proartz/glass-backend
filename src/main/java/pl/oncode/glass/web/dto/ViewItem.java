@@ -2,12 +2,11 @@ package pl.oncode.glass.web.dto;
 
 import java.util.List;
 
-public class Item {
+public class ViewItem {
 
     private Integer id;
-    private Integer orderId;
     private Integer materialId;
-    private List<Operation> operations;
+    private List<ViewOperation> operations;
     private Double width;
     private Double height;
     private Double depth;

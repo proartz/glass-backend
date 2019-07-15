@@ -1,23 +1,25 @@
 package pl.oncode.glass.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
 public class Operation {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @ManyToOne(targetEntity = Item.class)
+    @JsonIgnore
+    @ManyToOne
     @JoinColumn(name = "item_id")
-    private Integer itemId;
+    private Item item;
     private String name;
     private String status;
 
     public Operation() {
     }
 
-    public Operation(Integer itemId, String name) {
-        this.itemId = itemId;
+    public Operation(String name) {
         this.name = name;
         this.status = "NEW";
     }
@@ -30,12 +32,12 @@ public class Operation {
         this.id = id;
     }
 
-    public Integer getItemId() {
-        return itemId;
+    public Item getItem() {
+        return item;
     }
 
-    public void setItemId(Integer itemId) {
-        this.itemId = itemId;
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     public String getName() {
@@ -52,5 +54,15 @@ public class Operation {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Operation{" +
+                "id=" + id +
+                ", item=" + item +
+                ", name='" + name + '\'' +
+                ", status='" + status + '\'' +
+                '}';
     }
 }

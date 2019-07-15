@@ -1,22 +1,24 @@
 package pl.oncode.glass.model;
 
-import pl.oncode.glass.model.Operation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Item {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @ManyToOne(targetEntity = Order.class)
+    @JsonIgnore
+    @ManyToOne
     @JoinColumn(name = "order_id")
-    private Integer orderId;
+    private Order order;
     private Integer materialId;
-    @OneToMany(mappedBy = "itemId", cascade = CascadeType.ALL)
-    private List<Operation> operations;
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Operation> operations;
     private Double width;
     private Double height;
     private Double depth;
@@ -26,15 +28,7 @@ public class Item {
     public Item() {
     }
 
-    public Item(Integer orderId, Integer materialId, Double width, Double height,
-                Double depth, Integer quantity) {
-        this(orderId, materialId, null, width, height, depth, quantity, "");
-    }
-
-    public Item(Integer orderId, Integer materialId, List<Operation> operations,
-                Double width, Double height, Double depth, Integer quantity,
-                String note) {
-        this.orderId = orderId;
+    public Item(Integer materialId, Set<Operation> operations, Double width, Double height, Double depth, Integer quantity, String note) {
         this.materialId = materialId;
         this.operations = operations;
         this.width = width;
@@ -52,12 +46,12 @@ public class Item {
         this.id = id;
     }
 
-    public Integer getOrderId() {
-        return orderId;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public Integer getMaterialId() {
@@ -68,11 +62,11 @@ public class Item {
         this.materialId = materialId;
     }
 
-    public List<Operation> getOperations() {
+    public Set<Operation> getOperations() {
         return operations;
     }
 
-    public void setOperations(List<Operation> operations) {
+    public void setOperations(Set<Operation> operations) {
         this.operations = operations;
     }
 
@@ -115,4 +109,78 @@ public class Item {
     public void setNote(String note) {
         this.note = note;
     }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", order=" + order +
+                ", materialId=" + materialId +
+                ", operations=" + operations +
+                ", width=" + width +
+                ", height=" + height +
+                ", depth=" + depth +
+                ", quantity=" + quantity +
+                ", note='" + note + '\'' +
+                '}';
+    }
+
+    public static class ItemBuilder {
+        private Integer materialId;
+        private Set<Operation> operations;
+        private Double width;
+        private Double height;
+        private Double depth;
+        private Integer quantity;
+        private String note;
+
+        public ItemBuilder() {
+            this.operations = new HashSet<>();
+        }
+
+        public ItemBuilder setMaterialId(Integer materialId) {
+            this.materialId = materialId;
+            return this;
+        }
+
+        public ItemBuilder setOperations(Set<Operation> operations) {
+            this.operations = operations;
+            return this;
+        }
+
+        public ItemBuilder addOperation(Operation operation) {
+            this.operations.add(operation);
+        return this;
+        }
+
+        public ItemBuilder setWidth(Double width) {
+            this.width = width;
+            return this;
+        }
+
+        public ItemBuilder setHeight(Double height) {
+            this.height = height;
+            return this;
+        }
+
+        public ItemBuilder setDepth(Double depth) {
+            this.depth = depth;
+            return this;
+        }
+
+        public ItemBuilder setQuantity(Integer quantity) {
+            this.quantity = quantity;
+            return this;
+        }
+
+        public ItemBuilder setNote(String note) {
+            this.note = note;
+            return this;
+        }
+
+        public Item createItem() {
+            return new Item(materialId, operations, width, height, depth, quantity, note);
+        }
+    }
+
 }

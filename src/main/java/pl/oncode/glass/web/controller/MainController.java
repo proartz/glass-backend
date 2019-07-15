@@ -5,6 +5,7 @@ import pl.oncode.glass.model.Order;
 import pl.oncode.glass.service.DatabaseService;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class MainController {
@@ -20,10 +21,9 @@ public class MainController {
         return dbs.getAllOrders();
     }
 
-    @PostMapping("/order")
+    @GetMapping("/order/{id}")
     Order order(@PathVariable Integer id) {
         return dbs.getOrder(id);
     }
-
 
 }

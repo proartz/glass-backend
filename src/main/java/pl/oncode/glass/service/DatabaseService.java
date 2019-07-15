@@ -2,6 +2,7 @@ package pl.oncode.glass.service;
 
 import org.springframework.stereotype.Service;
 import pl.oncode.glass.dao.OrderDao;
+import pl.oncode.glass.model.Attachment;
 import pl.oncode.glass.model.Item;
 import pl.oncode.glass.model.Operation;
 import pl.oncode.glass.model.Order;
@@ -44,47 +45,84 @@ public class DatabaseService {
     }
 
     private void testDb(){
-        createFakeOrder("Sky Tower");
-        createFakeOrder("Galeria Dominikańska");
-        createFakeOrder("OVO");
-        createFakeOrder("Arkady Wrocławskie");
+        saveOrder(createFakeOrder("Sky Tower"));
+        saveOrder(createFakeOrder("Galeria Dominikańska"));
+        saveOrder(createFakeOrder("OVO"));
+        saveOrder(createFakeOrder("Arkady Wrocławskie"));
     }
 
-    private void createFakeOrder(String customer) {
-        Order order = new Order("Order/2019/07/12/FZ/54321",
-                                customer,
-                                "54321",
-                                BigDecimal.valueOf(50000.00),
-                                Date.valueOf("2019-09-30"),
-                                Date.valueOf(LocalDate.now()));
-        List<Item> items = new ArrayList<>();
-        Item item1 = new Item(order.getId(), 1, 100.0, 100.0, 10.0, 10);
-        Item item2 = new Item(order.getId(), 2, 200.0, 200.0, 10.0, 10);
-        Item item3 = new Item(order.getId(), 3, 100.0, 100.0, 10.0, 10);
-        Item item4 = new Item(order.getId(), 4, 100.0, 100.0, 10.0, 10);
+    private Order createFakeOrder(String customer) {
+        Order order = new Order.OrderBuilder()
+                .addItem(new Item.ItemBuilder()
+                    .setMaterialId(1)
+                    .addOperation(new Operation("Drilling"))
+                    .addOperation(new Operation("Smoothing"))
+                    .addOperation(new Operation("Cutting"))
+                    .addOperation(new Operation("CNC"))
+                    .addOperation(new Operation("Shocking"))
+                    .setWidth(100.0)
+                    .setHeight(100.0)
+                    .setDepth(10.0)
+                    .setQuantity(10)
+                    .createItem())
+                .addItem(new Item.ItemBuilder()
+                    .setMaterialId(2)
+                    .addOperation(new Operation("Drilling"))
+                    .addOperation(new Operation("Smoothing"))
+                    .addOperation(new Operation("Cutting"))
+                    .addOperation(new Operation("CNC"))
+                    .addOperation(new Operation("Shocking"))
+                    .setWidth(200.0)
+                    .setHeight(200.0)
+                    .setDepth(10.0)
+                    .setQuantity(10)
+                    .createItem())
+                .addItem(new Item.ItemBuilder()
+                    .setMaterialId(3)
+                    .addOperation(new Operation("Drilling"))
+                    .addOperation(new Operation("Smoothing"))
+                    .addOperation(new Operation("Cutting"))
+                    .addOperation(new Operation("CNC"))
+                    .addOperation(new Operation("Shocking"))
+                    .setWidth(100.0)
+                    .setHeight(100.0)
+                    .setDepth(10.0)
+                    .setQuantity(10)
+                    .createItem())
+                .addItem(new Item.ItemBuilder()
+                    .setMaterialId(4)
+                    .addOperation(new Operation("Drilling"))
+                    .addOperation(new Operation("Smoothing"))
+                    .addOperation(new Operation("Cutting"))
+                    .addOperation(new Operation("CNC"))
+                    .addOperation(new Operation("Shocking"))
+                    .setWidth(100.0)
+                    .setHeight(100.0)
+                    .setDepth(10.0)
+                    .setQuantity(10)
+                    .createItem())
+                .setExternalOrderId("Order/2019/07/12/FZ/54321")
+                .setCustomer(customer)
+                .setPrice(BigDecimal.valueOf(50000.00))
+                .setRealisationDate(Date.valueOf("2019-09-30"))
+                .setCreateDate(Date.valueOf(LocalDate.now()))
+                .setStatus("NEW")
+                .createOrder();
 
-        List<Operation> operations = new ArrayList<>();
-        operations.add(new Operation(item1.getId(), "Drilling"));
-        operations.add(new Operation(item1.getId(), "Smoothing"));
-        operations.add(new Operation(item1.getId(), "Cutting"));
-        operations.add(new Operation(item1.getId(), "CNC"));
-        operations.add(new Operation(item1.getId(), "Shocking"));
+        // register relationship of entities for JPA
 
-        item1.setOperations(operations);
+        for(Item item : order.getItems()) {
+            for(Operation operation : item.getOperations()) {
+                operation.setItem(item);
+            }
+            item.setOrder(order);
+        }
 
-        operations.forEach((operation)->operation.setItemId(item2.getId()));
-        item2.setOperations(operations);
+        for(Attachment attachment : order.getAttachments()) {
+            attachment.setOrder(order);
+        }
 
-        operations.forEach((operation)->operation.setItemId(item3.getId()));
-        item3.setOperations(operations);
-
-        operations.forEach((operation)->operation.setItemId(item4.getId()));
-        item4.setOperations(operations);
-
-        items.addAll(Arrays.asList(item1, item2, item3, item4));
-        order.setItems(items);
-
-        saveOrder(order);
+        return order;
     }
 
 }

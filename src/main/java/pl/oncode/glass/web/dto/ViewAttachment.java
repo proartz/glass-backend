@@ -2,7 +2,7 @@ package pl.oncode.glass.web.dto;
 
 import java.nio.file.Path;
 
-public class Attachment {
+public class ViewAttachment {
 
     private Integer id;
     private Path path;

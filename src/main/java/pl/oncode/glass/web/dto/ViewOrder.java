@@ -3,7 +3,7 @@ package pl.oncode.glass.web.dto;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Order {
+public class ViewOrder {
 
     private Integer id;
     private String customer;
