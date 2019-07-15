@@ -21,7 +21,7 @@ public class DatabaseService {
 
     public DatabaseService(OrderDao dao) {
         this.dao = dao;
-        testDb();
+//        testDb();
     }
 
     public Order getOrder(Integer id) {
@@ -105,7 +105,6 @@ public class DatabaseService {
                 .setCustomer(customer)
                 .setPrice(BigDecimal.valueOf(50000.00))
                 .setRealisationDate(Date.valueOf("2019-09-30"))
-                .setCreateDate(Date.valueOf(LocalDate.now()))
                 .setStatus("NEW")
                 .createOrder();
 
