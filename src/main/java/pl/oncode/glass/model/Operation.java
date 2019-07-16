@@ -20,8 +20,12 @@ public class Operation {
     }
 
     public Operation(String name) {
+        this(name, "NEW");
+    }
+
+    public Operation(String name, String status) {
         this.name = name;
-        this.status = "NEW";
+        this.status = status;
     }
 
     public Integer getId() {

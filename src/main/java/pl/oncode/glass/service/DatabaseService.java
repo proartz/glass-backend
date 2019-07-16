@@ -6,15 +6,19 @@ import pl.oncode.glass.model.Attachment;
 import pl.oncode.glass.model.Item;
 import pl.oncode.glass.model.Operation;
 import pl.oncode.glass.model.Order;
+import pl.oncode.glass.web.dto.AddItemDto;
+import pl.oncode.glass.web.dto.AddOperationDto;
+import pl.oncode.glass.web.dto.AddOrderDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
-@Service
+@Service(value = "databaseService")
 public class DatabaseService {
 
     private OrderDao dao;
@@ -23,6 +27,8 @@ public class DatabaseService {
         this.dao = dao;
 //        testDb();
     }
+
+    // DAO methods
 
     public Order getOrder(Integer id) {
         return dao.get(id);
@@ -43,6 +49,8 @@ public class DatabaseService {
     public void deleteOrder(Order Order) {
         dao.delete(Order);
     }
+
+    // model creation methods
 
     private void testDb(){
         saveOrder(createFakeOrder("Sky Tower"));
@@ -110,6 +118,12 @@ public class DatabaseService {
 
         // register relationship of entities for JPA
 
+        registerRelations(order);
+
+        return order;
+    }
+
+    private void registerRelations(Order order) {
         for(Item item : order.getItems()) {
             for(Operation operation : item.getOperations()) {
                 operation.setItem(item);
@@ -120,6 +134,47 @@ public class DatabaseService {
         for(Attachment attachment : order.getAttachments()) {
             attachment.setOrder(order);
         }
+    }
+
+    // add Order
+
+    public void addOrder(AddOrderDto addOrderDto) {
+        saveOrder(createOrder(addOrderDto));
+    }
+
+    public Order createOrder(AddOrderDto addOrderDto) {
+
+        Order order = new Order.OrderBuilder()
+            .setExternalOrderId(addOrderDto.getExternalOrderId())
+            .setCustomer(addOrderDto.getCustomer())
+            .setInvoiceNumber(addOrderDto.getInvoiceNumber())
+            .setPrice(addOrderDto.getPrice())
+            .setRealisationDate(addOrderDto.getRealisationDate())
+            .setStatus(addOrderDto.getStatus())
+            .createOrder();
+
+        for(AddItemDto addItemDto : addOrderDto.getItems()){
+
+            Item item = new Item.ItemBuilder()
+                .setMaterialId(addItemDto.getMaterialId())
+                .setWidth(addItemDto.getWidth())
+                .setHeight(addItemDto.getHeight())
+                .setDepth(addItemDto.getDepth())
+                .setQuantity(addItemDto.getQuantity())
+                .setNote(addItemDto.getNote())
+                .createItem();
+
+            for(AddOperationDto addOperationDto : addItemDto.getOperations()) {
+
+                item.getOperations().add(
+                        new Operation(addOperationDto.getName(),
+                                addOperationDto.getStatus()));
+            }
+
+            order.getItems().add(item);
+        }
+
+        registerRelations(order);
 
         return order;
     }
