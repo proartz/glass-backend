@@ -3,6 +3,7 @@ package pl.oncode.glass.web.controller;
 import org.springframework.web.bind.annotation.*;
 import pl.oncode.glass.service.DatabaseService;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
+import pl.oncode.glass.web.dto.viewOrder.ViewOrderDto;
 
 import java.util.List;
 
@@ -16,13 +17,13 @@ public class MainController {
     }
 
     @GetMapping("/orders")
-    List<Order> orders() {
-        return databaseService.getAllOrders();
+    List<ViewOrderDto> orders() {
+        return databaseService.viewOrders();
     }
 
     @GetMapping("/order/{id}")
-    Order order(@PathVariable Integer id) {
-        return databaseService.getOrder(id);
+    ViewOrderDto order(@PathVariable Integer id) {
+        return databaseService.viewOrder(id);
     }
 
     @PostMapping("/order")

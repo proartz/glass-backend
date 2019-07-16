@@ -9,9 +9,12 @@ import pl.oncode.glass.model.Order;
 import pl.oncode.glass.web.dto.addOrder.AddItemDto;
 import pl.oncode.glass.web.dto.addOrder.AddOperationDto;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
+import pl.oncode.glass.web.dto.viewOrder.ViewOrderDto;
 
+import javax.swing.text.View;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service(value = "databaseService")
@@ -138,7 +141,7 @@ public class DatabaseService {
         saveOrder(createOrder(addOrderDto));
     }
 
-    public Order createOrder(AddOrderDto addOrderDto) {
+    private Order createOrder(AddOrderDto addOrderDto) {
 
         Order order = new Order.OrderBuilder()
             .setExternalOrderId(addOrderDto.getExternalOrderId())
@@ -173,6 +176,38 @@ public class DatabaseService {
         registerRelations(order);
 
         return order;
+    }
+
+    // view Order
+
+    public List<ViewOrderDto> viewOrders() {
+        List<Order> orders = getAllOrders();
+        List<ViewOrderDto> viewOrderDtos = new ArrayList<>();
+
+        for(Order order : orders) {
+            viewOrderDtos.add(createViewOrderDto(order));
+        }
+
+        return viewOrderDtos;
+    }
+
+    public ViewOrderDto viewOrder(int id) {
+        return createViewOrderDto(getOrder(id));
+    }
+
+    private ViewOrderDto createViewOrderDto(Order order) {
+
+        ViewOrderDto viewOrderDto = new ViewOrderDto.ViewOrderBuilder()
+                .setExternalOrderId(order.getExternalOrderId())
+                .setCustomer(order.getCustomer())
+                .setInvoiceNumber(order.getInvoiceNumber())
+                .setPrice(order.getPrice())
+                .setRealisationDate(order.getRealisationDate())
+                .setCreateDate(order.getCreateDate())
+                .setStatus(order.getStatus())
+                .createViewOrder();
+
+        return viewOrderDto;
     }
 
 }
