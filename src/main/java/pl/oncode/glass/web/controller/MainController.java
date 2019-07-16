@@ -2,10 +2,9 @@ package pl.oncode.glass.web.controller;
 
 import org.springframework.web.bind.annotation.*;
 import pl.oncode.glass.service.DatabaseService;
-import pl.oncode.glass.web.dto.AddOrderDto;
+import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 public class MainController {

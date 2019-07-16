@@ -6,16 +6,12 @@ import pl.oncode.glass.model.Attachment;
 import pl.oncode.glass.model.Item;
 import pl.oncode.glass.model.Operation;
 import pl.oncode.glass.model.Order;
-import pl.oncode.glass.web.dto.AddItemDto;
-import pl.oncode.glass.web.dto.AddOperationDto;
-import pl.oncode.glass.web.dto.AddOrderDto;
+import pl.oncode.glass.web.dto.addOrder.AddItemDto;
+import pl.oncode.glass.web.dto.addOrder.AddOperationDto;
+import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.sql.Date;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 @Service(value = "databaseService")

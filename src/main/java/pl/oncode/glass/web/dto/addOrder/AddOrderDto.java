@@ -1,4 +1,4 @@
-package pl.oncode.glass.web.dto;
+package pl.oncode.glass.web.dto.addOrder;
 
 import java.math.BigDecimal;
 import java.util.Date;
