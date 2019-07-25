@@ -219,7 +219,8 @@ public class DatabaseService {
 
     private ViewOrderDto createViewOrderDto(Order order) {
 
-        return new ViewOrderDto.ViewOrderBuilder()
+        return new ViewOrderDto.ViewOrderDtoBuilder()
+                .setId(order.getId())
                 .setExternalOrderId(order.getExternalOrderId())
                 .setCustomer(order.getCustomer())
                 .setInvoiceNumber(order.getInvoiceNumber())
@@ -227,7 +228,7 @@ public class DatabaseService {
                 .setDueDate(order.getDueDate())
                 .setCreateDate(order.getCreateDate())
                 .setStatus(order.getStatus())
-                .createViewOrder();
+                .createViewOrderDto();
     }
 
     // view Materials

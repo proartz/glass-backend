@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class ViewOrderDto implements Serializable {
 
+    private Integer id;
     private String externalOrderId;
     private String customer;
     private String invoiceNumber;
@@ -17,14 +18,8 @@ public class ViewOrderDto implements Serializable {
     public ViewOrderDto() {
     }
 
-    public ViewOrderDto(String externalOrderId,
-                        String customer,
-                        String invoiceNumber,
-                        BigDecimal price,
-                        Date dueDate,
-                        Date createDate,
-                        String status) {
-
+    public ViewOrderDto(Integer id, String externalOrderId, String customer, String invoiceNumber, BigDecimal price, Date dueDate, Date createDate, String status) {
+        this.id = id;
         this.externalOrderId = externalOrderId;
         this.customer = customer;
         this.invoiceNumber = invoiceNumber;
@@ -32,6 +27,14 @@ public class ViewOrderDto implements Serializable {
         this.dueDate = dueDate;
         this.createDate = createDate;
         this.status = status;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getExternalOrderId() {
@@ -90,7 +93,8 @@ public class ViewOrderDto implements Serializable {
         this.status = status;
     }
 
-    public static class ViewOrderBuilder {
+    public static class ViewOrderDtoBuilder {
+        private Integer id;
         private String externalOrderId;
         private String customer;
         private String invoiceNumber;
@@ -99,43 +103,48 @@ public class ViewOrderDto implements Serializable {
         private Date createDate;
         private String status;
 
-        public ViewOrderBuilder setExternalOrderId(String externalOrderId) {
+        public ViewOrderDtoBuilder setId(Integer id) {
+            this.id = id;
+            return this;
+        }
+
+        public ViewOrderDtoBuilder setExternalOrderId(String externalOrderId) {
             this.externalOrderId = externalOrderId;
             return this;
         }
 
-        public ViewOrderBuilder setCustomer(String customer) {
+        public ViewOrderDtoBuilder setCustomer(String customer) {
             this.customer = customer;
             return this;
         }
 
-        public ViewOrderBuilder setInvoiceNumber(String invoiceNumber) {
+        public ViewOrderDtoBuilder setInvoiceNumber(String invoiceNumber) {
             this.invoiceNumber = invoiceNumber;
             return this;
         }
 
-        public ViewOrderBuilder setPrice(BigDecimal price) {
+        public ViewOrderDtoBuilder setPrice(BigDecimal price) {
             this.price = price;
             return this;
         }
 
-        public ViewOrderBuilder setDueDate(Date dueDate) {
+        public ViewOrderDtoBuilder setDueDate(Date dueDate) {
             this.dueDate = dueDate;
             return this;
         }
 
-        public ViewOrderBuilder setCreateDate(Date createDate) {
+        public ViewOrderDtoBuilder setCreateDate(Date createDate) {
             this.createDate = createDate;
             return this;
         }
 
-        public ViewOrderBuilder setStatus(String status) {
+        public ViewOrderDtoBuilder setStatus(String status) {
             this.status = status;
             return this;
         }
 
-        public ViewOrderDto createViewOrder() {
-            return new ViewOrderDto(externalOrderId, customer, invoiceNumber, price, dueDate, createDate, status);
+        public ViewOrderDto createViewOrderDto() {
+            return new ViewOrderDto(id, externalOrderId, customer, invoiceNumber, price, dueDate, createDate, status);
         }
     }
 }
