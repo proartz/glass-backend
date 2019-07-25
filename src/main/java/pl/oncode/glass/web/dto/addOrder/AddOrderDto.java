@@ -111,4 +111,19 @@ public class AddOrderDto {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "AddOrderDto{" +
+                "items=" + items +
+                ", attachments=" + attachments +
+                ", externalOrderId='" + externalOrderId + '\'' +
+                ", customer='" + customer + '\'' +
+                ", invoiceNumber='" + invoiceNumber + '\'' +
+                ", price=" + price +
+                ", realisationDate=" + realisationDate +
+                ", createDate=" + createDate +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }

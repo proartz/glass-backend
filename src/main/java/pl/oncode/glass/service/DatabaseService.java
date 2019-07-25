@@ -1,17 +1,15 @@
 package pl.oncode.glass.service;
 
 import org.springframework.stereotype.Service;
+import pl.oncode.glass.dao.MaterialDao;
 import pl.oncode.glass.dao.OrderDao;
-import pl.oncode.glass.model.Attachment;
-import pl.oncode.glass.model.Item;
-import pl.oncode.glass.model.Operation;
-import pl.oncode.glass.model.Order;
+import pl.oncode.glass.model.*;
 import pl.oncode.glass.web.dto.addOrder.AddItemDto;
 import pl.oncode.glass.web.dto.addOrder.AddOperationDto;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
+import pl.oncode.glass.web.dto.viewMaterial.ViewMaterialDto;
 import pl.oncode.glass.web.dto.viewOrder.ViewOrderDto;
 
-import javax.swing.text.View;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -20,33 +18,57 @@ import java.util.List;
 @Service(value = "databaseService")
 public class DatabaseService {
 
-    private OrderDao dao;
+    private OrderDao orderDao;
+    private MaterialDao materialDao;
 
-    public DatabaseService(OrderDao dao) {
-        this.dao = dao;
+    public DatabaseService(OrderDao orderDao, MaterialDao materialDao) {
+        this.orderDao = orderDao;
+        this.materialDao = materialDao;
 //        testDb();
     }
 
-    // DAO methods
+    // orderDao methods
 
     public Order getOrder(Integer id) {
-        return dao.get(id);
+        return orderDao.get(id);
     }
 
     public List<Order> getAllOrders() {
-        return dao.getAll();
+        return orderDao.getAll();
     }
 
     public void updateOrder(Order order) {
-        dao.update(order);
+        orderDao.update(order);
     }
 
     public void saveOrder(Order order) {
-        dao.save(order);
+        orderDao.save(order);
     }
 
     public void deleteOrder(Order Order) {
-        dao.delete(Order);
+        orderDao.delete(Order);
+    }
+
+    // materialDao methods
+
+    public Material getMaterial(Integer id) {
+        return materialDao.get(id);
+    }
+
+    public List<Material> getAllMaterials() {
+        return materialDao.getAll();
+    }
+
+    public void updateMaterial(Material material) {
+        materialDao.update(material);
+    }
+
+    public void saveMaterial(Material material) {
+        materialDao.save(material);
+    }
+
+    public void deleteMaterial(Material material) {
+        materialDao.delete(material);
     }
 
     // model creation methods
@@ -210,4 +232,25 @@ public class DatabaseService {
         return viewOrderDto;
     }
 
+    // view Materials
+    public List<ViewMaterialDto> viewMaterials() {
+        List<Material> Materials = getAllMaterials();
+        List<ViewMaterialDto> viewMaterialDtos = new ArrayList<>();
+
+        for(Material material : Materials) {
+            viewMaterialDtos.add(createViewMaterialDto(material));
+        }
+
+        return viewMaterialDtos;
+    }
+
+    private ViewMaterialDto createViewMaterialDto(Material material) {
+
+        ViewMaterialDto viewMaterialDto = new ViewMaterialDto(
+                material.getId(),
+                material.getName(),
+                material.getDescription());
+
+        return viewMaterialDto;
+    }
 }

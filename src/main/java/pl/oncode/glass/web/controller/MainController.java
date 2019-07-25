@@ -3,6 +3,7 @@ package pl.oncode.glass.web.controller;
 import org.springframework.web.bind.annotation.*;
 import pl.oncode.glass.service.DatabaseService;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
+import pl.oncode.glass.web.dto.viewMaterial.ViewMaterialDto;
 import pl.oncode.glass.web.dto.viewOrder.ViewOrderDto;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class MainController {
         this.databaseService = databaseService;
     }
 
+    @CrossOrigin
     @GetMapping("/orders")
     List<ViewOrderDto> orders() {
         return databaseService.viewOrders();
@@ -26,11 +28,16 @@ public class MainController {
         return databaseService.viewOrder(id);
     }
 
+    @CrossOrigin
     @PostMapping("/order")
-    AddOrderDto addOrder(@RequestBody AddOrderDto addOrderDto) {
-
+    void addOrder(@RequestBody AddOrderDto addOrderDto) {
         databaseService.addOrder(addOrderDto);
-        return addOrderDto;
     }
+
+    @GetMapping("/materials")
+    List<ViewMaterialDto> materials() {
+        return databaseService.viewMaterials();
+    }
+
 
 }
