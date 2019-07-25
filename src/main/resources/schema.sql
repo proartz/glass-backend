@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS `order` (
 	customer VARCHAR(30) NOT NULL,
 	invoice_number VARCHAR(30),
     price DECIMAL(19,4),
-	realisation_date DATE NOT NULL,
+	due_date DATE NOT NULL,
 	description TEXT,
 	create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     status VARCHAR(20) NOT NULL,
