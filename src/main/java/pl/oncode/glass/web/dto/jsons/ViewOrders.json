@@ -5,7 +5,7 @@
       "customer": "TVN",
       "invoiceNumber": "FK/2019/07/12345",
       "price": "2500.00",
-      "realisationDate": "2019-09-10",
+      "dueDate": "2019-09-10",
       "createDate": "2019-07-08",
       "status": "created"
     },
@@ -14,7 +14,7 @@
       "customer": "TVP",
       "invoiceNumber": "FK/2019/07/12346",
       "price": "4500.00",
-      "realisationDate": "2019-10-15",
+      "dueDate": "2019-10-15",
       "createDate": "2019-07-08",
       "status": "created"
     }

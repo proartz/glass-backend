@@ -12,7 +12,7 @@ public class AddOrderDto {
     private String customer;
     private String invoiceNumber;
     private BigDecimal price;
-    private Date realisationDate;
+    private Date dueDate;
     private Date createDate;
     private String status;
 
@@ -25,7 +25,7 @@ public class AddOrderDto {
                        String customer,
                        String invoiceNumber,
                        BigDecimal price,
-                       Date realisationDate,
+                       Date dueDate,
                        Date createDate,
                        String status) {
 
@@ -35,7 +35,7 @@ public class AddOrderDto {
         this.customer = customer;
         this.invoiceNumber = invoiceNumber;
         this.price = price;
-        this.realisationDate = realisationDate;
+        this.dueDate = dueDate;
         this.createDate = createDate;
         this.status = status;
     }
@@ -88,12 +88,12 @@ public class AddOrderDto {
         this.price = price;
     }
 
-    public Date getRealisationDate() {
-        return realisationDate;
+    public Date getDueDate() {
+        return dueDate;
     }
 
-    public void setRealisationDate(Date realisationDate) {
-        this.realisationDate = realisationDate;
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 
     public Date getCreateDate() {
@@ -121,7 +121,7 @@ public class AddOrderDto {
                 ", customer='" + customer + '\'' +
                 ", invoiceNumber='" + invoiceNumber + '\'' +
                 ", price=" + price +
-                ", realisationDate=" + realisationDate +
+                ", dueDate=" + dueDate +
                 ", createDate=" + createDate +
                 ", status='" + status + '\'' +
                 '}';

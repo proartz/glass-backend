@@ -29,45 +29,45 @@ public class DatabaseService {
 
     // orderDao methods
 
-    public Order getOrder(Integer id) {
+    private Order getOrder(Integer id) {
         return orderDao.get(id);
     }
 
-    public List<Order> getAllOrders() {
+    private List<Order> getAllOrders() {
         return orderDao.getAll();
     }
 
-    public void updateOrder(Order order) {
+    private void updateOrder(Order order) {
         orderDao.update(order);
     }
 
-    public void saveOrder(Order order) {
+    private void saveOrder(Order order) {
         orderDao.save(order);
     }
 
-    public void deleteOrder(Order Order) {
+    private void deleteOrder(Order Order) {
         orderDao.delete(Order);
     }
 
     // materialDao methods
 
-    public Material getMaterial(Integer id) {
+    private Material getMaterial(Integer id) {
         return materialDao.get(id);
     }
 
-    public List<Material> getAllMaterials() {
+    private List<Material> getAllMaterials() {
         return materialDao.getAll();
     }
 
-    public void updateMaterial(Material material) {
+    private void updateMaterial(Material material) {
         materialDao.update(material);
     }
 
-    public void saveMaterial(Material material) {
+    private void saveMaterial(Material material) {
         materialDao.save(material);
     }
 
-    public void deleteMaterial(Material material) {
+    private void deleteMaterial(Material material) {
         materialDao.delete(material);
     }
 
@@ -133,7 +133,7 @@ public class DatabaseService {
                 .setExternalOrderId("Order/2019/07/12/FZ/54321")
                 .setCustomer(customer)
                 .setPrice(BigDecimal.valueOf(50000.00))
-                .setRealisationDate(Date.valueOf("2019-09-30"))
+                .setDueDate(Date.valueOf("2019-09-30"))
                 .setStatus("NEW")
                 .createOrder();
 
@@ -170,7 +170,7 @@ public class DatabaseService {
             .setCustomer(addOrderDto.getCustomer())
             .setInvoiceNumber(addOrderDto.getInvoiceNumber())
             .setPrice(addOrderDto.getPrice())
-            .setRealisationDate(addOrderDto.getRealisationDate())
+            .setDueDate(addOrderDto.getDueDate())
             .setStatus(addOrderDto.getStatus())
             .createOrder();
 
@@ -219,17 +219,15 @@ public class DatabaseService {
 
     private ViewOrderDto createViewOrderDto(Order order) {
 
-        ViewOrderDto viewOrderDto = new ViewOrderDto.ViewOrderBuilder()
+        return new ViewOrderDto.ViewOrderBuilder()
                 .setExternalOrderId(order.getExternalOrderId())
                 .setCustomer(order.getCustomer())
                 .setInvoiceNumber(order.getInvoiceNumber())
                 .setPrice(order.getPrice())
-                .setRealisationDate(order.getRealisationDate())
+                .setDueDate(order.getDueDate())
                 .setCreateDate(order.getCreateDate())
                 .setStatus(order.getStatus())
                 .createViewOrder();
-
-        return viewOrderDto;
     }
 
     // view Materials
@@ -246,11 +244,9 @@ public class DatabaseService {
 
     private ViewMaterialDto createViewMaterialDto(Material material) {
 
-        ViewMaterialDto viewMaterialDto = new ViewMaterialDto(
+        return new ViewMaterialDto(
                 material.getId(),
                 material.getName(),
                 material.getDescription());
-
-        return viewMaterialDto;
     }
 }

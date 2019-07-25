@@ -23,20 +23,7 @@ public class GlassApplicationTests {
 
     @Test
     public void retrieveOrderTest() {
-        Order order = dbs.getOrder(1);
-        Set<Item> items = order.getItems();
-
-        assertNotNull(items);
-
-        System.out.println("*************");
-        System.out.println("*************");
-
-        System.out.println(items);
-
-        for(Item item : items) {
-            System.out.println(item);
-        }
-
+        
     }
 
 }

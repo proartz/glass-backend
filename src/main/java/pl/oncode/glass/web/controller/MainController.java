@@ -34,6 +34,7 @@ public class MainController {
         databaseService.addOrder(addOrderDto);
     }
 
+    @CrossOrigin
     @GetMapping("/materials")
     List<ViewMaterialDto> materials() {
         return databaseService.viewMaterials();

@@ -10,7 +10,7 @@ public class ViewOrderDto implements Serializable {
     private String customer;
     private String invoiceNumber;
     private BigDecimal price;
-    private Date realisationDate;
+    private Date dueDate;
     private Date createDate;
     private String status;
 
@@ -21,7 +21,7 @@ public class ViewOrderDto implements Serializable {
                         String customer,
                         String invoiceNumber,
                         BigDecimal price,
-                        Date realisationDate,
+                        Date dueDate,
                         Date createDate,
                         String status) {
 
@@ -29,7 +29,7 @@ public class ViewOrderDto implements Serializable {
         this.customer = customer;
         this.invoiceNumber = invoiceNumber;
         this.price = price;
-        this.realisationDate = realisationDate;
+        this.dueDate = dueDate;
         this.createDate = createDate;
         this.status = status;
     }
@@ -66,12 +66,12 @@ public class ViewOrderDto implements Serializable {
         this.price = price;
     }
 
-    public Date getRealisationDate() {
-        return realisationDate;
+    public Date getDueDate() {
+        return dueDate;
     }
 
-    public void setRealisationDate(Date realisationDate) {
-        this.realisationDate = realisationDate;
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 
     public Date getCreateDate() {
@@ -95,7 +95,7 @@ public class ViewOrderDto implements Serializable {
         private String customer;
         private String invoiceNumber;
         private BigDecimal price;
-        private Date realisationDate;
+        private Date dueDate;
         private Date createDate;
         private String status;
 
@@ -119,8 +119,8 @@ public class ViewOrderDto implements Serializable {
             return this;
         }
 
-        public ViewOrderBuilder setRealisationDate(Date realisationDate) {
-            this.realisationDate = realisationDate;
+        public ViewOrderBuilder setDueDate(Date dueDate) {
+            this.dueDate = dueDate;
             return this;
         }
 
@@ -135,7 +135,7 @@ public class ViewOrderDto implements Serializable {
         }
 
         public ViewOrderDto createViewOrder() {
-            return new ViewOrderDto(externalOrderId, customer, invoiceNumber, price, realisationDate, createDate, status);
+            return new ViewOrderDto(externalOrderId, customer, invoiceNumber, price, dueDate, createDate, status);
         }
     }
 }
