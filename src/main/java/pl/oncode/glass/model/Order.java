@@ -1,6 +1,7 @@
 package pl.oncode.glass.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
@@ -11,16 +12,34 @@ public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Item> items;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Attachment> attachments;
+
+    @Size(max = 30, message = "ExternalOrderId can have maximum 30 characters")
     private String externalOrderId;
+
+    @Size(max = 30, message = "Customer can have maximum 30 characters")
+    @NotEmpty(message = "Customer cannot be null nor empty")
     private String customer;
+
+    @Size(max = 30, message = "Customer can have maximum 30 characters")
     private String invoiceNumber;
+
+    @PositiveOrZero
+    @Digits(integer = 19, fraction = 4)
     private BigDecimal price;
+
+    @NotNull(message = "DueDate cannot be null")
+    @FutureOrPresent(message = "DueDate cannot be in the past")
     private Date dueDate;
+
     private Date createDate;
+
+    @NotEmpty(message = "Status cannot be empty")
     private String status;
 
     public Order() {
