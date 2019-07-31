@@ -1,5 +1,6 @@
 package pl.oncode.glass.web.dto.addOrder;
 
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
@@ -8,12 +9,28 @@ public class AddOrderDto {
 
     private Set<AddItemDto> items;
     private Set<AddAttachmentDto> attachments;
+
+    @Size(max = 30, message = "ExternalOrderId can have maximum 30 characters")
     private String externalOrderId;
+
+    @Size(max = 30, message = "Customer can have maximum 30 characters")
+    @NotEmpty(message = "Customer cannot be null nor empty")
     private String customer;
+
+    @Size(max = 30, message = "Customer can have maximum 30 characters")
     private String invoiceNumber;
+
+    @PositiveOrZero
+    @Digits(integer = 19, fraction = 4)
     private BigDecimal price;
+
+    @NotNull(message = "DueDate cannot be null")
+    @FutureOrPresent(message = "DueDate cannot be in the past")
     private Date dueDate;
+
     private Date createDate;
+
+    @NotEmpty(message = "Status cannot be empty")
     private String status;
 
     public AddOrderDto() {

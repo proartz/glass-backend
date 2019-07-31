@@ -6,6 +6,7 @@ import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
 import pl.oncode.glass.web.dto.viewMaterial.ViewMaterialDto;
 import pl.oncode.glass.web.dto.viewOrder.ViewOrderDto;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -30,7 +31,7 @@ public class MainController {
 
     @CrossOrigin
     @PostMapping("/order")
-    void addOrder(@RequestBody AddOrderDto addOrderDto) {
+    void addOrder(@Valid @RequestBody AddOrderDto addOrderDto) {
         databaseService.addOrder(addOrderDto);
     }
 
