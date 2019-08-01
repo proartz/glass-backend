@@ -1,5 +1,7 @@
 package pl.oncode.glass.web.error;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,14 +10,13 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+    Logger logger = LoggerFactory.getLogger(CustomGlobalExceptionHandler.class);
 
     // error handle for @Valid
     @Override
@@ -24,8 +25,13 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                                                                            HttpStatus status, WebRequest request) {
 
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", new Date());
+        Date timestamp = new Date();
+        logger.debug(String.valueOf(timestamp));
+        body.put("timestamp", timestamp);
         body.put("status", status.value());
+
+        logger.debug(ex.getMessage());
+
 
         // get all errors
         List<String> errors = ex.getBindingResult()

@@ -1,5 +1,7 @@
 package pl.oncode.glass.web.dto.addOrder;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -26,6 +28,7 @@ public class AddOrderDto {
 
     @NotNull(message = "DueDate cannot be null")
     @FutureOrPresent(message = "DueDate cannot be in the past")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dueDate;
 
     private Date createDate;
