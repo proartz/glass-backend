@@ -1,9 +1,13 @@
 package pl.oncode.glass.web.dto.addOrder;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.springframework.format.annotation.DateTimeFormat;
+import pl.oncode.glass.web.jackson.CustomDateDeserializer;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -28,8 +32,7 @@ public class AddOrderDto {
 
     @NotNull(message = "DueDate cannot be null")
     @FutureOrPresent(message = "DueDate cannot be in the past")
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date dueDate;
+    private LocalDate dueDate;
 
     private Date createDate;
 
@@ -45,7 +48,7 @@ public class AddOrderDto {
                        String customer,
                        String invoiceNumber,
                        BigDecimal price,
-                       Date dueDate,
+                       LocalDate dueDate,
                        Date createDate,
                        String status) {
 
@@ -108,11 +111,11 @@ public class AddOrderDto {
         this.price = price;
     }
 
-    public Date getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 

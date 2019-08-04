@@ -1,9 +1,12 @@
 package pl.oncode.glass.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -35,7 +38,7 @@ public class Order implements Serializable {
 
     @NotNull(message = "DueDate cannot be null")
     @FutureOrPresent(message = "DueDate cannot be in the past")
-    private Date dueDate;
+    private LocalDate dueDate;
 
     private Date createDate;
 
@@ -51,7 +54,7 @@ public class Order implements Serializable {
                  String customer,
                  String invoiceNumber,
                  BigDecimal price,
-                 Date dueDate,
+                 LocalDate dueDate,
                  Date createDate,
                  String status) {
         this.items = items;
@@ -121,11 +124,11 @@ public class Order implements Serializable {
         this.price = price;
     }
 
-    public Date getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -168,7 +171,7 @@ public class Order implements Serializable {
         private String customer;
         private String invoiceNumber;
         private BigDecimal price;
-        private Date dueDate;
+        private LocalDate dueDate;
         private Date createDate;
         private String status;
 
@@ -217,7 +220,7 @@ public class Order implements Serializable {
             return this;
         }
 
-        public OrderBuilder setDueDate(Date dueDate) {
+        public OrderBuilder setDueDate(LocalDate dueDate) {
             this.dueDate = dueDate;
             return this;
         }

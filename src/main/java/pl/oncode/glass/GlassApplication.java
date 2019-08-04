@@ -16,7 +16,7 @@ import static java.util.TimeZone.getAvailableIDs;
 @SpringBootApplication
 public class GlassApplication {
 
-    Logger logger = LoggerFactory.getLogger(GlassApplication.class);
+    private Logger logger = LoggerFactory.getLogger(GlassApplication.class);
 
     @Autowired
     private Environment env;

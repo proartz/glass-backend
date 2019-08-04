@@ -2,6 +2,7 @@ package pl.oncode.glass.web.dto.viewOrder;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class ViewOrderDto implements Serializable {
@@ -11,14 +12,14 @@ public class ViewOrderDto implements Serializable {
     private String customer;
     private String invoiceNumber;
     private BigDecimal price;
-    private Date dueDate;
+    private LocalDate dueDate;
     private Date createDate;
     private String status;
 
     public ViewOrderDto() {
     }
 
-    public ViewOrderDto(Integer id, String externalOrderId, String customer, String invoiceNumber, BigDecimal price, Date dueDate, Date createDate, String status) {
+    public ViewOrderDto(Integer id, String externalOrderId, String customer, String invoiceNumber, BigDecimal price, LocalDate dueDate, Date createDate, String status) {
         this.id = id;
         this.externalOrderId = externalOrderId;
         this.customer = customer;
@@ -69,11 +70,11 @@ public class ViewOrderDto implements Serializable {
         this.price = price;
     }
 
-    public Date getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -99,7 +100,7 @@ public class ViewOrderDto implements Serializable {
         private String customer;
         private String invoiceNumber;
         private BigDecimal price;
-        private Date dueDate;
+        private LocalDate dueDate;
         private Date createDate;
         private String status;
 
@@ -128,7 +129,7 @@ public class ViewOrderDto implements Serializable {
             return this;
         }
 
-        public ViewOrderDtoBuilder setDueDate(Date dueDate) {
+        public ViewOrderDtoBuilder setDueDate(LocalDate dueDate) {
             this.dueDate = dueDate;
             return this;
         }

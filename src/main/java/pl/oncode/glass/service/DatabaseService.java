@@ -12,6 +12,7 @@ import pl.oncode.glass.web.dto.viewOrder.ViewOrderDto;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,7 +134,7 @@ public class DatabaseService {
                 .setExternalOrderId("Order/2019/07/12/FZ/54321")
                 .setCustomer(customer)
                 .setPrice(BigDecimal.valueOf(50000.00))
-                .setDueDate(Date.valueOf("2019-09-30"))
+                .setDueDate(LocalDate.of(2019, 9, 30))
                 .setStatus("NEW")
                 .createOrder();
 
