@@ -3,7 +3,6 @@ package pl.oncode.glass.web.dto.addOrder;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.format.annotation.DateTimeFormat;
-import pl.oncode.glass.web.jackson.CustomDateDeserializer;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
