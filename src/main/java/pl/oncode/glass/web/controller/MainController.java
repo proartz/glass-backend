@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import pl.oncode.glass.service.DatabaseService;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
+import pl.oncode.glass.web.dto.fetchItemDto.FetchItemDto;
 import pl.oncode.glass.web.dto.viewMaterial.ViewMaterialDto;
 import pl.oncode.glass.web.dto.viewOrder.ViewOrderDto;
 
@@ -39,8 +40,8 @@ public class MainController {
     @CrossOrigin
     @PostMapping("/order")
     void addOrder(@Valid @RequestBody AddOrderDto addOrderDto) {
-        logger.info("/addOrder: Received request");
-        logger.info("/addOrder: Data received: " + addOrderDto);
+        logger.info("/order: Received request");
+        logger.info("/order: Data received: " + addOrderDto);
         databaseService.addOrder(addOrderDto);
     }
 
@@ -51,5 +52,12 @@ public class MainController {
         return databaseService.viewMaterials();
     }
 
+    @CrossOrigin
+    @GetMapping("/items/{orderId}")
+    List<FetchItemDto> items(@PathVariable Integer orderId) {
+        logger.info("/items: Received GET request");
+        logger.info("/items: orderId=" + orderId);
+        return databaseService.fetchItems(orderId);
+    }
 
 }

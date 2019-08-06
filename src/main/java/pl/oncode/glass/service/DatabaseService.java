@@ -1,12 +1,16 @@
 package pl.oncode.glass.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import pl.oncode.glass.dao.ItemsDao;
 import pl.oncode.glass.dao.MaterialDao;
 import pl.oncode.glass.dao.OrderDao;
 import pl.oncode.glass.model.*;
 import pl.oncode.glass.web.dto.addOrder.AddItemDto;
 import pl.oncode.glass.web.dto.addOrder.AddOperationDto;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
+import pl.oncode.glass.web.dto.fetchItemDto.FetchItemDto;
 import pl.oncode.glass.web.dto.viewMaterial.ViewMaterialDto;
 import pl.oncode.glass.web.dto.viewOrder.ViewOrderDto;
 
@@ -19,12 +23,16 @@ import java.util.List;
 @Service(value = "databaseService")
 public class DatabaseService {
 
+    private Logger logger = LoggerFactory.getLogger(DatabaseService.class);
+
     private OrderDao orderDao;
     private MaterialDao materialDao;
+    private ItemsDao itemsDao;
 
-    public DatabaseService(OrderDao orderDao, MaterialDao materialDao) {
+    public DatabaseService(OrderDao orderDao, MaterialDao materialDao, ItemsDao itemsDao) {
         this.orderDao = orderDao;
         this.materialDao = materialDao;
+        this.itemsDao = itemsDao;
 //        testDb();
     }
 
@@ -250,5 +258,33 @@ public class DatabaseService {
                 material.getId(),
                 material.getName(),
                 material.getDescription());
+    }
+
+    // fetch Items
+    public List<FetchItemDto> fetchItems(Integer orderId) {
+        logger.debug("orderId=" + orderId);
+        Order order = orderDao.get(orderId);
+        logger.debug("Order=" + order.getCustomer());
+        List<Item> items = itemsDao.getAll(order);
+        List<FetchItemDto> fetchItemDtos = new ArrayList<>();
+
+        for(Item item : items) {
+            fetchItemDtos.add(createFetchItemDto(item));
+        }
+
+        return fetchItemDtos;
+    }
+
+    private FetchItemDto createFetchItemDto(Item item) {
+        return new FetchItemDto.FetchItemDtoBuilder()
+                .setId(item.getId())
+                .setOrder(item.getOrder())
+                .setMaterialId(item.getMaterialId())
+                .setWidth(item.getWidth())
+                .setHeight(item.getHeight())
+                .setDepth(item.getDepth())
+                .setQuantity(item.getQuantity())
+                .setNote(item.getNote())
+                .createFetchItemDto();
     }
 }
