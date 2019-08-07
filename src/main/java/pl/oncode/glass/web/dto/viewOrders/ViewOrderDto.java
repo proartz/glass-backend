@@ -1,4 +1,4 @@
-package pl.oncode.glass.web.dto.viewOrder;
+package pl.oncode.glass.web.dto.viewOrders;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

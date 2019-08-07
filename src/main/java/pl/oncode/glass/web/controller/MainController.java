@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import pl.oncode.glass.service.DatabaseService;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
 import pl.oncode.glass.web.dto.fetchItemDto.FetchItemDto;
+import pl.oncode.glass.web.dto.fetchOrder.FetchOrderDto;
 import pl.oncode.glass.web.dto.viewMaterial.ViewMaterialDto;
-import pl.oncode.glass.web.dto.viewOrder.ViewOrderDto;
+import pl.oncode.glass.web.dto.viewOrders.ViewOrderDto;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -25,16 +26,17 @@ public class MainController {
 
     @CrossOrigin
     @GetMapping("/orders")
-    List<ViewOrderDto> orders() {
+    List<ViewOrderDto> viewOrders() {
         logger.info("/orders: Received request");
         return databaseService.viewOrders();
     }
 
+    @CrossOrigin
     @GetMapping("/order/{id}")
-    ViewOrderDto order(@PathVariable Integer id) {
+    FetchOrderDto fetchOrder(@PathVariable Integer id) {
         logger.info("/order: Received request");
         logger.info("/order: id=" + id);
-        return databaseService.viewOrder(id);
+        return databaseService.fetchOrder(id);
     }
 
     @CrossOrigin

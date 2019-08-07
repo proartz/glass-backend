@@ -11,11 +11,11 @@ import pl.oncode.glass.web.dto.addOrder.AddItemDto;
 import pl.oncode.glass.web.dto.addOrder.AddOperationDto;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
 import pl.oncode.glass.web.dto.fetchItemDto.FetchItemDto;
+import pl.oncode.glass.web.dto.fetchOrder.FetchOrderDto;
 import pl.oncode.glass.web.dto.viewMaterial.ViewMaterialDto;
-import pl.oncode.glass.web.dto.viewOrder.ViewOrderDto;
+import pl.oncode.glass.web.dto.viewOrders.ViewOrderDto;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -222,14 +222,30 @@ public class DatabaseService {
         return viewOrderDtos;
     }
 
-    public ViewOrderDto viewOrder(int id) {
-        return createViewOrderDto(getOrder(id));
-    }
-
     private ViewOrderDto createViewOrderDto(Order order) {
 
         return new ViewOrderDto.ViewOrderDtoBuilder()
                 .setId(order.getId())
+                .setExternalOrderId(order.getExternalOrderId())
+                .setCustomer(order.getCustomer())
+                .setInvoiceNumber(order.getInvoiceNumber())
+                .setPrice(order.getPrice())
+                .setDueDate(order.getDueDate())
+                .setCreateDate(order.getCreateDate())
+                .setStatus(order.getStatus())
+                .createViewOrderDto();
+    }
+
+    //fetch order
+    public FetchOrderDto fetchOrder(int id) {
+        return createFetchDto(getOrder(id));
+    }
+
+    private FetchOrderDto createFetchDto(Order order) {
+        return new FetchOrderDto.ViewOrderDtoBuilder()
+                .setId(order.getId())
+                .setItems(order.getItems())
+                .setAttachments(order.getAttachments())
                 .setExternalOrderId(order.getExternalOrderId())
                 .setCustomer(order.getCustomer())
                 .setInvoiceNumber(order.getInvoiceNumber())
