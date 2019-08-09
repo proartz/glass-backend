@@ -37,8 +37,8 @@ CREATE TABLE IF NOT EXISTS item (
 CREATE TABLE IF NOT EXISTS operation (
     id INT AUTO_INCREMENT NOT NULL,
     item_id INT NOT NULL,
-    name VARCHAR(20),
-    status VARCHAR(20),
+    name VARCHAR(30),
+    status VARCHAR(30),
     PRIMARY KEY (id),
     FOREIGN KEY (item_id)
     REFERENCES item(id)
