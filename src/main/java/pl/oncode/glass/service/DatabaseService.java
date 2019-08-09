@@ -191,6 +191,7 @@ public class DatabaseService {
                 .setHeight(addItemDto.getHeight())
                 .setDepth(addItemDto.getDepth())
                 .setQuantity(addItemDto.getQuantity())
+                .setStatus(addItemDto.getStatus())
                 .setNote(addItemDto.getNote())
                 .createItem();
 
@@ -300,6 +301,7 @@ public class DatabaseService {
                 .setHeight(item.getHeight())
                 .setDepth(item.getDepth())
                 .setQuantity(item.getQuantity())
+                .setStatus(item.getStatus())
                 .setNote(item.getNote())
                 .createFetchItemDto();
     }

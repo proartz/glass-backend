@@ -14,12 +14,13 @@ public class FetchItemDto {
     private Double height;
     private Double depth;
     private Integer quantity;
+    private String status;
     private String note;
 
     public FetchItemDto() {
     }
 
-    public FetchItemDto(Integer id, Order order, Integer materialId, Double width, Double height, Double depth, Integer quantity, String note) {
+    public FetchItemDto(Integer id, Order order, Integer materialId, Double width, Double height, Double depth, Integer quantity, String status, String note) {
         this.id = id;
         this.order = order;
         this.materialId = materialId;
@@ -27,6 +28,7 @@ public class FetchItemDto {
         this.height = height;
         this.depth = depth;
         this.quantity = quantity;
+        this.status = status;
         this.note = note;
     }
 
@@ -86,6 +88,14 @@ public class FetchItemDto {
         this.quantity = quantity;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getNote() {
         return note;
     }
@@ -102,6 +112,7 @@ public class FetchItemDto {
         private Double height;
         private Double depth;
         private Integer quantity;
+        private String status;
         private String note;
 
         public FetchItemDtoBuilder setId(Integer id) {
@@ -139,13 +150,18 @@ public class FetchItemDto {
             return this;
         }
 
+        public FetchItemDtoBuilder setStatus(String status) {
+            this.status = status;
+            return this;
+        }
+
         public FetchItemDtoBuilder setNote(String note) {
             this.note = note;
             return this;
         }
 
         public FetchItemDto createFetchItemDto() {
-            return new FetchItemDto(id, order, materialId, width, height, depth, quantity, note);
+            return new FetchItemDto(id, order, materialId, width, height, depth, quantity, status, note);
         }
     }
 }

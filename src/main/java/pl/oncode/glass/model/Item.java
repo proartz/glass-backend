@@ -3,6 +3,7 @@ package pl.oncode.glass.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,18 +24,22 @@ public class Item {
     private Double height;
     private Double depth;
     private Integer quantity;
+
+    @NotEmpty(message = "Status cannot be empty")
+    private String status;
     private String note;
 
     public Item() {
     }
 
-    public Item(Integer materialId, Set<Operation> operations, Double width, Double height, Double depth, Integer quantity, String note) {
+    public Item(Integer materialId, Set<Operation> operations, Double width, Double height, Double depth, Integer quantity, String status, String note) {
         this.materialId = materialId;
         this.operations = operations;
         this.width = width;
         this.height = height;
         this.depth = depth;
         this.quantity = quantity;
+        this.status = status;
         this.note = note;
     }
 
@@ -102,6 +107,14 @@ public class Item {
         this.quantity = quantity;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getNote() {
         return note;
     }
@@ -121,6 +134,7 @@ public class Item {
                 ", height=" + height +
                 ", depth=" + depth +
                 ", quantity=" + quantity +
+                ", status=" + status +
                 ", note='" + note + '\'' +
                 '}';
     }
@@ -132,6 +146,7 @@ public class Item {
         private Double height;
         private Double depth;
         private Integer quantity;
+        private String status;
         private String note;
 
         public ItemBuilder() {
@@ -173,13 +188,18 @@ public class Item {
             return this;
         }
 
+        public ItemBuilder setStatus(String status) {
+            this.status = status;
+            return this;
+        }
+
         public ItemBuilder setNote(String note) {
             this.note = note;
             return this;
         }
 
         public Item createItem() {
-            return new Item(materialId, operations, width, height, depth, quantity, note);
+            return new Item(materialId, operations, width, height, depth, quantity, status, note);
         }
     }
 

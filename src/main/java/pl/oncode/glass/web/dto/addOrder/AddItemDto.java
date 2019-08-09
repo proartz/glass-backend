@@ -10,6 +10,7 @@ public class AddItemDto {
     private Double height;
     private Double depth;
     private Integer quantity;
+    private String status;
     private String note;
 
     public AddItemDto() {
@@ -21,6 +22,7 @@ public class AddItemDto {
                       Double height,
                       Double depth,
                       Integer quantity,
+                      String status,
                       String note) {
 
         this.materialId = materialId;
@@ -29,6 +31,7 @@ public class AddItemDto {
         this.height = height;
         this.depth = depth;
         this.quantity = quantity;
+        this.status = status;
         this.note = note;
     }
 
@@ -78,6 +81,14 @@ public class AddItemDto {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getNote() {

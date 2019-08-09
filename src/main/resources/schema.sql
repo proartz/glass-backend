@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `order` (
 	due_date DATE NOT NULL,
 	description TEXT,
 	create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    status VARCHAR(20) NOT NULL,
+    status VARCHAR(30) NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS item (
     height FLOAT NOT NULL,
     depth FLOAT NOT NULL,
     quantity INT NOT NULL,
+    status VARCHAR(30) NOT NULL,
     note TEXT,
     PRIMARY KEY (id),
     FOREIGN KEY (order_id)
