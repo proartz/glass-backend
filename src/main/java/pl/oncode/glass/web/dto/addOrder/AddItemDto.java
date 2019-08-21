@@ -1,11 +1,12 @@
 package pl.oncode.glass.web.dto.addOrder;
 
-import java.util.Set;
+import java.util.List;
+import java.util.List;
 
 public class AddItemDto {
 
     private Integer materialId;
-    private Set<AddOperationDto> operations;
+    private List<AddOperationDto> operations;
     private Double width;
     private Double height;
     private Double depth;
@@ -17,7 +18,7 @@ public class AddItemDto {
     }
 
     public AddItemDto(Integer materialId,
-                      Set<AddOperationDto> operations,
+                      List<AddOperationDto> operations,
                       Double width,
                       Double height,
                       Double depth,
@@ -39,15 +40,15 @@ public class AddItemDto {
         return materialId;
     }
 
-    public void setMaterialId(Integer materialId) {
+    public void ListMaterialId(Integer materialId) {
         this.materialId = materialId;
     }
 
-    public Set<AddOperationDto> getOperations() {
+    public List<AddOperationDto> getOperations() {
         return operations;
     }
 
-    public void setOperations(Set<AddOperationDto> operations) {
+    public void ListOperations(List<AddOperationDto> operations) {
         this.operations = operations;
     }
 
@@ -55,7 +56,7 @@ public class AddItemDto {
         return width;
     }
 
-    public void setWidth(Double width) {
+    public void ListWidth(Double width) {
         this.width = width;
     }
 
@@ -63,7 +64,7 @@ public class AddItemDto {
         return height;
     }
 
-    public void setHeight(Double height) {
+    public void ListHeight(Double height) {
         this.height = height;
     }
 
@@ -71,7 +72,7 @@ public class AddItemDto {
         return depth;
     }
 
-    public void setDepth(Double depth) {
+    public void ListDepth(Double depth) {
         this.depth = depth;
     }
 
@@ -79,7 +80,7 @@ public class AddItemDto {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void ListQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
@@ -87,7 +88,7 @@ public class AddItemDto {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void ListStatus(String status) {
         this.status = status;
     }
 
@@ -95,7 +96,7 @@ public class AddItemDto {
         return note;
     }
 
-    public void setNote(String note) {
+    public void ListNote(String note) {
         this.note = note;
     }
 }

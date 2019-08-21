@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -19,7 +21,7 @@ public class Item {
     private Order order;
     private Integer materialId;
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Operation> operations;
+    private List<Operation> operations;
     private Double width;
     private Double height;
     private Double depth;
@@ -32,7 +34,7 @@ public class Item {
     public Item() {
     }
 
-    public Item(Integer materialId, Set<Operation> operations, Double width, Double height, Double depth, Integer quantity, String status, String note) {
+    public Item(Integer materialId, List<Operation> operations, Double width, Double height, Double depth, Integer quantity, String status, String note) {
         this.materialId = materialId;
         this.operations = operations;
         this.width = width;
@@ -67,11 +69,11 @@ public class Item {
         this.materialId = materialId;
     }
 
-    public Set<Operation> getOperations() {
+    public List<Operation> getOperations() {
         return operations;
     }
 
-    public void setOperations(Set<Operation> operations) {
+    public void setOperations(List<Operation> operations) {
         this.operations = operations;
     }
 
@@ -141,7 +143,7 @@ public class Item {
 
     public static class ItemBuilder {
         private Integer materialId;
-        private Set<Operation> operations;
+        private List<Operation> operations;
         private Double width;
         private Double height;
         private Double depth;
@@ -150,7 +152,7 @@ public class Item {
         private String note;
 
         public ItemBuilder() {
-            this.operations = new HashSet<>();
+            this.operations = new ArrayList<>();
         }
 
         public ItemBuilder setMaterialId(Integer materialId) {
@@ -158,7 +160,7 @@ public class Item {
             return this;
         }
 
-        public ItemBuilder setOperations(Set<Operation> operations) {
+        public ItemBuilder setOperations(List<Operation> operations) {
             this.operations = operations;
             return this;
         }
