@@ -48,6 +48,7 @@ public class MainController {
     void addOrder(@Valid @RequestBody AddOrderDto addOrderDto) {
         logger.info("/order: Received request");
         logger.info("/order: Data received: " + addOrderDto);
+        statusService.prepareStatuses(addOrderDto);
         databaseService.addOrder(addOrderDto);
     }
 
