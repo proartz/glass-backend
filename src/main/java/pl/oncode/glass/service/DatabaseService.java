@@ -38,7 +38,7 @@ public class DatabaseService {
 
     // orderDao methods
 
-    private Order getOrder(Integer id) {
+    public Order getOrder(Integer id) {
         return orderDao.get(id);
     }
 
@@ -46,7 +46,7 @@ public class DatabaseService {
         return orderDao.getAll();
     }
 
-    private void updateOrder(Order order) {
+    public void updateOrder(Order order) {
         orderDao.update(order);
     }
 

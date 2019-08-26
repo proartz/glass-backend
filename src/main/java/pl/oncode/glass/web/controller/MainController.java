@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import pl.oncode.glass.service.DatabaseService;
+import pl.oncode.glass.service.StatusService;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
+import pl.oncode.glass.web.dto.changeStatus.ChangeStatusDto;
 import pl.oncode.glass.web.dto.fetchItemDto.FetchItemDto;
 import pl.oncode.glass.web.dto.fetchOrder.FetchOrderDto;
 import pl.oncode.glass.web.dto.viewMaterial.ViewMaterialDto;
@@ -19,9 +21,11 @@ public class MainController {
     private Logger logger = LoggerFactory.getLogger(MainController.class);
 
     private DatabaseService databaseService;
+    private StatusService statusService;
 
-    public MainController(DatabaseService databaseService) {
+    public MainController(DatabaseService databaseService, StatusService statusService) {
         this.databaseService = databaseService;
+        this.statusService = statusService;
     }
 
     @CrossOrigin
@@ -62,4 +66,10 @@ public class MainController {
         return databaseService.fetchItems(orderId);
     }
 
+    @CrossOrigin
+    @PostMapping("/changeStatus")
+    FetchOrderDto changeStatus(@RequestBody ChangeStatusDto changeStatusDto) {
+        logger.info("/changeStatus: " + changeStatusDto);
+        return statusService.changeStatus(changeStatusDto);
+    }
 }
