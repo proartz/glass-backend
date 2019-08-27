@@ -1,5 +1,7 @@
 package pl.oncode.glass.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pl.oncode.glass.model.Item;
 import pl.oncode.glass.model.Operation;
@@ -15,6 +17,8 @@ import java.util.Set;
 
 @Service(value = "statusService")
 public class StatusService {
+
+    Logger logger = LoggerFactory.getLogger(StatusService.class);
 
     private DatabaseService databaseService;
     private Set<String> stageOneOperations;
@@ -48,7 +52,23 @@ public class StatusService {
         operation.setStatus(newStatus.toString());
 
         if(newStatus == Operations.IN_REALISATION) {
-            changeItemStatus(Operations.IN_REALISATION);
+            item.setStatus(Operations.IN_REALISATION.toString());
+            disableOtherOperationsInStage(item, operation);
+        } else if (newStatus == Operations.DONE) {
+            logger.debug("DONE");
+            if(stageOneOperations.contains(operation.getName())) {
+                logger.debug("StageOneOperation");
+                int stageOneCounter = countStageOneOperations(item);
+                logger.debug("stageOneCounter=" + stageOneCounter);
+                if(stageOneCounter > 0){
+                    enableOtherOperationsInStage(item, operation);
+                } else {
+                    enableStageTwoOperations(item);
+                }
+            } else {
+                enableOtherOperationsInStage(item, operation);
+            }
+
         }
 
         databaseService.updateOrder(order);
@@ -57,8 +77,57 @@ public class StatusService {
 
     }
 
-    public void changeItemStatus(Operations newStatus) {
+    private void disableOtherOperationsInStage(Item item, Operation operation) {
+        if(stageOneOperations.contains(operation.getName())) {
+            for(Operation otherOperation : item.getOperations()) {
+                if(stageOneOperations.contains(otherOperation.getName()) && otherOperation != operation && !otherOperation.getStatus().equals(Operations.DONE.toString())) {
+                    otherOperation.setStatus(Operations.DISABLED.toString());
+                }
+            }
+        } else {
+            for(Operation otherOperation : item.getOperations()) {
+                if(stageTwoOperations.contains(otherOperation.getName()) && otherOperation != operation && !otherOperation.getStatus().equals(Operations.DONE.toString())) {
+                    otherOperation.setStatus(Operations.DISABLED.toString());
+                }
+            }
+        }
+    }
 
+    private int countStageOneOperations(Item item) {
+        int counter = 0;
+        for(Operation operation : item.getOperations()) {
+            if(stageOneOperations.contains(operation.getName()) && !operation.getStatus().equals(Operations.DONE.toString())) {
+                counter++;
+            }
+        }
+        return counter;
+    }
+
+    private void enableOtherOperationsInStage(Item item, Operation operation) {
+        logger.debug("enableOtherOperationsInStage");
+        if(stageOneOperations.contains(operation.getName())) {
+            logger.debug("stageOne");
+            for(Operation otherOperation : item.getOperations()) {
+                logger.debug("otherOperation.getName() = " + otherOperation.getName() + ", stageOneOperations.contains(otherOperation.getName()): " + stageOneOperations.contains(otherOperation.getName()) + ", otherOperation != operation:" + (otherOperation != operation) + ", otherOperation.getStatus() = " + otherOperation.getStatus());
+                if(stageOneOperations.contains(otherOperation.getName()) && otherOperation != operation && otherOperation.getStatus().equals(Operations.DISABLED.toString())) {
+                    logger.debug("RFR");
+                    otherOperation.setStatus(Operations.READY_FOR_REALISATION.toString());
+                }
+            }
+        } else {
+            for(Operation otherOperation : item.getOperations()) {
+                if(stageTwoOperations.contains(otherOperation.getName()) && otherOperation != operation && otherOperation.getStatus().equals(Operations.DISABLED.toString())) {
+                    otherOperation.setStatus(Operations.READY_FOR_REALISATION.toString());
+                }
+            }
+        }
+    }
+
+    private void enableStageTwoOperations(Item item) {
+        for(Operation otherOperation : item.getOperations()) {
+            if(stageTwoOperations.contains(otherOperation.getName()))
+                otherOperation.setStatus(Operations.READY_FOR_REALISATION.toString());
+        }
     }
 
     public void prepareStatuses(AddOrderDto addOrderDto) {
