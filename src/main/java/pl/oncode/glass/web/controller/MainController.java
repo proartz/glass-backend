@@ -71,6 +71,6 @@ public class MainController {
     @PostMapping("/changeStatus")
     FetchOrderDto changeStatus(@RequestBody ChangeStatusDto changeStatusDto) {
         logger.info("/changeStatus: " + changeStatusDto);
-        return statusService.changeStatus(changeStatusDto);
+        return statusService.changeOrderStatuses(changeStatusDto);
     }
 }

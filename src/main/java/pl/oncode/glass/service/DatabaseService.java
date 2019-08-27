@@ -3,8 +3,9 @@ package pl.oncode.glass.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import pl.oncode.glass.dao.ItemsDao;
+import pl.oncode.glass.dao.ItemDao;
 import pl.oncode.glass.dao.MaterialDao;
+import pl.oncode.glass.dao.OperationDao;
 import pl.oncode.glass.dao.OrderDao;
 import pl.oncode.glass.model.*;
 import pl.oncode.glass.web.dto.addOrder.AddItemDto;
@@ -27,12 +28,14 @@ public class DatabaseService {
 
     private OrderDao orderDao;
     private MaterialDao materialDao;
-    private ItemsDao itemsDao;
+    private ItemDao itemDao;
+    private OperationDao operationDao;
 
-    public DatabaseService(OrderDao orderDao, MaterialDao materialDao, ItemsDao itemsDao) {
+    public DatabaseService(OrderDao orderDao, MaterialDao materialDao, ItemDao itemDao, OperationDao operationDao) {
         this.orderDao = orderDao;
         this.materialDao = materialDao;
-        this.itemsDao = itemsDao;
+        this.itemDao = itemDao;
+        this.operationDao = operationDao;
 //        testDb();
     }
 
@@ -79,6 +82,15 @@ public class DatabaseService {
     private void deleteMaterial(Material material) {
         materialDao.delete(material);
     }
+
+    public Item getItem(Integer id) { return itemDao.get(id);}
+
+    private List<Item> getAllItems(Integer orderId) {
+        Order order = getOrder(orderId);
+        return order.getItems();
+    }
+
+    public Operation getOperation(Integer id) { return operationDao.get(id);}
 
     // model creation methods
 
@@ -279,10 +291,7 @@ public class DatabaseService {
 
     // fetch Items
     public List<FetchItemDto> fetchItems(Integer orderId) {
-        logger.debug("orderId=" + orderId);
-        Order order = orderDao.get(orderId);
-        logger.debug("Order=" + order.getCustomer());
-        List<Item> items = itemsDao.getAll(order);
+        List<Item> items = getAllItems(orderId);
         List<FetchItemDto> fetchItemDtos = new ArrayList<>();
 
         for(Item item : items) {

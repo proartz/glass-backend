@@ -17,10 +17,10 @@ public class Order implements Serializable {
     private Integer id;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Item> items;
+    private List<Item> items;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Attachment> attachments;
+    private List<Attachment> attachments;
 
     @Size(max = 30, message = "ExternalOrderId can have maximum 30 characters")
     private String externalOrderId;
@@ -48,8 +48,8 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public Order(Set<Item> items,
-                 Set<Attachment> attachments,
+    public Order(List<Item> items,
+                 List<Attachment> attachments,
                  String externalOrderId,
                  String customer,
                  String invoiceNumber,
@@ -76,19 +76,19 @@ public class Order implements Serializable {
         this.id = id;
     }
 
-    public Set<Item> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
-    public void setItems(Set<Item> items) {
+    public void setItems(List<Item> items) {
         this.items = items;
     }
 
-    public Set<Attachment> getAttachments() {
+    public List<Attachment> getAttachments() {
         return attachments;
     }
 
-    public void setAttachments(Set<Attachment> attachments) {
+    public void setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
     }
 
@@ -165,8 +165,8 @@ public class Order implements Serializable {
     }
 
     public static class OrderBuilder {
-        private Set<Item> items;
-        private Set<Attachment> attachments;
+        private List<Item> items;
+        private List<Attachment> attachments;
         private String externalOrderId;
         private String customer;
         private String invoiceNumber;
@@ -176,11 +176,11 @@ public class Order implements Serializable {
         private String status;
 
         public OrderBuilder() {
-            this.items = new HashSet<>();
-            this.attachments = new HashSet<>();
+            this.items = new ArrayList<>();
+            this.attachments = new ArrayList<>();
         }
 
-        public OrderBuilder setItems(Set<Item> items) {
+        public OrderBuilder setItems(List<Item> items) {
             this.items = items;
             return this;
         }
@@ -190,7 +190,7 @@ public class Order implements Serializable {
             return this;
         }
 
-        public OrderBuilder setAttachments(Set<Attachment> attachments) {
+        public OrderBuilder setAttachments(List<Attachment> attachments) {
             this.attachments = attachments;
             return this;
         }

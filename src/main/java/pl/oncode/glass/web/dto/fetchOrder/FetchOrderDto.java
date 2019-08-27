@@ -6,13 +6,13 @@ import pl.oncode.glass.model.Item;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 public class FetchOrderDto {
 
     private Integer id;
-    private Set<Item> items;
-    private Set<Attachment> attachments;
+    private List<Item> items;
+    private List<Attachment> attachments;
     private String externalOrderId;
     private String customer;
     private String invoiceNumber;
@@ -24,7 +24,7 @@ public class FetchOrderDto {
     public FetchOrderDto() {
     }
 
-    public FetchOrderDto(Integer id, Set<Item> items, Set<Attachment> attachments, String externalOrderId, String customer, String invoiceNumber, BigDecimal price, LocalDate dueDate, Date createDate, String status) {
+    public FetchOrderDto(Integer id, List<Item> items, List<Attachment> attachments, String externalOrderId, String customer, String invoiceNumber, BigDecimal price, LocalDate dueDate, Date createDate, String status) {
         this.id = id;
         this.items = items;
         this.attachments = attachments;
@@ -45,19 +45,19 @@ public class FetchOrderDto {
         this.id = id;
     }
 
-    public Set<Item> getItems() {
+    public List<Item> getItems() {
         return items;
     }
 
-    public void setItems(Set<Item> items) {
+    public void setItems(List<Item> items) {
         this.items = items;
     }
 
-    public Set<Attachment> getAttachments() {
+    public List<Attachment> getAttachments() {
         return attachments;
     }
 
-    public void setAttachments(Set<Attachment> attachments) {
+    public void setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
     }
 
@@ -119,8 +119,8 @@ public class FetchOrderDto {
 
     public static class ViewOrderDtoBuilder {
         private Integer id;
-        private Set<Item> items;
-        private Set<Attachment> attachments;
+        private List<Item> items;
+        private List<Attachment> attachments;
         private String externalOrderId;
         private String customer;
         private String invoiceNumber;
@@ -134,12 +134,12 @@ public class FetchOrderDto {
             return this;
         }
 
-        public ViewOrderDtoBuilder setItems(Set<Item> items) {
+        public ViewOrderDtoBuilder setItems(List<Item> items) {
             this.items = items;
             return this;
         }
 
-        public ViewOrderDtoBuilder setAttachments(Set<Attachment> attachments) {
+        public ViewOrderDtoBuilder setAttachments(List<Attachment> attachments) {
             this.attachments = attachments;
             return this;
         }

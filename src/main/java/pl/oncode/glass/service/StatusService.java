@@ -38,23 +38,26 @@ public class StatusService {
 
     }
 
-    public FetchOrderDto changeStatus(ChangeStatusDto changeStatusDto) {
+    public FetchOrderDto changeOrderStatuses(ChangeStatusDto changeStatusDto) {
 
         Order order = databaseService.getOrder(changeStatusDto.getOrderId());
+        Item item = databaseService.getItem(changeStatusDto.getItemId());
+        Operation operation = databaseService.getOperation(changeStatusDto.getOperationId());
+        Operations newStatus = Operations.valueOf(changeStatusDto.getNewStatus());
 
-        for(Item item : order.getItems()) {
-            if(item.getId() == changeStatusDto.getItemId()) {
-                for (Operation operation : item.getOperations()) {
-                    if(operation.getId() == changeStatusDto.getOperationId()) {
-                        operation.setStatus(Operations.valueOf(changeStatusDto.getNewStatus()).toString());
-                    }
-                }
-            }
+        operation.setStatus(newStatus.toString());
+
+        if(newStatus == Operations.IN_REALISATION) {
+            changeItemStatus(Operations.IN_REALISATION);
         }
 
         databaseService.updateOrder(order);
 
         return databaseService.fetchOrder(changeStatusDto.getOrderId());
+
+    }
+
+    public void changeItemStatus(Operations newStatus) {
 
     }
 
@@ -66,7 +69,6 @@ public class StatusService {
                 }
             }
         }
-
     }
 
     public void disableStageTwoOperations(AddItemDto item) {

@@ -11,7 +11,7 @@ import javax.persistence.Query;
 import java.util.List;
 
 @Repository
-public class ItemsDao implements Dao<Item>{
+public class ItemDao implements Dao<Item>{
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -29,7 +29,7 @@ public class ItemsDao implements Dao<Item>{
         return query.getResultList();
     }
 
-    public List<Item> getAll(Order order) {
+    public List<Item> getAllOrderItems(Order order) {
         Query query = entityManager.createQuery("SELECT i FROM Item i WHERE i.order = :order");
         return query.setParameter("order", order)
                 .getResultList();
