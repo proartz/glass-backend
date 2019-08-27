@@ -20,7 +20,7 @@ public class Item {
     @JoinColumn(name = "order_id")
     private Order order;
     private Integer materialId;
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<Operation> operations;
     private Double width;
     private Double height;
