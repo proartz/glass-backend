@@ -49,10 +49,10 @@ public class StatusService {
         Operation operation = databaseService.getOperation(changeStatusDto.getOperationId());
         Operations newStatus = Operations.valueOf(changeStatusDto.getNewStatus());
 
-        operation.setStatus(newStatus.toString());
+        operation.setStatus(newStatus.name());
 
         if(newStatus == Operations.IN_REALISATION) {
-            item.setStatus(Operations.IN_REALISATION.toString());
+            item.setStatus(Operations.IN_REALISATION.name());
             disableOtherOperationsInStage(item, operation);
         } else if (newStatus == Operations.DONE) {
             logger.debug("DONE");
@@ -80,14 +80,14 @@ public class StatusService {
     private void disableOtherOperationsInStage(Item item, Operation operation) {
         if(stageOneOperations.contains(operation.getName())) {
             for(Operation otherOperation : item.getOperations()) {
-                if(stageOneOperations.contains(otherOperation.getName()) && otherOperation != operation && !otherOperation.getStatus().equals(Operations.DONE.toString())) {
-                    otherOperation.setStatus(Operations.DISABLED.toString());
+                if(stageOneOperations.contains(otherOperation.getName()) && otherOperation != operation && !otherOperation.getStatus().equals(Operations.DONE.name())) {
+                    otherOperation.setStatus(Operations.DISABLED.name());
                 }
             }
         } else {
             for(Operation otherOperation : item.getOperations()) {
-                if(stageTwoOperations.contains(otherOperation.getName()) && otherOperation != operation && !otherOperation.getStatus().equals(Operations.DONE.toString())) {
-                    otherOperation.setStatus(Operations.DISABLED.toString());
+                if(stageTwoOperations.contains(otherOperation.getName()) && otherOperation != operation && !otherOperation.getStatus().equals(Operations.DONE.name())) {
+                    otherOperation.setStatus(Operations.DISABLED.name());
                 }
             }
         }
@@ -96,7 +96,7 @@ public class StatusService {
     private int countStageOneOperations(Item item) {
         int counter = 0;
         for(Operation operation : item.getOperations()) {
-            if(stageOneOperations.contains(operation.getName()) && !operation.getStatus().equals(Operations.DONE.toString())) {
+            if(stageOneOperations.contains(operation.getName()) && !operation.getStatus().equals(Operations.DONE.name())) {
                 counter++;
             }
         }
@@ -104,20 +104,16 @@ public class StatusService {
     }
 
     private void enableOtherOperationsInStage(Item item, Operation operation) {
-        logger.debug("enableOtherOperationsInStage");
         if(stageOneOperations.contains(operation.getName())) {
-            logger.debug("stageOne");
             for(Operation otherOperation : item.getOperations()) {
-                logger.debug("otherOperation.getName() = " + otherOperation.getName() + ", stageOneOperations.contains(otherOperation.getName()): " + stageOneOperations.contains(otherOperation.getName()) + ", otherOperation != operation:" + (otherOperation != operation) + ", otherOperation.getStatus() = " + otherOperation.getStatus());
-                if(stageOneOperations.contains(otherOperation.getName()) && otherOperation != operation && otherOperation.getStatus().equals(Operations.DISABLED.toString())) {
-                    logger.debug("RFR");
-                    otherOperation.setStatus(Operations.READY_FOR_REALISATION.toString());
+                if(stageOneOperations.contains(otherOperation.getName()) && otherOperation != operation && otherOperation.getStatus().equals(Operations.DISABLED.name())) {
+                    otherOperation.setStatus(Operations.READY_FOR_REALISATION.name());
                 }
             }
         } else {
             for(Operation otherOperation : item.getOperations()) {
-                if(stageTwoOperations.contains(otherOperation.getName()) && otherOperation != operation && otherOperation.getStatus().equals(Operations.DISABLED.toString())) {
-                    otherOperation.setStatus(Operations.READY_FOR_REALISATION.toString());
+                if(stageTwoOperations.contains(otherOperation.getName()) && otherOperation != operation && otherOperation.getStatus().equals(Operations.DISABLED.name())) {
+                    otherOperation.setStatus(Operations.READY_FOR_REALISATION.name());
                 }
             }
         }
@@ -126,7 +122,7 @@ public class StatusService {
     private void enableStageTwoOperations(Item item) {
         for(Operation otherOperation : item.getOperations()) {
             if(stageTwoOperations.contains(otherOperation.getName()))
-                otherOperation.setStatus(Operations.READY_FOR_REALISATION.toString());
+                otherOperation.setStatus(Operations.READY_FOR_REALISATION.name());
         }
     }
 
@@ -149,6 +145,6 @@ public class StatusService {
     }
 
     public void disableOperation(AddOperationDto operation) {
-        operation.setStatus(Operations.DISABLED.toString());
+        operation.setStatus(Operations.DISABLED.name());
     }
 }
