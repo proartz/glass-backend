@@ -20,15 +20,13 @@ public class StatusService {
 
     Logger logger = LoggerFactory.getLogger(StatusService.class);
 
-    private DatabaseService databaseService;
     private Set<String> stageOneOperations;
     private Set<String> stageTwoOperations;
     public enum OperationStatus {DISABLED, READY_FOR_REALISATION, IN_REALISATION, DONE};
     public enum OrderStatus {RECEIVED, IN_REALISATION, READY, DELIVERED, PAID};
 
 
-    public StatusService(DatabaseService databaseService) {
-        this.databaseService = databaseService;
+    public StatusService() {
         this.stageOneOperations = new HashSet<>();
 
         this.stageOneOperations.add("Cutting");
@@ -43,12 +41,9 @@ public class StatusService {
 
     }
 
-    public Order changeOrderStatuses(ChangeStatusDto changeStatusDto) {
-
-        Order order = databaseService.getOrder(changeStatusDto.getOrderId());
-        Item item = databaseService.getItem(changeStatusDto.getItemId());
-        Operation operation = databaseService.getOperation(changeStatusDto.getOperationId());
-        OperationStatus newStatus = OperationStatus.valueOf(changeStatusDto.getNewStatus());
+    public Order changeOrderStatuses(Operation operation, OperationStatus newStatus) {
+        Item item = operation.getItem();
+        Order order = item.getOrder();
 
         operation.setStatus(newStatus.name());
 
@@ -56,11 +51,8 @@ public class StatusService {
             item.setStatus(OperationStatus.IN_REALISATION.name());
             disableOtherOperationsInStage(item, operation);
         } else if (newStatus == OperationStatus.DONE) {
-            logger.debug("DONE");
             if(stageOneOperations.contains(operation.getName())) {
-                logger.debug("StageOneOperation");
                 int stageOneCounter = countStageOneOperations(item);
-                logger.debug("stageOneCounter=" + stageOneCounter);
                 if(stageOneCounter > 0){
                     enableOtherOperationsInStage(item, operation);
                 } else {

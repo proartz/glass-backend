@@ -13,25 +13,10 @@ import java.util.List;
 public class ItemManagerService {
 
     Logger logger = LoggerFactory.getLogger(ItemManagerService.class);
-    private DatabaseService databaseService;
 
-    public ItemManagerService(DatabaseService databaseService) {
-        this.databaseService = databaseService;
-    }
+    public ItemManagerService() {};
 
-    // fetch Items
-    public List<FetchItemDto> fetchItems(Integer orderId) {
-        List<Item> items = databaseService.getAllOrderItems(orderId);
-        List<FetchItemDto> fetchItemDtos = new ArrayList<>();
-
-        for(Item item : items) {
-            fetchItemDtos.add(createFetchItemDto(item));
-        }
-
-        return fetchItemDtos;
-    }
-
-    private FetchItemDto createFetchItemDto(Item item) {
+    public FetchItemDto createFetchItemDto(Item item) {
         return new FetchItemDto.FetchItemDtoBuilder()
                 .setId(item.getId())
                 .setOrder(item.getOrder())

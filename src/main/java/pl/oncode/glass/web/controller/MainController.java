@@ -19,60 +19,51 @@ public class MainController {
 
     private Logger logger = LoggerFactory.getLogger(MainController.class);
 
-    private OrderManagerService orderManagerService;
-    private MaterialManagerService materialManagerService;
-    private ItemManagerService itemManagerService;
-    private StatusService statusService;
+    private MainControllerService mainControllerService;
 
-    public MainController(StatusService statusService,
-                          OrderManagerService orderManagerService,
-                          MaterialManagerService materialManagerService,
-                          ItemManagerService itemManagerService) {
-        this.statusService = statusService;
-        this.orderManagerService = orderManagerService;
-        this.materialManagerService = materialManagerService;
-        this.itemManagerService = itemManagerService;
+    public MainController(MainControllerService mainControllerService) {
+        this.mainControllerService = mainControllerService;
     }
 
     @CrossOrigin
     @GetMapping("/orders")
     List<ViewOrderDto> viewOrders() {
         logger.info("/orders: Received request");
-        return orderManagerService.viewOrders();
+        return mainControllerService.viewOrders();
     }
 
     @CrossOrigin
     @GetMapping("/order/{id}")
     FetchOrderDto fetchOrder(@PathVariable Integer id) {
         logger.info("/order: id=" + id);
-        return orderManagerService.fetchOrder(id);
+        return mainControllerService.fetchOrder(id);
     }
 
     @CrossOrigin
     @PostMapping("/order")
     void addOrder(@Valid @RequestBody AddOrderDto addOrderDto) {
         logger.info("/order: " + addOrderDto);
-        orderManagerService.addOrder(addOrderDto);
+        mainControllerService.addOrder(addOrderDto);
     }
 
     @CrossOrigin
     @GetMapping("/materials")
     List<ViewMaterialDto> materials() {
         logger.info("/materials: Received request");
-        return materialManagerService.viewMaterials();
+        return mainControllerService.viewMaterials();
     }
 
     @CrossOrigin
     @GetMapping("/items/{orderId}")
     List<FetchItemDto> items(@PathVariable Integer orderId) {
         logger.info("/items: orderId=" + orderId);
-        return itemManagerService.fetchItems(orderId);
+        return mainControllerService.fetchItems(orderId);
     }
 
     @CrossOrigin
     @PostMapping("/changeStatus")
     FetchOrderDto changeStatus(@RequestBody ChangeStatusDto changeStatusDto) {
         logger.info("/changeStatus: " + changeStatusDto);
-        return orderManagerService.changeOrderStatuses(changeStatusDto);
+        return mainControllerService.changeOrderStatuses(changeStatusDto);
     }
 }

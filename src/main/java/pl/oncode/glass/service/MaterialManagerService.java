@@ -13,25 +13,11 @@ import java.util.List;
 public class MaterialManagerService {
 
     Logger logger = LoggerFactory.getLogger(MaterialManagerService.class);
-    private DatabaseService databaseService;
 
-    public MaterialManagerService(DatabaseService databaseService) {
-        this.databaseService = databaseService;
+    public MaterialManagerService() {
     }
 
-    // view Materials
-    public List<ViewMaterialDto> viewMaterials() {
-        List<Material> Materials = databaseService.getAllMaterials();
-        List<ViewMaterialDto> viewMaterialDtos = new ArrayList<>();
-
-        for(Material material : Materials) {
-            viewMaterialDtos.add(createViewMaterialDto(material));
-        }
-
-        return viewMaterialDtos;
-    }
-
-    private ViewMaterialDto createViewMaterialDto(Material material) {
+    public ViewMaterialDto createViewMaterialDto(Material material) {
 
         return new ViewMaterialDto(
                 material.getId(),

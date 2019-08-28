@@ -23,48 +23,10 @@ public class OrderManagerService {
 
     private Logger logger = LoggerFactory.getLogger(OrderManagerService.class);
 
-    private OrderDao orderDao;
-    private DatabaseService databaseService;
-    private StatusService statusService;
-
-    public OrderManagerService(OrderDao orderDao, DatabaseService databaseService, StatusService statusService) {
-        this.orderDao = orderDao;
-        this.databaseService = databaseService;
-        this.statusService = statusService;
+    public OrderManagerService() {
     }
 
-    public void addOrder(AddOrderDto addOrderDto) {
-
-        Order order = createOrder(addOrderDto);
-        statusService.prepareStatuses(order);
-        databaseService.saveOrder(order);
-
-    }
-
-    public List<ViewOrderDto> viewOrders() {
-        List<Order> orders = databaseService.getAllOrders();
-        List<ViewOrderDto> viewOrderDtos = new ArrayList<>();
-
-        for(Order order : orders) {
-            viewOrderDtos.add(createViewOrderDto(order));
-        }
-
-        return viewOrderDtos;
-    }
-
-    public FetchOrderDto changeOrderStatuses(ChangeStatusDto changeStatusDto) {
-        Order order = statusService.changeOrderStatuses(changeStatusDto);
-        databaseService.updateOrder(order);
-        return createFetchDto(order);
-    }
-
-    //fetch order
-    public FetchOrderDto fetchOrder(int id) {
-        Order order = databaseService.getOrder(id);
-        return createFetchDto(order);
-    }
-
-    private Order createOrder(AddOrderDto addOrderDto) {
+    public Order createOrder(AddOrderDto addOrderDto) {
 
         Order order = new Order.OrderBuilder()
                 .setExternalOrderId(addOrderDto.getExternalOrderId())
@@ -115,7 +77,7 @@ public class OrderManagerService {
         }
     }
 
-    private ViewOrderDto createViewOrderDto(Order order) {
+    public ViewOrderDto createViewOrderDto(Order order) {
 
         return new ViewOrderDto.ViewOrderDtoBuilder()
                 .setId(order.getId())
@@ -129,7 +91,7 @@ public class OrderManagerService {
                 .createViewOrderDto();
     }
 
-    private FetchOrderDto createFetchDto(Order order) {
+    public FetchOrderDto createFetchOrderDto(Order order) {
         return new FetchOrderDto.ViewOrderDtoBuilder()
                 .setId(order.getId())
                 .setItems(order.getItems())
@@ -143,5 +105,4 @@ public class OrderManagerService {
                 .setStatus(order.getStatus())
                 .createViewOrderDto();
     }
-
 }
