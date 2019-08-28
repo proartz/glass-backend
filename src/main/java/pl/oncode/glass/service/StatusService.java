@@ -127,12 +127,12 @@ public class StatusService {
         }
     }
 
-    public void prepareStatuses(AddOrderDto addOrderDto) {
-        addOrderDto.setStatus(OrderStatus.RECEIVED.name());
+    public void prepareStatuses(Order order) {
+        order.setStatus(OrderStatus.RECEIVED.name());
         Boolean stageOne = false;
-        for(AddItemDto item : addOrderDto.getItems()) {
+        for(Item item : order.getItems()) {
             item.setStatus(OperationStatus.READY_FOR_REALISATION.name());
-            for(AddOperationDto operation : item.getOperations()) {
+            for(Operation operation : item.getOperations()) {
                 if(stageOneOperations.contains(operation.getName())) {
                     operation.setStatus(OperationStatus.READY_FOR_REALISATION.name());
                     stageOne = true;
@@ -142,15 +142,15 @@ public class StatusService {
         }
     }
 
-    public void disableStageTwoOperations(AddItemDto item) {
-        for(AddOperationDto operation : item.getOperations()) {
+    public void disableStageTwoOperations(Item item) {
+        for(Operation operation : item.getOperations()) {
             if(stageTwoOperations.contains(operation.getName())) {
                 disableOperation(operation);
             }
         }
     }
 
-    public void disableOperation(AddOperationDto operation) {
+    public void disableOperation(Operation operation) {
         operation.setStatus(OperationStatus.DISABLED.name());
     }
 }

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import pl.oncode.glass.service.DatabaseService;
+import pl.oncode.glass.service.OrderManagerService;
 import pl.oncode.glass.service.StatusService;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
 import pl.oncode.glass.web.dto.changeStatus.ChangeStatusDto;
@@ -20,12 +21,15 @@ public class MainController {
 
     private Logger logger = LoggerFactory.getLogger(MainController.class);
 
+    private OrderManagerService orderManagerService;
+
     private DatabaseService databaseService;
     private StatusService statusService;
 
-    public MainController(DatabaseService databaseService, StatusService statusService) {
+    public MainController(DatabaseService databaseService, StatusService statusService, OrderManagerService orderManagerService) {
         this.databaseService = databaseService;
         this.statusService = statusService;
+        this.orderManagerService = orderManagerService;
     }
 
     @CrossOrigin
@@ -46,10 +50,8 @@ public class MainController {
     @CrossOrigin
     @PostMapping("/order")
     void addOrder(@Valid @RequestBody AddOrderDto addOrderDto) {
-        logger.info("/order: Received request");
-        logger.info("/order: Data received: " + addOrderDto);
-        statusService.prepareStatuses(addOrderDto);
-        databaseService.addOrder(addOrderDto);
+        logger.info("/order: " + addOrderDto);
+        orderManagerService.addOrder(addOrderDto);
     }
 
     @CrossOrigin
