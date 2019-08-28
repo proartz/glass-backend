@@ -82,6 +82,7 @@ public class MainControllerService {
     public FetchOrderDto changeOrderStatuses(ChangeStatusDto changeStatusDto) {
         Operation operation = databaseService.getOperation(changeStatusDto.getOperationId());
         OperationStatus newStatus = OperationStatus.valueOf(changeStatusDto.getNewStatus());
+
         Order order = statusService.changeOrderStatuses(operation, newStatus);
         databaseService.updateOrder(order);
 

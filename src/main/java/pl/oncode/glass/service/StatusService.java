@@ -25,8 +25,6 @@ public class StatusService {
 
 
     public StatusService() {
-
-
     }
 
     public Order changeOrderStatuses(Operation operation, OperationStatus newStatus) {
@@ -37,8 +35,15 @@ public class StatusService {
 
         if(newStatus == OperationStatus.IN_REALISATION) {
             item.setStatus(OperationStatus.IN_REALISATION.name());
+            order.setStatus(OrderStatus.IN_REALISATION.name());
             disableOtherOperationsInStage(item, operation);
         } else if (newStatus == OperationStatus.DONE) {
+            if(countNotDoneOperations(item) == 0) {
+                item.setStatus(OperationStatus.DONE.name());
+                order.setStatus(OrderStatus.READY.name());
+
+                return order;
+            }
             if(stageOneOperations.getOperations().contains(operation.getName())) {
                 int stageOneCounter = countStageOneOperations(item);
                 if(stageOneCounter > 0){
@@ -69,6 +74,16 @@ public class StatusService {
                 }
             }
         }
+    }
+
+    public int countNotDoneOperations(Item item) {
+        int counter = 0;
+        for(Operation operation : item.getOperations()) {
+            if(!operation.getStatus().equals(OperationStatus.DONE.name())) {
+                counter++;
+            }
+        }
+        return counter;
     }
 
     private int countStageOneOperations(Item item) {
