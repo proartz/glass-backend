@@ -2,42 +2,30 @@ package pl.oncode.glass.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.oncode.glass.config.StageOneOperations;
+import pl.oncode.glass.config.StageTwoOperations;
 import pl.oncode.glass.model.Item;
 import pl.oncode.glass.model.Operation;
 import pl.oncode.glass.model.Order;
-import pl.oncode.glass.web.dto.addOrder.AddItemDto;
-import pl.oncode.glass.web.dto.addOrder.AddOperationDto;
-import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
-import pl.oncode.glass.web.dto.changeStatus.ChangeStatusDto;
-import pl.oncode.glass.web.dto.fetchOrder.FetchOrderDto;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Service(value = "statusService")
 public class StatusService {
 
     Logger logger = LoggerFactory.getLogger(StatusService.class);
 
-    private Set<String> stageOneOperations;
-    private Set<String> stageTwoOperations;
+    @Autowired
+    StageOneOperations stageOneOperations;
+    @Autowired
+    StageTwoOperations stageTwoOperations;
+
     public enum OperationStatus {DISABLED, READY_FOR_REALISATION, IN_REALISATION, DONE};
     public enum OrderStatus {RECEIVED, IN_REALISATION, READY, DELIVERED, PAID};
 
 
     public StatusService() {
-        this.stageOneOperations = new HashSet<>();
 
-        this.stageOneOperations.add("Cutting");
-        this.stageOneOperations.add("Sanding");
-        this.stageOneOperations.add("Drilling");
-        this.stageOneOperations.add("CNC");
-
-        this.stageTwoOperations = new HashSet<>();
-        this.stageTwoOperations.add("Hardening");
-        this.stageTwoOperations.add("Enamelling");
-        this.stageTwoOperations.add("Lamination");
 
     }
 
@@ -51,7 +39,7 @@ public class StatusService {
             item.setStatus(OperationStatus.IN_REALISATION.name());
             disableOtherOperationsInStage(item, operation);
         } else if (newStatus == OperationStatus.DONE) {
-            if(stageOneOperations.contains(operation.getName())) {
+            if(stageOneOperations.getOperations().contains(operation.getName())) {
                 int stageOneCounter = countStageOneOperations(item);
                 if(stageOneCounter > 0){
                     enableOtherOperationsInStage(item, operation);
@@ -68,15 +56,15 @@ public class StatusService {
     }
 
     private void disableOtherOperationsInStage(Item item, Operation operation) {
-        if(stageOneOperations.contains(operation.getName())) {
+        if(stageOneOperations.getOperations().contains(operation.getName())) {
             for(Operation otherOperation : item.getOperations()) {
-                if(stageOneOperations.contains(otherOperation.getName()) && otherOperation != operation && !otherOperation.getStatus().equals(OperationStatus.DONE.name())) {
+                if(stageOneOperations.getOperations().contains(otherOperation.getName()) && otherOperation != operation && !otherOperation.getStatus().equals(OperationStatus.DONE.name())) {
                     otherOperation.setStatus(OperationStatus.DISABLED.name());
                 }
             }
         } else {
             for(Operation otherOperation : item.getOperations()) {
-                if(stageTwoOperations.contains(otherOperation.getName()) && otherOperation != operation && !otherOperation.getStatus().equals(OperationStatus.DONE.name())) {
+                if(stageTwoOperations.getOperations().contains(otherOperation.getName()) && otherOperation != operation && !otherOperation.getStatus().equals(OperationStatus.DONE.name())) {
                     otherOperation.setStatus(OperationStatus.DISABLED.name());
                 }
             }
@@ -86,7 +74,7 @@ public class StatusService {
     private int countStageOneOperations(Item item) {
         int counter = 0;
         for(Operation operation : item.getOperations()) {
-            if(stageOneOperations.contains(operation.getName()) && !operation.getStatus().equals(OperationStatus.DONE.name())) {
+            if(stageOneOperations.getOperations().contains(operation.getName()) && !operation.getStatus().equals(OperationStatus.DONE.name())) {
                 counter++;
             }
         }
@@ -94,15 +82,15 @@ public class StatusService {
     }
 
     private void enableOtherOperationsInStage(Item item, Operation operation) {
-        if(stageOneOperations.contains(operation.getName())) {
+        if(stageOneOperations.getOperations().contains(operation.getName())) {
             for(Operation otherOperation : item.getOperations()) {
-                if(stageOneOperations.contains(otherOperation.getName()) && otherOperation != operation && otherOperation.getStatus().equals(OperationStatus.DISABLED.name())) {
+                if(stageOneOperations.getOperations().contains(otherOperation.getName()) && otherOperation != operation && otherOperation.getStatus().equals(OperationStatus.DISABLED.name())) {
                     otherOperation.setStatus(OperationStatus.READY_FOR_REALISATION.name());
                 }
             }
         } else {
             for(Operation otherOperation : item.getOperations()) {
-                if(stageTwoOperations.contains(otherOperation.getName()) && otherOperation != operation && otherOperation.getStatus().equals(OperationStatus.DISABLED.name())) {
+                if(stageTwoOperations.getOperations().contains(otherOperation.getName()) && otherOperation != operation && otherOperation.getStatus().equals(OperationStatus.DISABLED.name())) {
                     otherOperation.setStatus(OperationStatus.READY_FOR_REALISATION.name());
                 }
             }
@@ -111,7 +99,7 @@ public class StatusService {
 
     private void enableStageTwoOperations(Item item) {
         for(Operation otherOperation : item.getOperations()) {
-            if(stageTwoOperations.contains(otherOperation.getName()))
+            if(stageTwoOperations.getOperations().contains(otherOperation.getName()))
                 otherOperation.setStatus(OperationStatus.READY_FOR_REALISATION.name());
         }
     }
@@ -122,7 +110,7 @@ public class StatusService {
         for(Item item : order.getItems()) {
             item.setStatus(OperationStatus.READY_FOR_REALISATION.name());
             for(Operation operation : item.getOperations()) {
-                if(stageOneOperations.contains(operation.getName())) {
+                if(stageOneOperations.getOperations().contains(operation.getName())) {
                     operation.setStatus(OperationStatus.READY_FOR_REALISATION.name());
                     stageOne = true;
                 }
@@ -133,7 +121,7 @@ public class StatusService {
 
     public void disableStageTwoOperations(Item item) {
         for(Operation operation : item.getOperations()) {
-            if(stageTwoOperations.contains(operation.getName())) {
+            if(stageTwoOperations.getOperations().contains(operation.getName())) {
                 disableOperation(operation);
             }
         }
