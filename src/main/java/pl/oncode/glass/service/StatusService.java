@@ -23,7 +23,8 @@ public class StatusService {
     private DatabaseService databaseService;
     private Set<String> stageOneOperations;
     private Set<String> stageTwoOperations;
-    public enum Operations {DISABLED, READY_FOR_REALISATION, IN_REALISATION, DONE};
+    public enum OperationStatus {DISABLED, READY_FOR_REALISATION, IN_REALISATION, DONE};
+    public enum OrderStatus {RECEIVED, IN_REALISATION, READY, DELIVERED, PAID};
 
 
     public StatusService(DatabaseService databaseService) {
@@ -47,14 +48,14 @@ public class StatusService {
         Order order = databaseService.getOrder(changeStatusDto.getOrderId());
         Item item = databaseService.getItem(changeStatusDto.getItemId());
         Operation operation = databaseService.getOperation(changeStatusDto.getOperationId());
-        Operations newStatus = Operations.valueOf(changeStatusDto.getNewStatus());
+        OperationStatus newStatus = OperationStatus.valueOf(changeStatusDto.getNewStatus());
 
         operation.setStatus(newStatus.name());
 
-        if(newStatus == Operations.IN_REALISATION) {
-            item.setStatus(Operations.IN_REALISATION.name());
+        if(newStatus == OperationStatus.IN_REALISATION) {
+            item.setStatus(OperationStatus.IN_REALISATION.name());
             disableOtherOperationsInStage(item, operation);
-        } else if (newStatus == Operations.DONE) {
+        } else if (newStatus == OperationStatus.DONE) {
             logger.debug("DONE");
             if(stageOneOperations.contains(operation.getName())) {
                 logger.debug("StageOneOperation");
@@ -80,14 +81,14 @@ public class StatusService {
     private void disableOtherOperationsInStage(Item item, Operation operation) {
         if(stageOneOperations.contains(operation.getName())) {
             for(Operation otherOperation : item.getOperations()) {
-                if(stageOneOperations.contains(otherOperation.getName()) && otherOperation != operation && !otherOperation.getStatus().equals(Operations.DONE.name())) {
-                    otherOperation.setStatus(Operations.DISABLED.name());
+                if(stageOneOperations.contains(otherOperation.getName()) && otherOperation != operation && !otherOperation.getStatus().equals(OperationStatus.DONE.name())) {
+                    otherOperation.setStatus(OperationStatus.DISABLED.name());
                 }
             }
         } else {
             for(Operation otherOperation : item.getOperations()) {
-                if(stageTwoOperations.contains(otherOperation.getName()) && otherOperation != operation && !otherOperation.getStatus().equals(Operations.DONE.name())) {
-                    otherOperation.setStatus(Operations.DISABLED.name());
+                if(stageTwoOperations.contains(otherOperation.getName()) && otherOperation != operation && !otherOperation.getStatus().equals(OperationStatus.DONE.name())) {
+                    otherOperation.setStatus(OperationStatus.DISABLED.name());
                 }
             }
         }
@@ -96,7 +97,7 @@ public class StatusService {
     private int countStageOneOperations(Item item) {
         int counter = 0;
         for(Operation operation : item.getOperations()) {
-            if(stageOneOperations.contains(operation.getName()) && !operation.getStatus().equals(Operations.DONE.name())) {
+            if(stageOneOperations.contains(operation.getName()) && !operation.getStatus().equals(OperationStatus.DONE.name())) {
                 counter++;
             }
         }
@@ -106,14 +107,14 @@ public class StatusService {
     private void enableOtherOperationsInStage(Item item, Operation operation) {
         if(stageOneOperations.contains(operation.getName())) {
             for(Operation otherOperation : item.getOperations()) {
-                if(stageOneOperations.contains(otherOperation.getName()) && otherOperation != operation && otherOperation.getStatus().equals(Operations.DISABLED.name())) {
-                    otherOperation.setStatus(Operations.READY_FOR_REALISATION.name());
+                if(stageOneOperations.contains(otherOperation.getName()) && otherOperation != operation && otherOperation.getStatus().equals(OperationStatus.DISABLED.name())) {
+                    otherOperation.setStatus(OperationStatus.READY_FOR_REALISATION.name());
                 }
             }
         } else {
             for(Operation otherOperation : item.getOperations()) {
-                if(stageTwoOperations.contains(otherOperation.getName()) && otherOperation != operation && otherOperation.getStatus().equals(Operations.DISABLED.name())) {
-                    otherOperation.setStatus(Operations.READY_FOR_REALISATION.name());
+                if(stageTwoOperations.contains(otherOperation.getName()) && otherOperation != operation && otherOperation.getStatus().equals(OperationStatus.DISABLED.name())) {
+                    otherOperation.setStatus(OperationStatus.READY_FOR_REALISATION.name());
                 }
             }
         }
@@ -122,17 +123,22 @@ public class StatusService {
     private void enableStageTwoOperations(Item item) {
         for(Operation otherOperation : item.getOperations()) {
             if(stageTwoOperations.contains(otherOperation.getName()))
-                otherOperation.setStatus(Operations.READY_FOR_REALISATION.name());
+                otherOperation.setStatus(OperationStatus.READY_FOR_REALISATION.name());
         }
     }
 
     public void prepareStatuses(AddOrderDto addOrderDto) {
+        addOrderDto.setStatus(OrderStatus.RECEIVED.name());
+        Boolean stageOne = false;
         for(AddItemDto item : addOrderDto.getItems()) {
+            item.setStatus(OperationStatus.READY_FOR_REALISATION.name());
             for(AddOperationDto operation : item.getOperations()) {
                 if(stageOneOperations.contains(operation.getName())) {
-                    disableStageTwoOperations(item);
+                    operation.setStatus(OperationStatus.READY_FOR_REALISATION.name());
+                    stageOne = true;
                 }
             }
+            disableStageTwoOperations(item);
         }
     }
 
@@ -145,6 +151,6 @@ public class StatusService {
     }
 
     public void disableOperation(AddOperationDto operation) {
-        operation.setStatus(Operations.DISABLED.name());
+        operation.setStatus(OperationStatus.DISABLED.name());
     }
 }

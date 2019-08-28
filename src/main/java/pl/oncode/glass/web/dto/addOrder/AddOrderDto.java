@@ -35,7 +35,6 @@ public class AddOrderDto {
 
     private Date createDate;
 
-    @NotEmpty(message = "Status cannot be empty")
     private String status;
 
     public AddOrderDto() {

@@ -40,7 +40,7 @@ public class AddItemDto {
         return materialId;
     }
 
-    public void ListMaterialId(Integer materialId) {
+    public void setMaterialId(Integer materialId) {
         this.materialId = materialId;
     }
 
@@ -48,7 +48,7 @@ public class AddItemDto {
         return operations;
     }
 
-    public void ListOperations(List<AddOperationDto> operations) {
+    public void setOperations(List<AddOperationDto> operations) {
         this.operations = operations;
     }
 
@@ -56,7 +56,7 @@ public class AddItemDto {
         return width;
     }
 
-    public void ListWidth(Double width) {
+    public void setWidth(Double width) {
         this.width = width;
     }
 
@@ -64,7 +64,7 @@ public class AddItemDto {
         return height;
     }
 
-    public void ListHeight(Double height) {
+    public void setHeight(Double height) {
         this.height = height;
     }
 
@@ -72,7 +72,7 @@ public class AddItemDto {
         return depth;
     }
 
-    public void ListDepth(Double depth) {
+    public void setDepth(Double depth) {
         this.depth = depth;
     }
 
@@ -80,7 +80,7 @@ public class AddItemDto {
         return quantity;
     }
 
-    public void ListQuantity(Integer quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
@@ -88,7 +88,7 @@ public class AddItemDto {
         return status;
     }
 
-    public void ListStatus(String status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -96,7 +96,7 @@ public class AddItemDto {
         return note;
     }
 
-    public void ListNote(String note) {
+    public void setNote(String note) {
         this.note = note;
     }
 }
