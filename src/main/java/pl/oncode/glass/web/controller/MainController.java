@@ -3,9 +3,7 @@ package pl.oncode.glass.web.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import pl.oncode.glass.service.DatabaseService;
-import pl.oncode.glass.service.OrderManagerService;
-import pl.oncode.glass.service.StatusService;
+import pl.oncode.glass.service.*;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
 import pl.oncode.glass.web.dto.changeStatus.ChangeStatusDto;
 import pl.oncode.glass.web.dto.fetchItemDto.FetchItemDto;
@@ -22,29 +20,32 @@ public class MainController {
     private Logger logger = LoggerFactory.getLogger(MainController.class);
 
     private OrderManagerService orderManagerService;
-
-    private DatabaseService databaseService;
+    private MaterialManagerService materialManagerService;
+    private ItemManagerService itemManagerService;
     private StatusService statusService;
 
-    public MainController(DatabaseService databaseService, StatusService statusService, OrderManagerService orderManagerService) {
-        this.databaseService = databaseService;
+    public MainController(StatusService statusService,
+                          OrderManagerService orderManagerService,
+                          MaterialManagerService materialManagerService,
+                          ItemManagerService itemManagerService) {
         this.statusService = statusService;
         this.orderManagerService = orderManagerService;
+        this.materialManagerService = materialManagerService;
+        this.itemManagerService = itemManagerService;
     }
 
     @CrossOrigin
     @GetMapping("/orders")
     List<ViewOrderDto> viewOrders() {
         logger.info("/orders: Received request");
-        return databaseService.viewOrders();
+        return orderManagerService.viewOrders();
     }
 
     @CrossOrigin
     @GetMapping("/order/{id}")
     FetchOrderDto fetchOrder(@PathVariable Integer id) {
-        logger.info("/order: Received request");
         logger.info("/order: id=" + id);
-        return databaseService.fetchOrder(id);
+        return orderManagerService.fetchOrder(id);
     }
 
     @CrossOrigin
@@ -58,21 +59,20 @@ public class MainController {
     @GetMapping("/materials")
     List<ViewMaterialDto> materials() {
         logger.info("/materials: Received request");
-        return databaseService.viewMaterials();
+        return materialManagerService.viewMaterials();
     }
 
     @CrossOrigin
     @GetMapping("/items/{orderId}")
     List<FetchItemDto> items(@PathVariable Integer orderId) {
-        logger.info("/items: Received GET request");
         logger.info("/items: orderId=" + orderId);
-        return databaseService.fetchItems(orderId);
+        return itemManagerService.fetchItems(orderId);
     }
 
     @CrossOrigin
     @PostMapping("/changeStatus")
     FetchOrderDto changeStatus(@RequestBody ChangeStatusDto changeStatusDto) {
         logger.info("/changeStatus: " + changeStatusDto);
-        return statusService.changeOrderStatuses(changeStatusDto);
+        return orderManagerService.changeOrderStatuses(changeStatusDto);
     }
 }

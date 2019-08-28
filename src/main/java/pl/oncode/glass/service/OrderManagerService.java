@@ -11,6 +11,12 @@ import pl.oncode.glass.model.Order;
 import pl.oncode.glass.web.dto.addOrder.AddItemDto;
 import pl.oncode.glass.web.dto.addOrder.AddOperationDto;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
+import pl.oncode.glass.web.dto.changeStatus.ChangeStatusDto;
+import pl.oncode.glass.web.dto.fetchOrder.FetchOrderDto;
+import pl.oncode.glass.web.dto.viewOrders.ViewOrderDto;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service(value = "orderManagerService")
 public class OrderManagerService {
@@ -33,6 +39,29 @@ public class OrderManagerService {
         statusService.prepareStatuses(order);
         databaseService.saveOrder(order);
 
+    }
+
+    public List<ViewOrderDto> viewOrders() {
+        List<Order> orders = databaseService.getAllOrders();
+        List<ViewOrderDto> viewOrderDtos = new ArrayList<>();
+
+        for(Order order : orders) {
+            viewOrderDtos.add(createViewOrderDto(order));
+        }
+
+        return viewOrderDtos;
+    }
+
+    public FetchOrderDto changeOrderStatuses(ChangeStatusDto changeStatusDto) {
+        Order order = statusService.changeOrderStatuses(changeStatusDto);
+        databaseService.updateOrder(order);
+        return createFetchDto(order);
+    }
+
+    //fetch order
+    public FetchOrderDto fetchOrder(int id) {
+        Order order = databaseService.getOrder(id);
+        return createFetchDto(order);
     }
 
     private Order createOrder(AddOrderDto addOrderDto) {
@@ -84,6 +113,35 @@ public class OrderManagerService {
         for(Attachment attachment : order.getAttachments()) {
             attachment.setOrder(order);
         }
+    }
+
+    private ViewOrderDto createViewOrderDto(Order order) {
+
+        return new ViewOrderDto.ViewOrderDtoBuilder()
+                .setId(order.getId())
+                .setExternalOrderId(order.getExternalOrderId())
+                .setCustomer(order.getCustomer())
+                .setInvoiceNumber(order.getInvoiceNumber())
+                .setPrice(order.getPrice())
+                .setDueDate(order.getDueDate())
+                .setCreateDate(order.getCreateDate())
+                .setStatus(order.getStatus())
+                .createViewOrderDto();
+    }
+
+    private FetchOrderDto createFetchDto(Order order) {
+        return new FetchOrderDto.ViewOrderDtoBuilder()
+                .setId(order.getId())
+                .setItems(order.getItems())
+                .setAttachments(order.getAttachments())
+                .setExternalOrderId(order.getExternalOrderId())
+                .setCustomer(order.getCustomer())
+                .setInvoiceNumber(order.getInvoiceNumber())
+                .setPrice(order.getPrice())
+                .setDueDate(order.getDueDate())
+                .setCreateDate(order.getCreateDate())
+                .setStatus(order.getStatus())
+                .createViewOrderDto();
     }
 
 }

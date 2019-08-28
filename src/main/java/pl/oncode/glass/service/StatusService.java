@@ -43,7 +43,7 @@ public class StatusService {
 
     }
 
-    public FetchOrderDto changeOrderStatuses(ChangeStatusDto changeStatusDto) {
+    public Order changeOrderStatuses(ChangeStatusDto changeStatusDto) {
 
         Order order = databaseService.getOrder(changeStatusDto.getOrderId());
         Item item = databaseService.getItem(changeStatusDto.getItemId());
@@ -72,10 +72,7 @@ public class StatusService {
 
         }
 
-        databaseService.updateOrder(order);
-
-        return databaseService.fetchOrder(changeStatusDto.getOrderId());
-
+        return order;
     }
 
     private void disableOtherOperationsInStage(Item item, Operation operation) {
