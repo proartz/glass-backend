@@ -88,4 +88,13 @@ public class MainControllerService {
 
         return orderManagerService.createFetchOrderDto(order);
     }
+
+    public List<FetchItemDto> viewItems() {
+        List<Item> items = databaseService.getAllItems();
+        List<FetchItemDto> fetchItemDtos = new ArrayList<>();
+
+        items.forEach(item -> fetchItemDtos.add(itemManagerService.createFetchItemDto(item)));
+
+        return fetchItemDtos;
+    }
 }

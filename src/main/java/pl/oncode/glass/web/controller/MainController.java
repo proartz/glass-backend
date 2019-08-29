@@ -3,6 +3,7 @@ package pl.oncode.glass.web.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+import pl.oncode.glass.model.Item;
 import pl.oncode.glass.service.*;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
 import pl.oncode.glass.web.dto.changeStatus.ChangeStatusDto;
@@ -54,10 +55,24 @@ public class MainController {
     }
 
     @CrossOrigin
+    @GetMapping("/items")
+    List<FetchItemDto> items() {
+        logger.info("/items: Received request");
+        return mainControllerService.viewItems();
+    }
+
+    @CrossOrigin
     @GetMapping("/items/{orderId}")
     List<FetchItemDto> items(@PathVariable Integer orderId) {
         logger.info("/items: orderId=" + orderId);
         return mainControllerService.fetchItems(orderId);
+    }
+
+    @CrossOrigin
+    @GetMapping("/operations/{itemId}")
+    List<FetchOperationDto> fetchOperations(@PathVariable Integer itemId) {
+        logger.info("/operations: itemId=" + itemId);
+        return mainControllerService.fetchOperations(itemId);
     }
 
     @CrossOrigin

@@ -75,6 +75,8 @@ public class DatabaseService {
 
     public Item getItem(Integer id) { return itemDao.get(id);}
 
+    public List<Item> getAllItems() { return itemDao.getAll();}
+
     public List<Item> getAllOrderItems(Integer orderId) {
         Order order = getOrder(orderId);
         return order.getItems();
