@@ -15,16 +15,15 @@ public class StatusService {
 
     Logger logger = LoggerFactory.getLogger(StatusService.class);
 
-    @Autowired
     StageOneOperations stageOneOperations;
-    @Autowired
     StageTwoOperations stageTwoOperations;
 
     public enum OperationStatus {DISABLED, READY_FOR_REALISATION, IN_REALISATION, DONE};
     public enum OrderStatus {RECEIVED, IN_REALISATION, READY, DELIVERED, PAID};
 
-
-    public StatusService() {
+    public StatusService(StageOneOperations stageOneOperations, StageTwoOperations stageTwoOperations) {
+        this.stageOneOperations = stageOneOperations;
+        this.stageTwoOperations = stageTwoOperations;
     }
 
     public Order changeOrderStatuses(Operation operation, OperationStatus newStatus) {
@@ -46,7 +45,7 @@ public class StatusService {
             }
             if(stageOneOperations.getOperations().contains(operation.getName())) {
                 int stageOneCounter = countStageOneOperations(item);
-                if(stageOneCounter > 0){
+                if(stageOneCounter > 0) {
                     enableOtherOperationsInStage(item, operation);
                 } else {
                     enableStageTwoOperations(item);

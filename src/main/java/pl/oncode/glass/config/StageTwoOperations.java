@@ -1,8 +1,21 @@
 package pl.oncode.glass.config;
 
+import java.util.HashSet;
 import java.util.Set;
 
-public interface StageTwoOperations {
+public class StageTwoOperations implements StageOperations {
 
-    Set<String> getOperations();
+    private Set<String> operations;
+
+    public StageTwoOperations() {
+        operations = new HashSet<>();
+        operations.add("Hardening");
+        operations.add("Enamelling");
+        operations.add("Lamination");
+    }
+
+    @Override
+    public Set<String> getOperations() {
+        return operations;
+    }
 }

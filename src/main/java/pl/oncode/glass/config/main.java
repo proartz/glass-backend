@@ -11,22 +11,11 @@ public class main {
 
     @Bean
     public StageOneOperations stageOneOperations() {
-        Set<String> stageOneOperations = new HashSet<>();
-        stageOneOperations.add("Cutting");
-        stageOneOperations.add("Sanding");
-        stageOneOperations.add("Drilling");
-        stageOneOperations.add("CNC");
-
-        return () -> stageOneOperations;
+        return new StageOneOperations();
     }
 
     @Bean
     public StageTwoOperations getStageTwoOperations() {
-        Set<String> stageTwoOperations = new HashSet<>();
-        stageTwoOperations.add("Hardening");
-        stageTwoOperations.add("Enamelling");
-        stageTwoOperations.add("Lamination");
-
-        return () -> stageTwoOperations;
+        return new StageTwoOperations();
     }
 }
