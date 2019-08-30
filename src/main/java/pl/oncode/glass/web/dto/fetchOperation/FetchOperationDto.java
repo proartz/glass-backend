@@ -9,15 +9,17 @@ public class FetchOperationDto {
     private Item item;
     private String name;
     private String status;
+    private Integer orderId;
 
     public FetchOperationDto() {
     }
 
-    public FetchOperationDto(Integer id, Item item, String name, String status) {
+    public FetchOperationDto(Integer id, Item item, String name, String status, Integer orderId) {
         this.id = id;
         this.item = item;
         this.name = name;
         this.status = status;
+        this.orderId = orderId;
     }
 
     public Integer getId() {
@@ -52,11 +54,20 @@ public class FetchOperationDto {
         this.status = status;
     }
 
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
+
     public static class FetchOperationDtoBuilder {
         private Integer id;
         private Item item;
         private String name;
         private String status;
+        private Integer orderId;
 
         public FetchOperationDtoBuilder setId(Integer id) {
             this.id = id;
@@ -78,11 +89,14 @@ public class FetchOperationDto {
             return this;
         }
 
-        public FetchOperationDto createFetchOperationDto() {
-            return new FetchOperationDto(id, item, name, status);
+        public FetchOperationDtoBuilder setOrderId(Integer orderId) {
+            this.orderId = orderId;
+            return this;
         }
 
-
+        public FetchOperationDto createFetchOperationDto() {
+            return new FetchOperationDto(id, item, name, status, orderId);
+        }
     }
 
     public static FetchOperationDto createFetchOperationDto(Operation operation) {
@@ -91,7 +105,7 @@ public class FetchOperationDto {
                 .setItem(operation.getItem())
                 .setName(operation.getName())
                 .setStatus(operation.getStatus())
+                .setOrderId(operation.getItem().getOrder().getId())
                 .createFetchOperationDto();
     }
-
 }

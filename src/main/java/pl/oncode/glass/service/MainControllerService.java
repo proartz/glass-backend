@@ -107,4 +107,12 @@ public class MainControllerService {
 
         return fetchOperationDtos;
     }
+
+    public List<FetchOperationDto> viewOperations() {
+        List<Operation> operations = databaseService.getAllOperations();
+        List<FetchOperationDto> fetchOperationDtos = new ArrayList<>();
+        operations.forEach(operation -> fetchOperationDtos.add(FetchOperationDto.createFetchOperationDto(operation)));
+
+        return fetchOperationDtos;
+    }
 }

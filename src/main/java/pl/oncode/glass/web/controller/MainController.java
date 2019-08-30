@@ -69,6 +69,13 @@ public class MainController {
     }
 
     @CrossOrigin
+    @GetMapping("/operations")
+    List<FetchOperationDto> viewOperations() {
+        logger.info("/operations: Received request");
+        return mainControllerService.viewOperations();
+    }
+
+    @CrossOrigin
     @GetMapping("/operations/{itemId}")
     List<FetchOperationDto> fetchOperations(@PathVariable Integer itemId) {
         logger.info("/operations: itemId=" + itemId);

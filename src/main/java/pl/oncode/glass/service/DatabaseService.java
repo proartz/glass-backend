@@ -8,6 +8,8 @@ import pl.oncode.glass.dao.MaterialDao;
 import pl.oncode.glass.dao.OperationDao;
 import pl.oncode.glass.dao.OrderDao;
 import pl.oncode.glass.model.*;
+import pl.oncode.glass.web.dto.fetchOperation.FetchOperationDto;
+
 import java.util.List;
 
 @Service(value = "databaseService")
@@ -86,4 +88,7 @@ public class DatabaseService {
 
     public Operation getOperation(Integer id) { return operationDao.get(id);}
 
+    public List<Operation> getAllOperations() {
+        return operationDao.getAll();
+    }
 }
