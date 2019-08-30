@@ -1,6 +1,7 @@
 package pl.oncode.glass.web.dto.fetchOperation;
 
 import pl.oncode.glass.model.Item;
+import pl.oncode.glass.model.Operation;
 
 public class FetchOperationDto {
 
@@ -80,6 +81,17 @@ public class FetchOperationDto {
         public FetchOperationDto createFetchOperationDto() {
             return new FetchOperationDto(id, item, name, status);
         }
+
+
+    }
+
+    public static FetchOperationDto createFetchOperationDto(Operation operation) {
+        return new FetchOperationDtoBuilder()
+                .setId(operation.getId())
+                .setItem(operation.getItem())
+                .setName(operation.getName())
+                .setStatus(operation.getStatus())
+                .createFetchOperationDto();
     }
 
 }

@@ -10,6 +10,7 @@ import pl.oncode.glass.model.Order;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
 import pl.oncode.glass.web.dto.changeStatus.ChangeStatusDto;
 import pl.oncode.glass.web.dto.fetchItemDto.FetchItemDto;
+import pl.oncode.glass.web.dto.fetchOperation.FetchOperationDto;
 import pl.oncode.glass.web.dto.fetchOrder.FetchOrderDto;
 import pl.oncode.glass.web.dto.viewMaterial.ViewMaterialDto;
 import pl.oncode.glass.web.dto.viewOrders.ViewOrderDto;
@@ -96,5 +97,14 @@ public class MainControllerService {
         items.forEach(item -> fetchItemDtos.add(itemManagerService.createFetchItemDto(item)));
 
         return fetchItemDtos;
+    }
+
+    public List<FetchOperationDto> fetchItemOperations(Integer itemId) {
+        Item item = databaseService.getItem(itemId);
+        List<FetchOperationDto> fetchOperationDtos = new ArrayList<>();
+
+        item.getOperations().forEach(operation -> fetchOperationDtos.add(FetchOperationDto.createFetchOperationDto(operation)));
+
+        return fetchOperationDtos;
     }
 }

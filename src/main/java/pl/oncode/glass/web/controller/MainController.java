@@ -3,11 +3,11 @@ package pl.oncode.glass.web.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import pl.oncode.glass.model.Item;
 import pl.oncode.glass.service.*;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
 import pl.oncode.glass.web.dto.changeStatus.ChangeStatusDto;
 import pl.oncode.glass.web.dto.fetchItemDto.FetchItemDto;
+import pl.oncode.glass.web.dto.fetchOperation.FetchOperationDto;
 import pl.oncode.glass.web.dto.fetchOrder.FetchOrderDto;
 import pl.oncode.glass.web.dto.viewMaterial.ViewMaterialDto;
 import pl.oncode.glass.web.dto.viewOrders.ViewOrderDto;
@@ -72,7 +72,7 @@ public class MainController {
     @GetMapping("/operations/{itemId}")
     List<FetchOperationDto> fetchOperations(@PathVariable Integer itemId) {
         logger.info("/operations: itemId=" + itemId);
-        return mainControllerService.fetchOperations(itemId);
+        return mainControllerService.fetchItemOperations(itemId);
     }
 
     @CrossOrigin
