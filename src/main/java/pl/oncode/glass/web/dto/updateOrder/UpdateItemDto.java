@@ -1,12 +1,12 @@
-package pl.oncode.glass.web.dto.addOrder;
+package pl.oncode.glass.web.dto.updateOrder;
 
 import java.util.List;
-import java.util.List;
 
-public class AddItemDto {
+public class UpdateItemDto {
 
+    private Integer id;
     private Integer materialId;
-    private List<AddOperationDto> operations;
+    private List<UpdateOperationDto> operations;
     private Double width;
     private Double height;
     private Double depth;
@@ -14,18 +14,20 @@ public class AddItemDto {
     private String status;
     private String note;
 
-    public AddItemDto() {
+    public UpdateItemDto() {
     }
 
-    public AddItemDto(Integer materialId,
-                      List<AddOperationDto> operations,
-                      Double width,
-                      Double height,
-                      Double depth,
-                      Integer quantity,
-                      String status,
-                      String note) {
+    public UpdateItemDto(Integer id,
+                         Integer materialId,
+                         List<UpdateOperationDto> operations,
+                         Double width,
+                         Double height,
+                         Double depth,
+                         Integer quantity,
+                         String status,
+                         String note) {
 
+        this.id = id;
         this.materialId = materialId;
         this.operations = operations;
         this.width = width;
@@ -36,6 +38,14 @@ public class AddItemDto {
         this.note = note;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Integer getMaterialId() {
         return materialId;
     }
@@ -44,11 +54,11 @@ public class AddItemDto {
         this.materialId = materialId;
     }
 
-    public List<AddOperationDto> getOperations() {
+    public List<UpdateOperationDto> getOperations() {
         return operations;
     }
 
-    public void setOperations(List<AddOperationDto> operations) {
+    public void setOperations(List<UpdateOperationDto> operations) {
         this.operations = operations;
     }
 
@@ -103,6 +113,7 @@ public class AddItemDto {
     @Override
     public String toString() {
         return "AddItemDto{" +
+                "id=" + id +
                 "materialId=" + materialId +
                 ", operations=" + operations +
                 ", width=" + width +

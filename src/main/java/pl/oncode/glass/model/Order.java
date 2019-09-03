@@ -48,7 +48,8 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public Order(List<Item> items,
+    public Order(Integer id,
+                 List<Item> items,
                  List<Attachment> attachments,
                  String externalOrderId,
                  String customer,
@@ -57,6 +58,7 @@ public class Order implements Serializable {
                  LocalDate dueDate,
                  Date createDate,
                  String status) {
+        this.id = id;
         this.items = items;
         this.attachments = attachments;
         this.externalOrderId = externalOrderId;
@@ -165,6 +167,7 @@ public class Order implements Serializable {
     }
 
     public static class OrderBuilder {
+        private Integer id;
         private List<Item> items;
         private List<Attachment> attachments;
         private String externalOrderId;
@@ -178,6 +181,11 @@ public class Order implements Serializable {
         public OrderBuilder() {
             this.items = new ArrayList<>();
             this.attachments = new ArrayList<>();
+        }
+
+        public OrderBuilder setId(Integer id) {
+            this.id = id;
+            return this;
         }
 
         public OrderBuilder setItems(List<Item> items) {
@@ -236,7 +244,7 @@ public class Order implements Serializable {
         }
 
         public Order createOrder() {
-            return new Order(items, attachments, externalOrderId, customer, invoiceNumber, price, dueDate, createDate, status);
+            return new Order(id, items, attachments, externalOrderId, customer, invoiceNumber, price, dueDate, createDate, status);
         }
     }
 }

@@ -12,6 +12,7 @@ import pl.oncode.glass.web.dto.changeStatus.ChangeStatusDto;
 import pl.oncode.glass.web.dto.fetchItemDto.FetchItemDto;
 import pl.oncode.glass.web.dto.fetchOperation.FetchOperationDto;
 import pl.oncode.glass.web.dto.fetchOrder.FetchOrderDto;
+import pl.oncode.glass.web.dto.updateOrder.UpdateOrderDto;
 import pl.oncode.glass.web.dto.viewMaterial.ViewMaterialDto;
 import pl.oncode.glass.web.dto.viewOrders.ViewOrderDto;
 import pl.oncode.glass.service.StatusService.OperationStatus;
@@ -114,5 +115,13 @@ public class MainControllerService {
         operations.forEach(operation -> fetchOperationDtos.add(FetchOperationDto.createFetchOperationDto(operation)));
 
         return fetchOperationDtos;
+    }
+
+    public void updateOrder(UpdateOrderDto updateOrderDto) {
+        Order newOrder = orderManagerService.createOrder(updateOrderDto);
+        Order oldOrder = databaseService.getOrder(newOrder.getId());
+        Order order = orderManagerService.updateOrder(newOrder, oldOrder);
+        statusService.prepareStatuses(order);
+        databaseService.updateOrder(order);
     }
 }

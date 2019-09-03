@@ -1,18 +1,28 @@
-package pl.oncode.glass.web.dto.addOrder;
+package pl.oncode.glass.web.dto.updateOrder;
 
-public class AddOperationDto {
+public class UpdateOperationDto {
 
+    private Integer id;
     private String name;
     private String status;
 
-    public AddOperationDto() {
+    public UpdateOperationDto() {
     }
 
-    public AddOperationDto(String name,
-                           String status) {
+    public UpdateOperationDto(Integer id,
+                              String name,
+                              String status) {
 
         this.name = name;
         this.status = status;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -34,6 +44,7 @@ public class AddOperationDto {
     @Override
     public String toString() {
         return "AddOperationDto{" +
+                "id=" + id +
                 "name='" + name + '\'' +
                 ", status='" + status + '\'' +
                 '}';

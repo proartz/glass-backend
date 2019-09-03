@@ -3,7 +3,6 @@ package pl.oncode.glass.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import pl.oncode.glass.dao.OrderDao;
 import pl.oncode.glass.model.Attachment;
 import pl.oncode.glass.model.Item;
 import pl.oncode.glass.model.Operation;
@@ -11,11 +10,12 @@ import pl.oncode.glass.model.Order;
 import pl.oncode.glass.web.dto.addOrder.AddItemDto;
 import pl.oncode.glass.web.dto.addOrder.AddOperationDto;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
-import pl.oncode.glass.web.dto.changeStatus.ChangeStatusDto;
 import pl.oncode.glass.web.dto.fetchOrder.FetchOrderDto;
+import pl.oncode.glass.web.dto.updateOrder.UpdateItemDto;
+import pl.oncode.glass.web.dto.updateOrder.UpdateOperationDto;
+import pl.oncode.glass.web.dto.updateOrder.UpdateOrderDto;
 import pl.oncode.glass.web.dto.viewOrders.ViewOrderDto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service(value = "orderManagerService")
@@ -52,7 +52,7 @@ public class OrderManagerService {
             for(AddOperationDto addOperationDto : addItemDto.getOperations()) {
 
                 item.getOperations().add(
-                        new Operation(addOperationDto.getName(),
+                        new Operation(null, addOperationDto.getName(),
                                 addOperationDto.getStatus()));
             }
 
@@ -104,5 +104,86 @@ public class OrderManagerService {
                 .setCreateDate(order.getCreateDate())
                 .setStatus(order.getStatus())
                 .createViewOrderDto();
+    }
+
+    public Order updateOrder(Order newOrder, Order oldOrder) {
+        oldOrder.setStatus(newOrder.getStatus());
+//        oldOrder.setItems(newOrder.getItems());
+        updateItems(oldOrder.getItems(), newOrder.getItems());
+
+        oldOrder.setAttachments(newOrder.getAttachments());
+        oldOrder.setExternalOrderId(newOrder.getExternalOrderId());
+        oldOrder.setCustomer(newOrder.getCustomer());
+        oldOrder.setInvoiceNumber(newOrder.getInvoiceNumber());
+        oldOrder.setPrice(newOrder.getPrice());
+        oldOrder.setDueDate(newOrder.getDueDate());
+        oldOrder.setCreateDate(newOrder.getCreateDate());
+
+        registerRelations(oldOrder);
+
+        return oldOrder;
+    }
+
+    private void updateItems(List<Item> oldItems, List<Item> newItems) {
+        addNewItems(oldItems, newItems);
+        removeUnnecessaryItems(oldItems, newItems);
+    }
+
+    private void removeUnnecessaryItems(List<Item> oldItems, List<Item> newItems) {
+        oldItems.forEach(item -> {
+            if(!newItems.contains(item)) {
+                oldItems.remove(item);
+            }
+        });
+    }
+
+    private void addNewItems(List<Item> oldItems, List<Item> newItems) {
+        logger.debug("newItems=" + newItems.toString());
+        logger.debug("oldItems=" + oldItems.toString());
+        newItems.forEach(item -> {
+            logger.debug("item=" + item.toString());
+            if(!oldItems.contains(item)) {
+                oldItems.add(item);
+            }
+        });
+    }
+
+    public Order createOrder(UpdateOrderDto updateOrderDto) {
+        Order order = new Order.OrderBuilder()
+                .setId(updateOrderDto.getId())
+                .setExternalOrderId(updateOrderDto.getExternalOrderId())
+                .setCustomer(updateOrderDto.getCustomer())
+                .setInvoiceNumber(updateOrderDto.getInvoiceNumber())
+                .setPrice(updateOrderDto.getPrice())
+                .setDueDate(updateOrderDto.getDueDate())
+                .setStatus(updateOrderDto.getStatus())
+                .createOrder();
+
+        for(UpdateItemDto updateItemDto : updateOrderDto.getItems()){
+
+            Item item = new Item.ItemBuilder()
+                    .setId(updateItemDto.getId())
+                    .setMaterialId(updateItemDto.getMaterialId())
+                    .setWidth(updateItemDto.getWidth())
+                    .setHeight(updateItemDto.getHeight())
+                    .setDepth(updateItemDto.getDepth())
+                    .setQuantity(updateItemDto.getQuantity())
+                    .setStatus(updateItemDto.getStatus())
+                    .setNote(updateItemDto.getNote())
+                    .createItem();
+
+            for(UpdateOperationDto updateOperationDto : updateItemDto.getOperations()) {
+
+                item.getOperations().add(
+                        new Operation(updateOperationDto.getId(), updateOperationDto.getName(),
+                                updateOperationDto.getStatus()));
+            }
+
+            order.getItems().add(item);
+        }
+
+        registerRelations(order);
+
+        return order;
     }
 }

@@ -1,13 +1,12 @@
 package pl.oncode.glass.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class Item {
@@ -34,7 +33,8 @@ public class Item {
     public Item() {
     }
 
-    public Item(Integer materialId, List<Operation> operations, Double width, Double height, Double depth, Integer quantity, String status, String note) {
+    public Item(Integer id, Integer materialId, List<Operation> operations, Double width, Double height, Double depth, Integer quantity, String status, String note) {
+        this.id = id;
         this.materialId = materialId;
         this.operations = operations;
         this.width = width;
@@ -129,7 +129,6 @@ public class Item {
     public String toString() {
         return "Item{" +
                 "id=" + id +
-                ", order=" + order +
                 ", materialId=" + materialId +
                 ", operations=" + operations +
                 ", width=" + width +
@@ -141,7 +140,21 @@ public class Item {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        return id.equals(item.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
     public static class ItemBuilder {
+        private Integer id;
         private Integer materialId;
         private List<Operation> operations;
         private Double width;
@@ -153,6 +166,11 @@ public class Item {
 
         public ItemBuilder() {
             this.operations = new ArrayList<>();
+        }
+
+        public ItemBuilder setId(Integer id) {
+            this.id = id;
+            return this;
         }
 
         public ItemBuilder setMaterialId(Integer materialId) {
@@ -201,7 +219,7 @@ public class Item {
         }
 
         public Item createItem() {
-            return new Item(materialId, operations, width, height, depth, quantity, status, note);
+            return new Item(id, materialId, operations, width, height, depth, quantity, status, note);
         }
     }
 

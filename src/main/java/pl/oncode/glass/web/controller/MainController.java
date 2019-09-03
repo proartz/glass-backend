@@ -9,6 +9,7 @@ import pl.oncode.glass.web.dto.changeStatus.ChangeStatusDto;
 import pl.oncode.glass.web.dto.fetchItemDto.FetchItemDto;
 import pl.oncode.glass.web.dto.fetchOperation.FetchOperationDto;
 import pl.oncode.glass.web.dto.fetchOrder.FetchOrderDto;
+import pl.oncode.glass.web.dto.updateOrder.UpdateOrderDto;
 import pl.oncode.glass.web.dto.viewMaterial.ViewMaterialDto;
 import pl.oncode.glass.web.dto.viewOrders.ViewOrderDto;
 
@@ -45,6 +46,13 @@ public class MainController {
     void addOrder(@Valid @RequestBody AddOrderDto addOrderDto) {
         logger.info("/order: " + addOrderDto);
         mainControllerService.addOrder(addOrderDto);
+    }
+
+    @CrossOrigin
+    @PostMapping("/updateOrder")
+    void updateOrder(@Valid @RequestBody UpdateOrderDto updateOrderDto) {
+        logger.info("/updateOrder: " + updateOrderDto);
+        mainControllerService.updateOrder(updateOrderDto);
     }
 
     @CrossOrigin

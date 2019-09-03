@@ -19,11 +19,8 @@ public class Operation {
     public Operation() {
     }
 
-    public Operation(String name) {
-        this(name, "NEW");
-    }
-
-    public Operation(String name, String status) {
+    public Operation(Integer id, String name, String status) {
+        this.id = id;
         this.name = name;
         this.status = status;
     }
@@ -64,7 +61,6 @@ public class Operation {
     public String toString() {
         return "Operation{" +
                 "id=" + id +
-                ", item=" + item +
                 ", name='" + name + '\'' +
                 ", status='" + status + '\'' +
                 '}';
