@@ -26,20 +26,11 @@ public class MainControllerService {
     Logger logger = LoggerFactory.getLogger(MainControllerService.class);
 
     private DatabaseService databaseService;
-    private ItemManagerService itemManagerService;
-    private MaterialManagerService materialManagerService;
-    private OrderManagerService orderManagerService;
     private StatusService statusService;
 
     public MainControllerService(DatabaseService databaseService,
-                                 ItemManagerService itemManagerService,
-                                 MaterialManagerService materialManagerService,
-                                 OrderManagerService orderManagerService,
                                  StatusService statusService) {
         this.databaseService = databaseService;
-        this.itemManagerService = itemManagerService;
-        this.materialManagerService = materialManagerService;
-        this.orderManagerService = orderManagerService;
         this.statusService = statusService;
     }
 
@@ -47,18 +38,18 @@ public class MainControllerService {
         List<Order> orders = databaseService.getAllOrders();
         List<ViewOrderDto> viewOrderDtos = new ArrayList<>();
 
-        orders.forEach(order -> viewOrderDtos.add(orderManagerService.createViewOrderDto(order)));
+        orders.forEach(order -> viewOrderDtos.add(ViewOrderDto.createViewOrderDto(order)));
 
         return viewOrderDtos;
     }
 
     public FetchOrderDto fetchOrder(int id) {
         Order order = databaseService.getOrder(id);
-        return orderManagerService.createFetchOrderDto(order);
+        return FetchOrderDto.createFetchOrderDto(order);
     }
 
     public void addOrder(AddOrderDto addOrderDto) {
-        Order order = orderManagerService.createOrder(addOrderDto);
+        Order order = AddOrderDto.createOrder(addOrderDto);
         statusService.prepareStatuses(order);
         databaseService.saveOrder(order);
     }
@@ -67,7 +58,7 @@ public class MainControllerService {
         List<Material> materials = databaseService.getAllMaterials();
         List<ViewMaterialDto> viewMaterialDtos = new ArrayList<>();
 
-        materials.forEach((material -> viewMaterialDtos.add(materialManagerService.createViewMaterialDto(material))));
+        materials.forEach((material -> viewMaterialDtos.add(ViewMaterialDto.createViewMaterialDto(material))));
 
         return viewMaterialDtos;
     }
@@ -76,7 +67,7 @@ public class MainControllerService {
         List<Item> items = databaseService.getAllOrderItems(orderId);
         List<FetchItemDto> fetchItemDtos = new ArrayList<>();
 
-        items.forEach(item -> fetchItemDtos.add(itemManagerService.createFetchItemDto(item)));
+        items.forEach(item -> fetchItemDtos.add(FetchItemDto.createFetchItemDto(item)));
 
         return fetchItemDtos;
     }
@@ -88,14 +79,14 @@ public class MainControllerService {
         Order order = statusService.changeOrderStatuses(operation, newStatus);
         databaseService.updateOrder(order);
 
-        return orderManagerService.createFetchOrderDto(order);
+        return FetchOrderDto.createFetchOrderDto(order);
     }
 
     public List<FetchItemDto> viewItems() {
         List<Item> items = databaseService.getAllItems();
         List<FetchItemDto> fetchItemDtos = new ArrayList<>();
 
-        items.forEach(item -> fetchItemDtos.add(itemManagerService.createFetchItemDto(item)));
+        items.forEach(item -> fetchItemDtos.add(FetchItemDto.createFetchItemDto(item)));
 
         return fetchItemDtos;
     }
@@ -118,12 +109,41 @@ public class MainControllerService {
     }
 
     public FetchOrderDto updateOrder(UpdateOrderDto updateOrderDto) {
-        Order newOrder = orderManagerService.createOrder(updateOrderDto);
+        Order newOrder = UpdateOrderDto.createOrder(updateOrderDto);
         statusService.prepareStatuses(newOrder);
         Order oldOrder = databaseService.getOrder(newOrder.getId());
-        Order order = orderManagerService.updateOrder(newOrder, oldOrder);
+        Order order = updateOrder(newOrder, oldOrder);
         databaseService.updateOrder(order);
 
-        return orderManagerService.createFetchOrderDto(order);
+        return FetchOrderDto.createFetchOrderDto(order);
+    }
+
+    public Order updateOrder(Order newOrder, Order oldOrder) {
+        oldOrder.setStatus(newOrder.getStatus());
+        updateItems(oldOrder.getItems(), newOrder.getItems());
+
+        oldOrder.setAttachments(newOrder.getAttachments());
+        oldOrder.setExternalOrderId(newOrder.getExternalOrderId());
+        oldOrder.setCustomer(newOrder.getCustomer());
+        oldOrder.setInvoiceNumber(newOrder.getInvoiceNumber());
+        oldOrder.setPrice(newOrder.getPrice());
+        oldOrder.setDueDate(newOrder.getDueDate());
+        oldOrder.setCreateDate(newOrder.getCreateDate());
+
+        oldOrder.registerRelations();
+
+        return oldOrder;
+    }
+
+    private void updateItems(List<Item> oldItems, List<Item> newItems) {
+        addNewItems(oldItems, newItems);
+    }
+
+    private void addNewItems(List<Item> oldItems, List<Item> newItems) {
+        newItems.forEach(item -> {
+            if(item.isItemNew()) {
+                oldItems.add(item);
+            }
+        });
     }
 }

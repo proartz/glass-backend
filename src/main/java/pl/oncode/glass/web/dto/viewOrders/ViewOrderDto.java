@@ -1,5 +1,7 @@
 package pl.oncode.glass.web.dto.viewOrders;
 
+import pl.oncode.glass.model.Order;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -147,5 +149,19 @@ public class ViewOrderDto implements Serializable {
         public ViewOrderDto createViewOrderDto() {
             return new ViewOrderDto(id, externalOrderId, customer, invoiceNumber, price, dueDate, createDate, status);
         }
+    }
+
+    public static ViewOrderDto createViewOrderDto(Order order) {
+
+        return new ViewOrderDto.ViewOrderDtoBuilder()
+                .setId(order.getId())
+                .setExternalOrderId(order.getExternalOrderId())
+                .setCustomer(order.getCustomer())
+                .setInvoiceNumber(order.getInvoiceNumber())
+                .setPrice(order.getPrice())
+                .setDueDate(order.getDueDate())
+                .setCreateDate(order.getCreateDate())
+                .setStatus(order.getStatus())
+                .createViewOrderDto();
     }
 }

@@ -1,5 +1,6 @@
 package pl.oncode.glass.web.dto.fetchItemDto;
 
+import pl.oncode.glass.model.Item;
 import pl.oncode.glass.model.Operation;
 import pl.oncode.glass.model.Order;
 
@@ -163,5 +164,19 @@ public class FetchItemDto {
         public FetchItemDto createFetchItemDto() {
             return new FetchItemDto(id, order, materialId, width, height, depth, quantity, status, note);
         }
+    }
+
+    public static FetchItemDto createFetchItemDto(Item item) {
+        return new FetchItemDto.FetchItemDtoBuilder()
+                .setId(item.getId())
+                .setOrder(item.getOrder())
+                .setMaterialId(item.getMaterialId())
+                .setWidth(item.getWidth())
+                .setHeight(item.getHeight())
+                .setDepth(item.getDepth())
+                .setQuantity(item.getQuantity())
+                .setStatus(item.getStatus())
+                .setNote(item.getNote())
+                .createFetchItemDto();
     }
 }

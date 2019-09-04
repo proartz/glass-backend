@@ -3,6 +3,9 @@ package pl.oncode.glass.web.dto.addOrder;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.format.annotation.DateTimeFormat;
+import pl.oncode.glass.model.Item;
+import pl.oncode.glass.model.Operation;
+import pl.oncode.glass.model.Order;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
@@ -146,5 +149,43 @@ public class AddOrderDto {
                 ", createDate=" + createDate +
                 ", status='" + status + '\'' +
                 '}';
+    }
+
+    public static Order createOrder(AddOrderDto addOrderDto) {
+
+        pl.oncode.glass.model.Order order = new Order.OrderBuilder()
+                .setExternalOrderId(addOrderDto.getExternalOrderId())
+                .setCustomer(addOrderDto.getCustomer())
+                .setInvoiceNumber(addOrderDto.getInvoiceNumber())
+                .setPrice(addOrderDto.getPrice())
+                .setDueDate(addOrderDto.getDueDate())
+                .setStatus(addOrderDto.getStatus())
+                .createOrder();
+
+        for(AddItemDto addItemDto : addOrderDto.getItems()){
+
+            Item item = new Item.ItemBuilder()
+                    .setMaterialId(addItemDto.getMaterialId())
+                    .setWidth(addItemDto.getWidth())
+                    .setHeight(addItemDto.getHeight())
+                    .setDepth(addItemDto.getDepth())
+                    .setQuantity(addItemDto.getQuantity())
+                    .setStatus(addItemDto.getStatus())
+                    .setNote(addItemDto.getNote())
+                    .createItem();
+
+            for(AddOperationDto addOperationDto : addItemDto.getOperations()) {
+
+                item.getOperations().add(
+                        new Operation(null, addOperationDto.getName(),
+                                addOperationDto.getStatus()));
+            }
+
+            order.getItems().add(item);
+        }
+
+        order.registerRelations();
+
+        return order;
     }
 }

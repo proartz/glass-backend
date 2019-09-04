@@ -2,6 +2,7 @@ package pl.oncode.glass.web.dto.fetchOrder;
 
 import pl.oncode.glass.model.Attachment;
 import pl.oncode.glass.model.Item;
+import pl.oncode.glass.model.Order;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -182,5 +183,20 @@ public class FetchOrderDto {
         public FetchOrderDto createViewOrderDto() {
             return new FetchOrderDto(id, items, attachments, externalOrderId, customer, invoiceNumber, price, dueDate, createDate, status);
         }
+    }
+
+    public static FetchOrderDto createFetchOrderDto(Order order) {
+        return new FetchOrderDto.ViewOrderDtoBuilder()
+                .setId(order.getId())
+                .setItems(order.getItems())
+                .setAttachments(order.getAttachments())
+                .setExternalOrderId(order.getExternalOrderId())
+                .setCustomer(order.getCustomer())
+                .setInvoiceNumber(order.getInvoiceNumber())
+                .setPrice(order.getPrice())
+                .setDueDate(order.getDueDate())
+                .setCreateDate(order.getCreateDate())
+                .setStatus(order.getStatus())
+                .createViewOrderDto();
     }
 }

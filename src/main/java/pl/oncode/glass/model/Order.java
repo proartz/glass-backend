@@ -247,4 +247,17 @@ public class Order implements Serializable {
             return new Order(id, items, attachments, externalOrderId, customer, invoiceNumber, price, dueDate, createDate, status);
         }
     }
+
+    public void registerRelations() {
+        for(Item item : this.getItems()) {
+            for(Operation operation : item.getOperations()) {
+                operation.setItem(item);
+            }
+            item.setOrder(this);
+        }
+
+        for(Attachment attachment : this.getAttachments()) {
+            attachment.setOrder(this);
+        }
+    }
 }

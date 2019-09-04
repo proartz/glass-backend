@@ -1,5 +1,7 @@
 package pl.oncode.glass.web.dto.viewMaterial;
 
+import pl.oncode.glass.model.Material;
+
 public class ViewMaterialDto {
     private Integer id;
     private String name;
@@ -36,5 +38,13 @@ public class ViewMaterialDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public static ViewMaterialDto createViewMaterialDto(Material material) {
+
+        return new ViewMaterialDto(
+                material.getId(),
+                material.getName(),
+                material.getDescription());
     }
 }

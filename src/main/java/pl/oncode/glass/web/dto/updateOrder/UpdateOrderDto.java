@@ -1,5 +1,9 @@
 package pl.oncode.glass.web.dto.updateOrder;
 
+import pl.oncode.glass.model.Item;
+import pl.oncode.glass.model.Operation;
+import pl.oncode.glass.model.Order;
+
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -154,5 +158,44 @@ public class UpdateOrderDto {
                 ", createDate=" + createDate +
                 ", status='" + status + '\'' +
                 '}';
+    }
+
+    public static Order createOrder(UpdateOrderDto updateOrderDto) {
+        Order order = new Order.OrderBuilder()
+                .setId(updateOrderDto.getId())
+                .setExternalOrderId(updateOrderDto.getExternalOrderId())
+                .setCustomer(updateOrderDto.getCustomer())
+                .setInvoiceNumber(updateOrderDto.getInvoiceNumber())
+                .setPrice(updateOrderDto.getPrice())
+                .setDueDate(updateOrderDto.getDueDate())
+                .setStatus(updateOrderDto.getStatus())
+                .createOrder();
+
+        for(UpdateItemDto updateItemDto : updateOrderDto.getItems()){
+
+            Item item = new Item.ItemBuilder()
+                    .setId(updateItemDto.getId())
+                    .setMaterialId(updateItemDto.getMaterialId())
+                    .setWidth(updateItemDto.getWidth())
+                    .setHeight(updateItemDto.getHeight())
+                    .setDepth(updateItemDto.getDepth())
+                    .setQuantity(updateItemDto.getQuantity())
+                    .setStatus(updateItemDto.getStatus())
+                    .setNote(updateItemDto.getNote())
+                    .createItem();
+
+            for(UpdateOperationDto updateOperationDto : updateItemDto.getOperations()) {
+
+                item.getOperations().add(
+                        new Operation(updateOperationDto.getId(), updateOperationDto.getName(),
+                                updateOperationDto.getStatus()));
+            }
+
+            order.getItems().add(item);
+        }
+
+        order.registerRelations();
+
+        return order;
     }
 }
