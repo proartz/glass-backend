@@ -64,6 +64,46 @@ public class OrderManagerService {
         return order;
     }
 
+
+    public Order createOrder(UpdateOrderDto updateOrderDto) {
+        Order order = new Order.OrderBuilder()
+                .setId(updateOrderDto.getId())
+                .setExternalOrderId(updateOrderDto.getExternalOrderId())
+                .setCustomer(updateOrderDto.getCustomer())
+                .setInvoiceNumber(updateOrderDto.getInvoiceNumber())
+                .setPrice(updateOrderDto.getPrice())
+                .setDueDate(updateOrderDto.getDueDate())
+                .setStatus(updateOrderDto.getStatus())
+                .createOrder();
+
+        for(UpdateItemDto updateItemDto : updateOrderDto.getItems()){
+
+            Item item = new Item.ItemBuilder()
+                    .setId(updateItemDto.getId())
+                    .setMaterialId(updateItemDto.getMaterialId())
+                    .setWidth(updateItemDto.getWidth())
+                    .setHeight(updateItemDto.getHeight())
+                    .setDepth(updateItemDto.getDepth())
+                    .setQuantity(updateItemDto.getQuantity())
+                    .setStatus(updateItemDto.getStatus())
+                    .setNote(updateItemDto.getNote())
+                    .createItem();
+
+            for(UpdateOperationDto updateOperationDto : updateItemDto.getOperations()) {
+
+                item.getOperations().add(
+                        new Operation(updateOperationDto.getId(), updateOperationDto.getName(),
+                                updateOperationDto.getStatus()));
+            }
+
+            order.getItems().add(item);
+        }
+
+        registerRelations(order);
+
+        return order;
+    }
+
     private void registerRelations(Order order) {
         for(Item item : order.getItems()) {
             for(Operation operation : item.getOperations()) {
@@ -126,7 +166,7 @@ public class OrderManagerService {
 
     private void updateItems(List<Item> oldItems, List<Item> newItems) {
         addNewItems(oldItems, newItems);
-        removeUnnecessaryItems(oldItems, newItems);
+//        removeUnnecessaryItems(oldItems, newItems);
     }
 
     private void removeUnnecessaryItems(List<Item> oldItems, List<Item> newItems) {
@@ -138,52 +178,14 @@ public class OrderManagerService {
     }
 
     private void addNewItems(List<Item> oldItems, List<Item> newItems) {
-        logger.debug("newItems=" + newItems.toString());
-        logger.debug("oldItems=" + oldItems.toString());
         newItems.forEach(item -> {
-            logger.debug("item=" + item.toString());
-            if(!oldItems.contains(item)) {
+            if(item.isItemNew()) {
                 oldItems.add(item);
             }
+//            if(!oldItems.contains(item)) {
+//                item.setId(null);
+//                oldItems.add(item);
+//            }
         });
-    }
-
-    public Order createOrder(UpdateOrderDto updateOrderDto) {
-        Order order = new Order.OrderBuilder()
-                .setId(updateOrderDto.getId())
-                .setExternalOrderId(updateOrderDto.getExternalOrderId())
-                .setCustomer(updateOrderDto.getCustomer())
-                .setInvoiceNumber(updateOrderDto.getInvoiceNumber())
-                .setPrice(updateOrderDto.getPrice())
-                .setDueDate(updateOrderDto.getDueDate())
-                .setStatus(updateOrderDto.getStatus())
-                .createOrder();
-
-        for(UpdateItemDto updateItemDto : updateOrderDto.getItems()){
-
-            Item item = new Item.ItemBuilder()
-                    .setId(updateItemDto.getId())
-                    .setMaterialId(updateItemDto.getMaterialId())
-                    .setWidth(updateItemDto.getWidth())
-                    .setHeight(updateItemDto.getHeight())
-                    .setDepth(updateItemDto.getDepth())
-                    .setQuantity(updateItemDto.getQuantity())
-                    .setStatus(updateItemDto.getStatus())
-                    .setNote(updateItemDto.getNote())
-                    .createItem();
-
-            for(UpdateOperationDto updateOperationDto : updateItemDto.getOperations()) {
-
-                item.getOperations().add(
-                        new Operation(updateOperationDto.getId(), updateOperationDto.getName(),
-                                updateOperationDto.getStatus()));
-            }
-
-            order.getItems().add(item);
-        }
-
-        registerRelations(order);
-
-        return order;
     }
 }

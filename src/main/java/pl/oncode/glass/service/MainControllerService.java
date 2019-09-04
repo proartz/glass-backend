@@ -117,11 +117,13 @@ public class MainControllerService {
         return fetchOperationDtos;
     }
 
-    public void updateOrder(UpdateOrderDto updateOrderDto) {
+    public FetchOrderDto updateOrder(UpdateOrderDto updateOrderDto) {
         Order newOrder = orderManagerService.createOrder(updateOrderDto);
+        statusService.prepareStatuses(newOrder);
         Order oldOrder = databaseService.getOrder(newOrder.getId());
         Order order = orderManagerService.updateOrder(newOrder, oldOrder);
-        statusService.prepareStatuses(order);
         databaseService.updateOrder(order);
+
+        return orderManagerService.createFetchOrderDto(order);
     }
 }

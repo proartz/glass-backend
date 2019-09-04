@@ -153,6 +153,13 @@ public class Item {
         return Objects.hash(id);
     }
 
+    public boolean isItemNew() {
+        if(this.getId() == null) {
+            return true;
+        }
+        return false;
+    }
+
     public static class ItemBuilder {
         private Integer id;
         private Integer materialId;

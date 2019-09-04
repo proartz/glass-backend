@@ -120,15 +120,21 @@ public class StatusService {
 
     public void prepareStatuses(Order order) {
         order.setStatus(OrderStatus.RECEIVED.name());
-        Boolean stageOne = false;
         for(Item item : order.getItems()) {
-            item.setStatus(OperationStatus.READY_FOR_REALISATION.name());
-            for(Operation operation : item.getOperations()) {
-                if(stageOneOperations.getOperations().contains(operation.getName())) {
-                    operation.setStatus(OperationStatus.READY_FOR_REALISATION.name());
-                    stageOne = true;
-                }
+            prepareItemStatuses(item);
+        }
+    }
+
+    public void prepareItemStatuses(Item item) {
+        Boolean stageOne = false;
+        item.setStatus(OperationStatus.READY_FOR_REALISATION.name());
+        for(Operation operation : item.getOperations()) {
+            if(stageOneOperations.getOperations().contains(operation.getName())) {
+                stageOne = true;
             }
+            operation.setStatus(OperationStatus.READY_FOR_REALISATION.name());
+        }
+        if(stageOne) {
             disableStageTwoOperations(item);
         }
     }

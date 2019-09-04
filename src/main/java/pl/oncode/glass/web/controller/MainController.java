@@ -50,9 +50,9 @@ public class MainController {
 
     @CrossOrigin
     @PostMapping("/updateOrder")
-    void updateOrder(@Valid @RequestBody UpdateOrderDto updateOrderDto) {
+    FetchOrderDto updateOrder(@Valid @RequestBody UpdateOrderDto updateOrderDto) {
         logger.info("/updateOrder: " + updateOrderDto);
-        mainControllerService.updateOrder(updateOrderDto);
+        return mainControllerService.updateOrder(updateOrderDto);
     }
 
     @CrossOrigin
