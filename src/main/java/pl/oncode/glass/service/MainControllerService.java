@@ -119,7 +119,6 @@ public class MainControllerService {
     }
 
     public Order updateOrder(Order newOrder, Order oldOrder) {
-        oldOrder.setStatus(newOrder.getStatus());
         updateItems(oldOrder.getItems(), newOrder.getItems());
 
         oldOrder.setAttachments(newOrder.getAttachments());
