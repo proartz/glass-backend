@@ -9,6 +9,7 @@ import pl.oncode.glass.web.dto.changeStatus.ChangeStatusDto;
 import pl.oncode.glass.web.dto.fetchItemDto.FetchItemDto;
 import pl.oncode.glass.web.dto.fetchOperation.FetchOperationDto;
 import pl.oncode.glass.web.dto.fetchOrder.FetchOrderDto;
+import pl.oncode.glass.web.dto.updateMaterial.UpdateMaterialDto;
 import pl.oncode.glass.web.dto.updateOrder.UpdateOrderDto;
 import pl.oncode.glass.web.dto.viewMaterial.ViewMaterialDto;
 import pl.oncode.glass.web.dto.viewOrders.ViewOrderDto;
@@ -60,6 +61,13 @@ public class MainController {
     List<ViewMaterialDto> materials() {
         logger.info("/materials: Received request");
         return mainControllerService.viewMaterials();
+    }
+
+    @CrossOrigin
+    @GetMapping("/updateMaterial")
+    void updateMaterial(@Valid @RequestBody UpdateMaterialDto updateMaterialDto) {
+        logger.info("/updateMaterial: " + updateMaterialDto);
+        mainControllerService.updateMaterial(updateMaterialDto);
     }
 
     @CrossOrigin
