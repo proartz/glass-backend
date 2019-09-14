@@ -30,20 +30,21 @@ public class MaterialDao implements Dao<Material>{
 
     @Override
     @Transactional
-    public void save(Material Material) {
-        entityManager.persist(Material);
+    public void save(Material material) {
+        entityManager.persist(material);
     }
 
     @Override
     @Transactional
-    public void update(Material Material) {
-        entityManager.merge(Material);
+    public void update(Material material) {
+        entityManager.merge(material);
     }
 
     @Override
     @Transactional
-    public void delete(Material Material) {
-        entityManager.remove(Material);
+    public void delete(Material material) {
+        Material managedMaterial = entityManager.merge(material);
+        entityManager.remove(managedMaterial);
     }
     
 }

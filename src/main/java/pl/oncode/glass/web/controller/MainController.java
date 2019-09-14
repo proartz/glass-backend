@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.oncode.glass.service.*;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
 import pl.oncode.glass.web.dto.changeStatus.ChangeStatusDto;
+import pl.oncode.glass.web.dto.deleteMaterial.DeleteMaterialDto;
 import pl.oncode.glass.web.dto.fetchItemDto.FetchItemDto;
 import pl.oncode.glass.web.dto.fetchOperation.FetchOperationDto;
 import pl.oncode.glass.web.dto.fetchOrder.FetchOrderDto;
@@ -64,10 +65,17 @@ public class MainController {
     }
 
     @CrossOrigin
-    @GetMapping("/updateMaterial")
+    @PostMapping("/updateMaterial")
     void updateMaterial(@Valid @RequestBody UpdateMaterialDto updateMaterialDto) {
         logger.info("/updateMaterial: " + updateMaterialDto);
         mainControllerService.updateMaterial(updateMaterialDto);
+    }
+
+    @CrossOrigin
+    @PostMapping("/deleteMaterial")
+    void deleteMaterial(@Valid @RequestBody DeleteMaterialDto deleteMaterialDto) {
+        logger.info("/deleteMaterial: " + deleteMaterialDto);
+        mainControllerService.deleteMaterial(deleteMaterialDto);
     }
 
     @CrossOrigin

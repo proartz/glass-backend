@@ -2,15 +2,13 @@ package pl.oncode.glass.web.dto.updateMaterial;
 
 import pl.oncode.glass.model.Material;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class UpdateMaterialDto {
 
-    @NotEmpty(message = "Id cannot be null nor empty")
+    @NotNull(message = "Id cannot be null")
     private Integer id;
 
     @Size(max = 30, message = "Name can have maximum 30 characters")
@@ -29,8 +27,8 @@ public class UpdateMaterialDto {
         this.description = description;
     }
 
-    public static Material createMaterial(UpdateMaterialDto updateMaterialDto) {
-        return new Material(updateMaterialDto.id, updateMaterialDto.name, updateMaterialDto.description);
+    public Material createMaterial() {
+        return new Material(this.id, this.name, this.description);
     }
 
     public Integer getId() {
@@ -82,4 +80,12 @@ public class UpdateMaterialDto {
         }
     }
 
+    @Override
+    public String toString() {
+        return "UpdateMaterialDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }
