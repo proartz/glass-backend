@@ -1,8 +1,6 @@
 package pl.oncode.glass.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -18,7 +16,9 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
-    private Integer materialId;
+    @OneToOne
+    @JoinColumn(name = "material_id")
+    private Material material;
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<Operation> operations;
     private Double width;
@@ -33,9 +33,9 @@ public class Item {
     public Item() {
     }
 
-    public Item(Integer id, Integer materialId, List<Operation> operations, Double width, Double height, Double depth, Integer quantity, String status, String note) {
+    public Item(Integer id, Material material, List<Operation> operations, Double width, Double height, Double depth, Integer quantity, String status, String note) {
         this.id = id;
-        this.materialId = materialId;
+        this.material = material;
         this.operations = operations;
         this.width = width;
         this.height = height;
@@ -61,12 +61,12 @@ public class Item {
         this.order = order;
     }
 
-    public Integer getMaterialId() {
-        return materialId;
+    public Material getMaterial() {
+        return material;
     }
 
-    public void setMaterialId(Integer materialId) {
-        this.materialId = materialId;
+    public void setMaterial(Material material) {
+        this.material = material;
     }
 
     public List<Operation> getOperations() {
@@ -129,7 +129,7 @@ public class Item {
     public String toString() {
         return "Item{" +
                 "id=" + id +
-                ", materialId=" + materialId +
+                ", material=" + material +
                 ", operations=" + operations +
                 ", width=" + width +
                 ", height=" + height +
@@ -154,15 +154,12 @@ public class Item {
     }
 
     public boolean isItemNew() {
-        if(this.getId() == null) {
-            return true;
-        }
-        return false;
+        return this.getId() == null;
     }
 
     public static class ItemBuilder {
         private Integer id;
-        private Integer materialId;
+        private Material material;
         private List<Operation> operations;
         private Double width;
         private Double height;
@@ -180,8 +177,8 @@ public class Item {
             return this;
         }
 
-        public ItemBuilder setMaterialId(Integer materialId) {
-            this.materialId = materialId;
+        public ItemBuilder setMaterial(Material material) {
+            this.material = material;
             return this;
         }
 
@@ -226,7 +223,7 @@ public class Item {
         }
 
         public Item createItem() {
-            return new Item(id, materialId, operations, width, height, depth, quantity, status, note);
+            return new Item(id, material, operations, width, height, depth, quantity, status, note);
         }
     }
 

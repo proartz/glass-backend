@@ -175,7 +175,7 @@ public class UpdateOrderDto {
 
             Item item = new Item.ItemBuilder()
                     .setId(updateItemDto.getId())
-                    .setMaterialId(updateItemDto.getMaterialId())
+                    .setMaterial(updateItemDto.getMaterial())
                     .setWidth(updateItemDto.getWidth())
                     .setHeight(updateItemDto.getHeight())
                     .setDepth(updateItemDto.getDepth())

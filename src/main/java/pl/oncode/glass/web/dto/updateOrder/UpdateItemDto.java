@@ -1,11 +1,13 @@
 package pl.oncode.glass.web.dto.updateOrder;
 
+import pl.oncode.glass.model.Material;
+
 import java.util.List;
 
 public class UpdateItemDto {
 
     private Integer id;
-    private Integer materialId;
+    private Material material;
     private List<UpdateOperationDto> operations;
     private Double width;
     private Double height;
@@ -18,7 +20,7 @@ public class UpdateItemDto {
     }
 
     public UpdateItemDto(Integer id,
-                         Integer materialId,
+                         Material material,
                          List<UpdateOperationDto> operations,
                          Double width,
                          Double height,
@@ -28,7 +30,7 @@ public class UpdateItemDto {
                          String note) {
 
         this.id = id;
-        this.materialId = materialId;
+        this.material = material;
         this.operations = operations;
         this.width = width;
         this.height = height;
@@ -46,12 +48,12 @@ public class UpdateItemDto {
         this.id = id;
     }
 
-    public Integer getMaterialId() {
-        return materialId;
+    public Material getMaterial() {
+        return material;
     }
 
-    public void setMaterialId(Integer materialId) {
-        this.materialId = materialId;
+    public void setMaterial(Material material) {
+        this.material = material;
     }
 
     public List<UpdateOperationDto> getOperations() {
@@ -114,7 +116,7 @@ public class UpdateItemDto {
     public String toString() {
         return "AddItemDto{" +
                 "id=" + id +
-                "materialId=" + materialId +
+                "material=" + material +
                 ", operations=" + operations +
                 ", width=" + width +
                 ", height=" + height +

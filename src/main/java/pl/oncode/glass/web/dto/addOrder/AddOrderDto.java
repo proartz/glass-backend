@@ -1,8 +1,5 @@
 package pl.oncode.glass.web.dto.addOrder;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.springframework.format.annotation.DateTimeFormat;
 import pl.oncode.glass.model.Item;
 import pl.oncode.glass.model.Operation;
 import pl.oncode.glass.model.Order;
@@ -165,7 +162,7 @@ public class AddOrderDto {
         for(AddItemDto addItemDto : addOrderDto.getItems()){
 
             Item item = new Item.ItemBuilder()
-                    .setMaterialId(addItemDto.getMaterialId())
+                    .setMaterial(addItemDto.getMaterial())
                     .setWidth(addItemDto.getWidth())
                     .setHeight(addItemDto.getHeight())
                     .setDepth(addItemDto.getDepth())

@@ -1,16 +1,14 @@
 package pl.oncode.glass.web.dto.fetchItemDto;
 
 import pl.oncode.glass.model.Item;
-import pl.oncode.glass.model.Operation;
+import pl.oncode.glass.model.Material;
 import pl.oncode.glass.model.Order;
-
-import java.util.Set;
 
 public class FetchItemDto {
 
     private Integer id;
     private Order order;
-    private Integer materialId;
+    private Material material;
     private Double width;
     private Double height;
     private Double depth;
@@ -21,10 +19,10 @@ public class FetchItemDto {
     public FetchItemDto() {
     }
 
-    public FetchItemDto(Integer id, Order order, Integer materialId, Double width, Double height, Double depth, Integer quantity, String status, String note) {
+    public FetchItemDto(Integer id, Order order, Material material, Double width, Double height, Double depth, Integer quantity, String status, String note) {
         this.id = id;
         this.order = order;
-        this.materialId = materialId;
+        this.material = material;
         this.width = width;
         this.height = height;
         this.depth = depth;
@@ -49,12 +47,12 @@ public class FetchItemDto {
         this.order = order;
     }
 
-    public Integer getMaterialId() {
-        return materialId;
+    public Material getMaterial() {
+        return material;
     }
 
-    public void setMaterialId(Integer materialId) {
-        this.materialId = materialId;
+    public void setMaterial(Material material) {
+        this.material = material;
     }
 
     public Double getWidth() {
@@ -108,7 +106,7 @@ public class FetchItemDto {
     public static class FetchItemDtoBuilder {
         private Integer id;
         private Order order;
-        private Integer materialId;
+        private Material material;
         private Double width;
         private Double height;
         private Double depth;
@@ -126,8 +124,8 @@ public class FetchItemDto {
             return this;
         }
 
-        public FetchItemDtoBuilder setMaterialId(Integer materialId) {
-            this.materialId = materialId;
+        public FetchItemDtoBuilder setMaterialId(Material material) {
+            this.material = material;
             return this;
         }
 
@@ -162,7 +160,7 @@ public class FetchItemDto {
         }
 
         public FetchItemDto createFetchItemDto() {
-            return new FetchItemDto(id, order, materialId, width, height, depth, quantity, status, note);
+            return new FetchItemDto(id, order, material, width, height, depth, quantity, status, note);
         }
     }
 
@@ -170,7 +168,7 @@ public class FetchItemDto {
         return new FetchItemDto.FetchItemDtoBuilder()
                 .setId(item.getId())
                 .setOrder(item.getOrder())
-                .setMaterialId(item.getMaterialId())
+                .setMaterialId(item.getMaterial())
                 .setWidth(item.getWidth())
                 .setHeight(item.getHeight())
                 .setDepth(item.getDepth())
