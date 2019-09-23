@@ -10,7 +10,7 @@ import pl.oncode.glass.model.Order;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
 import pl.oncode.glass.web.dto.changeStatus.ChangeStatusDto;
 import pl.oncode.glass.web.dto.deleteMaterial.DeleteMaterialDto;
-import pl.oncode.glass.web.dto.fetchItemDto.FetchItemDto;
+import pl.oncode.glass.web.dto.fetchItem.FetchItemDto;
 import pl.oncode.glass.web.dto.fetchOperation.FetchOperationDto;
 import pl.oncode.glass.web.dto.fetchOrder.FetchOrderDto;
 import pl.oncode.glass.web.dto.updateMaterial.UpdateMaterialDto;

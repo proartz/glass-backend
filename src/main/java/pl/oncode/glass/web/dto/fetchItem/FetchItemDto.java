@@ -1,14 +1,18 @@
-package pl.oncode.glass.web.dto.fetchItemDto;
+package pl.oncode.glass.web.dto.fetchItem;
 
 import pl.oncode.glass.model.Item;
 import pl.oncode.glass.model.Material;
+import pl.oncode.glass.model.Operation;
 import pl.oncode.glass.model.Order;
+
+import java.util.List;
 
 public class FetchItemDto {
 
     private Integer id;
     private Order order;
     private Material material;
+    private List<Operation> operations;
     private Double width;
     private Double height;
     private Double depth;
@@ -19,10 +23,11 @@ public class FetchItemDto {
     public FetchItemDto() {
     }
 
-    public FetchItemDto(Integer id, Order order, Material material, Double width, Double height, Double depth, Integer quantity, String status, String note) {
+    public FetchItemDto(Integer id, Order order, Material material, List<Operation> operations, Double width, Double height, Double depth, Integer quantity, String status, String note) {
         this.id = id;
         this.order = order;
         this.material = material;
+        this.operations = operations;
         this.width = width;
         this.height = height;
         this.depth = depth;
@@ -53,6 +58,14 @@ public class FetchItemDto {
 
     public void setMaterial(Material material) {
         this.material = material;
+    }
+
+    public List<Operation> getOperations() {
+        return operations;
+    }
+
+    public void setOperations(List<Operation> operations) {
+        this.operations = operations;
     }
 
     public Double getWidth() {
@@ -107,6 +120,7 @@ public class FetchItemDto {
         private Integer id;
         private Order order;
         private Material material;
+        private List<Operation> operations;
         private Double width;
         private Double height;
         private Double depth;
@@ -126,6 +140,11 @@ public class FetchItemDto {
 
         public FetchItemDtoBuilder setMaterialId(Material material) {
             this.material = material;
+            return this;
+        }
+
+        public FetchItemDtoBuilder setOperations(List<Operation> operations) {
+            this.operations = operations;
             return this;
         }
 
@@ -160,7 +179,7 @@ public class FetchItemDto {
         }
 
         public FetchItemDto createFetchItemDto() {
-            return new FetchItemDto(id, order, material, width, height, depth, quantity, status, note);
+            return new FetchItemDto(id, order, material, operations, width, height, depth, quantity, status, note);
         }
     }
 
@@ -169,6 +188,7 @@ public class FetchItemDto {
                 .setId(item.getId())
                 .setOrder(item.getOrder())
                 .setMaterialId(item.getMaterial())
+                .setOperations(item.getOperations())
                 .setWidth(item.getWidth())
                 .setHeight(item.getHeight())
                 .setDepth(item.getDepth())
