@@ -7,6 +7,7 @@ import pl.oncode.glass.model.Item;
 import pl.oncode.glass.model.Material;
 import pl.oncode.glass.model.Operation;
 import pl.oncode.glass.model.Order;
+import pl.oncode.glass.web.dto.addMaterial.AddMaterialDto;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
 import pl.oncode.glass.web.dto.changeStatus.ChangeStatusDto;
 import pl.oncode.glass.web.dto.deleteMaterial.DeleteMaterialDto;
@@ -154,5 +155,9 @@ public class MainControllerService {
 
     public void deleteMaterial(DeleteMaterialDto deleteMaterialDto) {
         databaseService.deleteMaterial(deleteMaterialDto.createMaterial());
+    }
+
+    public void addMaterial(AddMaterialDto addMaterialDto) {
+        databaseService.saveMaterial(addMaterialDto.createMaterial());
     }
 }

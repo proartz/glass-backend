@@ -18,8 +18,8 @@ public class StatusService {
     StageOneOperations stageOneOperations;
     StageTwoOperations stageTwoOperations;
 
-    public enum OperationStatus {DISABLED, READY_FOR_REALISATION, IN_REALISATION, DONE};
-    public enum OrderStatus {RECEIVED, IN_REALISATION, READY, DELIVERED, PAID};
+    public enum OperationStatus {ZABLOKOWANE, GOTOWE_DO_REALIZACJI , W_REALIZACJI, ZROBIONE};
+    public enum OrderStatus {PRZYJĘTO, W_REALIZACJI, GOTOWE, WYDANE, ROZLICZONE};
 
     public StatusService(StageOneOperations stageOneOperations, StageTwoOperations stageTwoOperations) {
         this.stageOneOperations = stageOneOperations;
@@ -32,14 +32,14 @@ public class StatusService {
 
         operation.setStatus(newStatus.name());
 
-        if(newStatus == OperationStatus.IN_REALISATION) {
-            item.setStatus(OperationStatus.IN_REALISATION.name());
-            order.setStatus(OrderStatus.IN_REALISATION.name());
+        if(newStatus == OperationStatus.W_REALIZACJI) {
+            item.setStatus(OperationStatus.W_REALIZACJI.name());
+            order.setStatus(OrderStatus.W_REALIZACJI.name());
             disableOtherOperationsInStage(item, operation);
-        } else if (newStatus == OperationStatus.DONE) {
+        } else if (newStatus == OperationStatus.ZROBIONE) {
             if(countNotDoneOperations(item) == 0) {
-                item.setStatus(OperationStatus.DONE.name());
-                order.setStatus(OrderStatus.READY.name());
+                item.setStatus(OperationStatus.ZROBIONE.name());
+                order.setStatus(OrderStatus.GOTOWE.name());
 
                 return order;
             }
@@ -62,14 +62,14 @@ public class StatusService {
     private void disableOtherOperationsInStage(Item item, Operation operation) {
         if(stageOneOperations.getOperations().contains(operation.getName())) {
             for(Operation otherOperation : item.getOperations()) {
-                if(stageOneOperations.getOperations().contains(otherOperation.getName()) && otherOperation != operation && !otherOperation.getStatus().equals(OperationStatus.DONE.name())) {
-                    otherOperation.setStatus(OperationStatus.DISABLED.name());
+                if(stageOneOperations.getOperations().contains(otherOperation.getName()) && otherOperation != operation && !otherOperation.getStatus().equals(OperationStatus.ZROBIONE.name())) {
+                    otherOperation.setStatus(OperationStatus.ZABLOKOWANE.name());
                 }
             }
         } else {
             for(Operation otherOperation : item.getOperations()) {
-                if(stageTwoOperations.getOperations().contains(otherOperation.getName()) && otherOperation != operation && !otherOperation.getStatus().equals(OperationStatus.DONE.name())) {
-                    otherOperation.setStatus(OperationStatus.DISABLED.name());
+                if(stageTwoOperations.getOperations().contains(otherOperation.getName()) && otherOperation != operation && !otherOperation.getStatus().equals(OperationStatus.ZROBIONE.name())) {
+                    otherOperation.setStatus(OperationStatus.ZABLOKOWANE.name());
                 }
             }
         }
@@ -78,7 +78,7 @@ public class StatusService {
     public int countNotDoneOperations(Item item) {
         int counter = 0;
         for(Operation operation : item.getOperations()) {
-            if(!operation.getStatus().equals(OperationStatus.DONE.name())) {
+            if(!operation.getStatus().equals(OperationStatus.ZROBIONE.name())) {
                 counter++;
             }
         }
@@ -88,7 +88,7 @@ public class StatusService {
     private int countStageOneOperations(Item item) {
         int counter = 0;
         for(Operation operation : item.getOperations()) {
-            if(stageOneOperations.getOperations().contains(operation.getName()) && !operation.getStatus().equals(OperationStatus.DONE.name())) {
+            if(stageOneOperations.getOperations().contains(operation.getName()) && !operation.getStatus().equals(OperationStatus.ZROBIONE.name())) {
                 counter++;
             }
         }
@@ -98,14 +98,14 @@ public class StatusService {
     private void enableOtherOperationsInStage(Item item, Operation operation) {
         if(stageOneOperations.getOperations().contains(operation.getName())) {
             for(Operation otherOperation : item.getOperations()) {
-                if(stageOneOperations.getOperations().contains(otherOperation.getName()) && otherOperation != operation && otherOperation.getStatus().equals(OperationStatus.DISABLED.name())) {
-                    otherOperation.setStatus(OperationStatus.READY_FOR_REALISATION.name());
+                if(stageOneOperations.getOperations().contains(otherOperation.getName()) && otherOperation != operation && otherOperation.getStatus().equals(OperationStatus.ZABLOKOWANE.name())) {
+                    otherOperation.setStatus(OperationStatus.GOTOWE_DO_REALIZACJI.name());
                 }
             }
         } else {
             for(Operation otherOperation : item.getOperations()) {
-                if(stageTwoOperations.getOperations().contains(otherOperation.getName()) && otherOperation != operation && otherOperation.getStatus().equals(OperationStatus.DISABLED.name())) {
-                    otherOperation.setStatus(OperationStatus.READY_FOR_REALISATION.name());
+                if(stageTwoOperations.getOperations().contains(otherOperation.getName()) && otherOperation != operation && otherOperation.getStatus().equals(OperationStatus.ZABLOKOWANE.name())) {
+                    otherOperation.setStatus(OperationStatus.GOTOWE_DO_REALIZACJI.name());
                 }
             }
         }
@@ -114,12 +114,12 @@ public class StatusService {
     private void enableStageTwoOperations(Item item) {
         for(Operation otherOperation : item.getOperations()) {
             if(stageTwoOperations.getOperations().contains(otherOperation.getName()))
-                otherOperation.setStatus(OperationStatus.READY_FOR_REALISATION.name());
+                otherOperation.setStatus(OperationStatus.GOTOWE_DO_REALIZACJI.name());
         }
     }
 
     public void prepareStatuses(Order order) {
-        order.setStatus(OrderStatus.RECEIVED.name());
+        order.setStatus(OrderStatus.PRZYJĘTO.name());
         for(Item item : order.getItems()) {
             prepareItemStatuses(item);
         }
@@ -127,12 +127,12 @@ public class StatusService {
 
     public void prepareItemStatuses(Item item) {
         Boolean stageOne = false;
-        item.setStatus(OperationStatus.READY_FOR_REALISATION.name());
+        item.setStatus(OperationStatus.GOTOWE_DO_REALIZACJI.name());
         for(Operation operation : item.getOperations()) {
             if(stageOneOperations.getOperations().contains(operation.getName())) {
                 stageOne = true;
             }
-            operation.setStatus(OperationStatus.READY_FOR_REALISATION.name());
+            operation.setStatus(OperationStatus.GOTOWE_DO_REALIZACJI.name());
         }
         if(stageOne) {
             disableStageTwoOperations(item);
@@ -148,6 +148,6 @@ public class StatusService {
     }
 
     public void disableOperation(Operation operation) {
-        operation.setStatus(OperationStatus.DISABLED.name());
+        operation.setStatus(OperationStatus.ZABLOKOWANE.name());
     }
 }

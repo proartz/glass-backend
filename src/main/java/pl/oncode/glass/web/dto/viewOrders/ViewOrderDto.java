@@ -1,15 +1,20 @@
 package pl.oncode.glass.web.dto.viewOrders;
 
+import pl.oncode.glass.model.Attachment;
+import pl.oncode.glass.model.Item;
 import pl.oncode.glass.model.Order;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 public class ViewOrderDto implements Serializable {
 
     private Integer id;
+    private List<Item> items;
+    private List<Attachment> attachments;
     private String externalOrderId;
     private String customer;
     private String invoiceNumber;
@@ -21,8 +26,10 @@ public class ViewOrderDto implements Serializable {
     public ViewOrderDto() {
     }
 
-    public ViewOrderDto(Integer id, String externalOrderId, String customer, String invoiceNumber, BigDecimal price, LocalDate dueDate, Date createDate, String status) {
+    public ViewOrderDto(Integer id, List<Item> items, List<Attachment> attachments, String externalOrderId, String customer, String invoiceNumber, BigDecimal price, LocalDate dueDate, Date createDate, String status) {
         this.id = id;
+        this.items = items;
+        this.attachments = attachments;
         this.externalOrderId = externalOrderId;
         this.customer = customer;
         this.invoiceNumber = invoiceNumber;
@@ -34,6 +41,22 @@ public class ViewOrderDto implements Serializable {
 
     public Integer getId() {
         return id;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    public List<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<Attachment> attachments) {
+        this.attachments = attachments;
     }
 
     public void setId(Integer id) {
@@ -98,6 +121,8 @@ public class ViewOrderDto implements Serializable {
 
     public static class ViewOrderDtoBuilder {
         private Integer id;
+        private List<Item> items;
+        private List<Attachment> attachments;
         private String externalOrderId;
         private String customer;
         private String invoiceNumber;
@@ -108,6 +133,16 @@ public class ViewOrderDto implements Serializable {
 
         public ViewOrderDtoBuilder setId(Integer id) {
             this.id = id;
+            return this;
+        }
+
+        private ViewOrderDtoBuilder setItems(List<Item> items) {
+            this.items = items;
+            return this;
+        }
+
+        private ViewOrderDtoBuilder setAttachments(List<Attachment> attachments) {
+            this.attachments = attachments;
             return this;
         }
 
@@ -147,7 +182,7 @@ public class ViewOrderDto implements Serializable {
         }
 
         public ViewOrderDto createViewOrderDto() {
-            return new ViewOrderDto(id, externalOrderId, customer, invoiceNumber, price, dueDate, createDate, status);
+            return new ViewOrderDto(id, items, attachments, externalOrderId, customer, invoiceNumber, price, dueDate, createDate, status);
         }
     }
 
@@ -155,6 +190,8 @@ public class ViewOrderDto implements Serializable {
 
         return new ViewOrderDto.ViewOrderDtoBuilder()
                 .setId(order.getId())
+                .setItems(order.getItems())
+                .setAttachments(order.getAttachments())
                 .setExternalOrderId(order.getExternalOrderId())
                 .setCustomer(order.getCustomer())
                 .setInvoiceNumber(order.getInvoiceNumber())

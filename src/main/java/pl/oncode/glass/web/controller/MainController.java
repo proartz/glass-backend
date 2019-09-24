@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import pl.oncode.glass.service.*;
+import pl.oncode.glass.web.dto.addMaterial.AddMaterialDto;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
 import pl.oncode.glass.web.dto.changeStatus.ChangeStatusDto;
 import pl.oncode.glass.web.dto.deleteMaterial.DeleteMaterialDto;
@@ -62,6 +63,13 @@ public class MainController {
     List<ViewMaterialDto> materials() {
         logger.info("/materials: Received request");
         return mainControllerService.viewMaterials();
+    }
+
+    @CrossOrigin
+    @PostMapping("/material")
+    void material(@Valid @RequestBody AddMaterialDto addMaterialDto) {
+        logger.info("/material: " + addMaterialDto);
+        mainControllerService.addMaterial(addMaterialDto);
     }
 
     @CrossOrigin

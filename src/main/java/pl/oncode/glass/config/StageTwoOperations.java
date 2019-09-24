@@ -9,9 +9,10 @@ public class StageTwoOperations implements StageOperations {
 
     public StageTwoOperations() {
         operations = new HashSet<>();
-        operations.add("Hardening");
-        operations.add("Enamelling");
-        operations.add("Lamination");
+        operations.add("Hartowanie");
+        operations.add("Emaliowanie");
+        operations.add("Laminowanie");
+        operations.add("Wydanie");
     }
 
     @Override

@@ -150,7 +150,7 @@ public class AddOrderDto {
 
     public static Order createOrder(AddOrderDto addOrderDto) {
 
-        pl.oncode.glass.model.Order order = new Order.OrderBuilder()
+        Order order = new Order.OrderBuilder()
                 .setExternalOrderId(addOrderDto.getExternalOrderId())
                 .setCustomer(addOrderDto.getCustomer())
                 .setInvoiceNumber(addOrderDto.getInvoiceNumber())

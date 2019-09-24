@@ -9,9 +9,9 @@ public class StageOneOperations implements StageOperations {
 
     public StageOneOperations() {
         operations = new HashSet<>();
-        operations.add("Cutting");
-        operations.add("Sanding");
-        operations.add("Drilling");
+        operations.add("Cięcie");
+        operations.add("Szlifowanie");
+        operations.add("Wiercenie");
         operations.add("CNC");
     }
 
