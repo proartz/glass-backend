@@ -84,6 +84,10 @@ public class DatabaseService {
         return order.getItems();
     }
 
+    public void deleteItem(Item item) {
+        itemDao.delete(item);
+    }
+
     // operationDao methods
 
     public Operation getOperation(Integer id) { return operationDao.get(id);}

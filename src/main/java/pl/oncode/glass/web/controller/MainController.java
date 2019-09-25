@@ -7,6 +7,7 @@ import pl.oncode.glass.service.*;
 import pl.oncode.glass.web.dto.addMaterial.AddMaterialDto;
 import pl.oncode.glass.web.dto.addOrder.AddOrderDto;
 import pl.oncode.glass.web.dto.changeStatus.ChangeStatusDto;
+import pl.oncode.glass.web.dto.deleteItem.DeleteItemDto;
 import pl.oncode.glass.web.dto.deleteMaterial.DeleteMaterialDto;
 import pl.oncode.glass.web.dto.fetchItem.FetchItemDto;
 import pl.oncode.glass.web.dto.fetchOperation.FetchOperationDto;
@@ -19,6 +20,7 @@ import pl.oncode.glass.web.dto.viewOrders.ViewOrderDto;
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin(methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PUT} )
 @RestController
 public class MainController {
 
@@ -84,6 +86,13 @@ public class MainController {
     void deleteMaterial(@Valid @RequestBody DeleteMaterialDto deleteMaterialDto) {
         logger.info("/deleteMaterial: " + deleteMaterialDto);
         mainControllerService.deleteMaterial(deleteMaterialDto);
+    }
+
+    @CrossOrigin(origins = "*", methods = RequestMethod.DELETE)
+    @DeleteMapping("/item")
+    void deleteItem(@RequestBody DeleteItemDto deleteItemDto) {
+        logger.info("/item/: Received delete request");
+        mainControllerService.deleteItem(deleteItemDto);
     }
 
     @CrossOrigin
