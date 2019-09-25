@@ -19,13 +19,24 @@ public class FetchOrderDto {
     private String invoiceNumber;
     private BigDecimal price;
     private LocalDate dueDate;
+    private String description;
     private Date createDate;
     private String status;
 
     public FetchOrderDto() {
     }
 
-    public FetchOrderDto(Integer id, List<Item> items, List<Attachment> attachments, String externalOrderId, String customer, String invoiceNumber, BigDecimal price, LocalDate dueDate, Date createDate, String status) {
+    public FetchOrderDto(Integer id,
+                         List<Item> items,
+                         List<Attachment> attachments,
+                         String externalOrderId,
+                         String customer,
+                         String invoiceNumber,
+                         BigDecimal price,
+                         LocalDate dueDate,
+                         String description,
+                         Date createDate,
+                         String status) {
         this.id = id;
         this.items = items;
         this.attachments = attachments;
@@ -34,6 +45,7 @@ public class FetchOrderDto {
         this.invoiceNumber = invoiceNumber;
         this.price = price;
         this.dueDate = dueDate;
+        this.description = description;
         this.createDate = createDate;
         this.status = status;
     }
@@ -102,6 +114,14 @@ public class FetchOrderDto {
         this.dueDate = dueDate;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -127,6 +147,7 @@ public class FetchOrderDto {
         private String invoiceNumber;
         private BigDecimal price;
         private LocalDate dueDate;
+        private String description;
         private Date createDate;
         private String status;
 
@@ -170,6 +191,11 @@ public class FetchOrderDto {
             return this;
         }
 
+        public ViewOrderDtoBuilder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
         public ViewOrderDtoBuilder setCreateDate(Date createDate) {
             this.createDate = createDate;
             return this;
@@ -181,7 +207,7 @@ public class FetchOrderDto {
         }
 
         public FetchOrderDto createViewOrderDto() {
-            return new FetchOrderDto(id, items, attachments, externalOrderId, customer, invoiceNumber, price, dueDate, createDate, status);
+            return new FetchOrderDto(id, items, attachments, externalOrderId, customer, invoiceNumber, price, dueDate, description, createDate, status);
         }
     }
 
@@ -195,6 +221,7 @@ public class FetchOrderDto {
                 .setInvoiceNumber(order.getInvoiceNumber())
                 .setPrice(order.getPrice())
                 .setDueDate(order.getDueDate())
+                .setDescription(order.getDescription())
                 .setCreateDate(order.getCreateDate())
                 .setStatus(order.getStatus())
                 .createViewOrderDto();

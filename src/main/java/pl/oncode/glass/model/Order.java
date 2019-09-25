@@ -40,6 +40,9 @@ public class Order implements Serializable {
     @FutureOrPresent(message = "DueDate cannot be in the past")
     private LocalDate dueDate;
 
+    @Size(max = 100, message = "Description can have maximum 100 characters")
+    private String description;
+
     private Date createDate;
 
     @NotEmpty(message = "Status cannot be empty")
@@ -56,6 +59,7 @@ public class Order implements Serializable {
                  String invoiceNumber,
                  BigDecimal price,
                  LocalDate dueDate,
+                 String description,
                  Date createDate,
                  String status) {
         this.id = id;
@@ -66,6 +70,7 @@ public class Order implements Serializable {
         this.invoiceNumber = invoiceNumber;
         this.price = price;
         this.dueDate = dueDate;
+        this.description = description;
         this.createDate = createDate;
         this.status = status;
     }
@@ -134,6 +139,14 @@ public class Order implements Serializable {
         this.dueDate = dueDate;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -161,6 +174,7 @@ public class Order implements Serializable {
                 ", invoiceNumber='" + invoiceNumber + '\'' +
                 ", price=" + price +
                 ", dueDate=" + dueDate +
+                ", description=" + description +
                 ", createDate=" + createDate +
                 ", status='" + status + '\'' +
                 '}';
@@ -175,6 +189,7 @@ public class Order implements Serializable {
         private String invoiceNumber;
         private BigDecimal price;
         private LocalDate dueDate;
+        private String description;
         private Date createDate;
         private String status;
 
@@ -233,6 +248,11 @@ public class Order implements Serializable {
             return this;
         }
 
+        public OrderBuilder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
         public OrderBuilder setCreateDate(Date createDate) {
             this.createDate = createDate;
             return this;
@@ -244,7 +264,7 @@ public class Order implements Serializable {
         }
 
         public Order createOrder() {
-            return new Order(id, items, attachments, externalOrderId, customer, invoiceNumber, price, dueDate, createDate, status);
+            return new Order(id, items, attachments, externalOrderId, customer, invoiceNumber, price, dueDate, description, createDate, status);
         }
     }
 

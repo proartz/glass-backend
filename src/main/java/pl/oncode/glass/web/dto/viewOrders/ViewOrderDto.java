@@ -20,13 +20,24 @@ public class ViewOrderDto implements Serializable {
     private String invoiceNumber;
     private BigDecimal price;
     private LocalDate dueDate;
+    private String description;
     private Date createDate;
     private String status;
 
     public ViewOrderDto() {
     }
 
-    public ViewOrderDto(Integer id, List<Item> items, List<Attachment> attachments, String externalOrderId, String customer, String invoiceNumber, BigDecimal price, LocalDate dueDate, Date createDate, String status) {
+    public ViewOrderDto(Integer id,
+                        List<Item> items,
+                        List<Attachment> attachments,
+                        String externalOrderId,
+                        String customer,
+                        String invoiceNumber,
+                        BigDecimal price,
+                        LocalDate dueDate,
+                        String description,
+                        Date createDate,
+                        String status) {
         this.id = id;
         this.items = items;
         this.attachments = attachments;
@@ -35,6 +46,7 @@ public class ViewOrderDto implements Serializable {
         this.invoiceNumber = invoiceNumber;
         this.price = price;
         this.dueDate = dueDate;
+        this.description = description;
         this.createDate = createDate;
         this.status = status;
     }
@@ -103,6 +115,14 @@ public class ViewOrderDto implements Serializable {
         this.dueDate = dueDate;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -128,6 +148,7 @@ public class ViewOrderDto implements Serializable {
         private String invoiceNumber;
         private BigDecimal price;
         private LocalDate dueDate;
+        private String description;
         private Date createDate;
         private String status;
 
@@ -171,6 +192,11 @@ public class ViewOrderDto implements Serializable {
             return this;
         }
 
+        public ViewOrderDtoBuilder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
         public ViewOrderDtoBuilder setCreateDate(Date createDate) {
             this.createDate = createDate;
             return this;
@@ -182,7 +208,7 @@ public class ViewOrderDto implements Serializable {
         }
 
         public ViewOrderDto createViewOrderDto() {
-            return new ViewOrderDto(id, items, attachments, externalOrderId, customer, invoiceNumber, price, dueDate, createDate, status);
+            return new ViewOrderDto(id, items, attachments, externalOrderId, customer, invoiceNumber, price, dueDate, description, createDate, status);
         }
     }
 
@@ -197,6 +223,7 @@ public class ViewOrderDto implements Serializable {
                 .setInvoiceNumber(order.getInvoiceNumber())
                 .setPrice(order.getPrice())
                 .setDueDate(order.getDueDate())
+                .setDescription(order.getDescription())
                 .setCreateDate(order.getCreateDate())
                 .setStatus(order.getStatus())
                 .createViewOrderDto();

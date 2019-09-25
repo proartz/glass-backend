@@ -34,6 +34,9 @@ public class UpdateOrderDto {
     @FutureOrPresent(message = "DueDate cannot be in the past")
     private LocalDate dueDate;
 
+    @Size(max = 100, message = "Description can have maximum 100 characters")
+    private String description;
+
     private Date createDate;
 
     private String status;
@@ -49,6 +52,7 @@ public class UpdateOrderDto {
                           String invoiceNumber,
                           BigDecimal price,
                           LocalDate dueDate,
+                          String description,
                           Date createDate,
                           String status) {
 
@@ -60,6 +64,7 @@ public class UpdateOrderDto {
         this.invoiceNumber = invoiceNumber;
         this.price = price;
         this.dueDate = dueDate;
+        this.description = description;
         this.createDate = createDate;
         this.status = status;
     }
@@ -128,6 +133,14 @@ public class UpdateOrderDto {
         this.dueDate = dueDate;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -155,6 +168,7 @@ public class UpdateOrderDto {
                 ", invoiceNumber='" + invoiceNumber + '\'' +
                 ", price=" + price +
                 ", dueDate=" + dueDate +
+                ", description=" + description +
                 ", createDate=" + createDate +
                 ", status='" + status + '\'' +
                 '}';
@@ -168,6 +182,7 @@ public class UpdateOrderDto {
                 .setInvoiceNumber(updateOrderDto.getInvoiceNumber())
                 .setPrice(updateOrderDto.getPrice())
                 .setDueDate(updateOrderDto.getDueDate())
+                .setDescription(updateOrderDto.getDescription())
                 .setStatus(updateOrderDto.getStatus())
                 .createOrder();
 
