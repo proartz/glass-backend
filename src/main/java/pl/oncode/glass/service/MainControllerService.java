@@ -76,11 +76,19 @@ public class MainControllerService {
         return fetchItemDtos;
     }
 
+//    public FetchOrderDto changeOrderStatuses(ChangeStatusDto changeStatusDto) {
+//        Operation operation = databaseService.getOperation(changeStatusDto.getOperationId());
+//        OperationStatus newStatus = OperationStatus.valueOf(changeStatusDto.getNewStatus());
+//
+//        Order order = statusService.changeOrderStatuses(operation, newStatus);
+//        databaseService.updateOrder(order);
+//
+//        return FetchOrderDto.createFetchOrderDto(order);
+//    }
+
     public FetchOrderDto changeOrderStatuses(ChangeStatusDto changeStatusDto) {
         Operation operation = databaseService.getOperation(changeStatusDto.getOperationId());
-        OperationStatus newStatus = OperationStatus.valueOf(changeStatusDto.getNewStatus());
-
-        Order order = statusService.changeOrderStatuses(operation, newStatus);
+        Order order = statusService.changeOrderStatuses(operation, OperationStatus.valueOf(changeStatusDto.getNewStatus()));
         databaseService.updateOrder(order);
 
         return FetchOrderDto.createFetchOrderDto(order);

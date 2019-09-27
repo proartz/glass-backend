@@ -1,8 +1,8 @@
 package pl.oncode.glass.config;
 
-import java.util.Set;
+import java.util.List;
 
 public interface StageOperations {
 
-    Set<String> getOperations();
+    List<String> getOperations();
 }

@@ -9,13 +9,7 @@ import java.util.Set;
 @Configuration
 public class main {
 
-    @Bean
-    public StageOneOperations stageOneOperations() {
-        return new StageOneOperations();
-    }
-
-    @Bean
-    public StageTwoOperations getStageTwoOperations() {
-        return new StageTwoOperations();
+    @Bean StageOperations allOperations() {
+        return new AllOperations();
     }
 }
