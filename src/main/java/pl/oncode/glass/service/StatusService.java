@@ -17,17 +17,9 @@ public class StatusService {
 
     StageOperations allOperations;
 
-    public enum OperationStatus {ZAPLANOWANE, GOTOWE_DO_REALIZACJI, W_REALIZACJI, ZROBIONE}
-
-    ;
-
-    public enum OrderStatus {PRZYJĘTO, W_REALIZACJI, WYDANE, ROZLICZONE}
-
-    ;
-
-    public enum Operations {CIĘCIE, SZLIFOWANIE, WIERCENIE, CNC, HARTOWANIE, EMALIOWANIE, LAMINOWANIE, WYDANIE}
-
-    ;
+    public enum OperationStatus {ZAPLANOWANE, GOTOWE_DO_REALIZACJI, W_REALIZACJI, ZROBIONE};
+    public enum OrderStatus {PRZYJĘTO, W_REALIZACJI, WYDANE, ROZLICZONE};
+    public enum Operations {CIĘCIE, SZLIFOWANIE, WIERCENIE, CNC, HARTOWANIE, EMALIOWANIE, LAMINOWANIE, WYDANIE};
 
     public StatusService(StageOperations allOperations) {
         this.allOperations = allOperations;
@@ -61,11 +53,27 @@ public class StatusService {
 
     public void prepareStatuses(Order order) {
         order.setStatus(OrderStatus.PRZYJĘTO.name());
-        for (Item item : order.getItems()) {
-            prepareItemStatuses(item);
+        prepareItemsStatuses(order);
+    }
+
+    public void prepareItemsStatuses(Order order) {
+        for(Item item : order.getItems()) {
+            if(item.isItemNew()) {
+                prepareItemStatuses(item);
+            }
         }
     }
 
+    public Order updateOrderStatus(Order newOrder) {
+        if(newOrder.isContainingNewItems()) {
+            prepareItemsStatuses(newOrder);
+
+            if(newOrder.getStatus().equalsIgnoreCase(OrderStatus.WYDANE.name())) {
+                newOrder.setStatus(OrderStatus.W_REALIZACJI.name());
+            }
+        }
+        return newOrder;
+    }
     public void prepareItemStatuses(Item item) {
         // enable first operation
         item.getOperations().get(0).setStatus(OperationStatus.GOTOWE_DO_REALIZACJI.name());

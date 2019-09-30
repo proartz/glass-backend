@@ -180,6 +180,15 @@ public class Order implements Serializable {
                 '}';
     }
 
+    public boolean isContainingNewItems() {
+        for(Item item : this.items) {
+            if(item.isItemNew()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static class OrderBuilder {
         private Integer id;
         private List<Item> items;

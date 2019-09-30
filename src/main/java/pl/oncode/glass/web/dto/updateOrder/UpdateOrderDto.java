@@ -8,13 +8,14 @@ import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 public class UpdateOrderDto {
 
     private Integer id;
-    private Set<UpdateItemDto> items;
-    private Set<UpdateAttachmentDto> attachments;
+    private List<UpdateItemDto> items;
+    private List<UpdateAttachmentDto> attachments;
 
     @Size(max = 30, message = "ExternalOrderId can have maximum 30 characters")
     private String externalOrderId;
@@ -45,8 +46,8 @@ public class UpdateOrderDto {
     }
 
     public UpdateOrderDto(Integer id,
-                          Set<UpdateItemDto> items,
-                          Set<UpdateAttachmentDto> attachments,
+                          List<UpdateItemDto> items,
+                          List<UpdateAttachmentDto> attachments,
                           String externalOrderId,
                           String customer,
                           String invoiceNumber,
@@ -77,19 +78,19 @@ public class UpdateOrderDto {
         this.id = id;
     }
 
-    public Set<UpdateItemDto> getItems() {
+    public List<UpdateItemDto> getItems() {
         return items;
     }
 
-    public void setItems(Set<UpdateItemDto> items) {
+    public void setItems(List<UpdateItemDto> items) {
         this.items = items;
     }
 
-    public Set<UpdateAttachmentDto> getAttachments() {
+    public List<UpdateAttachmentDto> getAttachments() {
         return attachments;
     }
 
-    public void setAttachments(Set<UpdateAttachmentDto> attachments) {
+    public void setAttachments(List<UpdateAttachmentDto> attachments) {
         this.attachments = attachments;
     }
 

@@ -122,40 +122,11 @@ public class MainControllerService {
 
     public FetchOrderDto updateOrder(UpdateOrderDto updateOrderDto) {
         Order newOrder = UpdateOrderDto.createOrder(updateOrderDto);
-        statusService.prepareStatuses(newOrder);
-        Order oldOrder = databaseService.getOrder(newOrder.getId());
-        Order order = updateOrder(newOrder, oldOrder);
+        Order order = statusService.updateOrderStatus(newOrder);
         databaseService.updateOrder(order);
+        order = databaseService.getOrder(order.getId());
 
         return FetchOrderDto.createFetchOrderDto(order);
-    }
-
-    public Order updateOrder(Order newOrder, Order oldOrder) {
-        updateItems(oldOrder.getItems(), newOrder.getItems());
-
-        oldOrder.setAttachments(newOrder.getAttachments());
-        oldOrder.setExternalOrderId(newOrder.getExternalOrderId());
-        oldOrder.setCustomer(newOrder.getCustomer());
-        oldOrder.setInvoiceNumber(newOrder.getInvoiceNumber());
-        oldOrder.setPrice(newOrder.getPrice());
-        oldOrder.setDueDate(newOrder.getDueDate());
-        oldOrder.setCreateDate(newOrder.getCreateDate());
-
-        oldOrder.registerRelations();
-
-        return oldOrder;
-    }
-
-    private void updateItems(List<Item> oldItems, List<Item> newItems) {
-        addNewItems(oldItems, newItems);
-    }
-
-    private void addNewItems(List<Item> oldItems, List<Item> newItems) {
-        newItems.forEach(item -> {
-            if(item.isItemNew()) {
-                oldItems.add(item);
-            }
-        });
     }
 
     public void updateMaterial(UpdateMaterialDto updateMaterialDto) {
