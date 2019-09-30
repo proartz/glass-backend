@@ -17,9 +17,17 @@ public class StatusService {
 
     StageOperations allOperations;
 
-    public enum OperationStatus {ZAPLANOWANE, GOTOWE_DO_REALIZACJI , W_REALIZACJI, ZROBIONE};
-    public enum OrderStatus {PRZYJĘTO, W_REALIZACJI, WYDANE, ROZLICZONE};
-    public enum Operations {CIĘCIE, SZLIFOWANIE, WIERCENIE, CNC, HARTOWANIE, EMALIOWANIE, LAMINOWANIE, WYDANIE};
+    public enum OperationStatus {ZAPLANOWANE, GOTOWE_DO_REALIZACJI, W_REALIZACJI, ZROBIONE}
+
+    ;
+
+    public enum OrderStatus {PRZYJĘTO, W_REALIZACJI, WYDANE, ROZLICZONE}
+
+    ;
+
+    public enum Operations {CIĘCIE, SZLIFOWANIE, WIERCENIE, CNC, HARTOWANIE, EMALIOWANIE, LAMINOWANIE, WYDANIE}
+
+    ;
 
     public StatusService(StageOperations allOperations) {
         this.allOperations = allOperations;
@@ -32,111 +40,28 @@ public class StatusService {
 
         operation.setStatus(newStatus.name());
 
-        if(newStatus == OperationStatus.ZROBIONE) {
-            if(!operation.getName().equalsIgnoreCase(Operations.WYDANIE.name())) {
+        if (newStatus == OperationStatus.ZROBIONE) {
+
+            if (!operation.getName().equalsIgnoreCase(Operations.WYDANIE.name())) {
                 // enable next operation in the item
                 int indexOfNextOperation = operations.indexOf(operation) + 1;
                 operations.get(indexOfNextOperation).setStatus(OperationStatus.GOTOWE_DO_REALIZACJI.name());
+
+                // change order status to W_REALIZACJI
+                order.setStatus(OrderStatus.W_REALIZACJI.name());
+            } else {
+                // it's WYDANIE
+                if (isItLastOperationToDeliver(order)) {
+                    order.setStatus(OrderStatus.WYDANE.name());
+                }
             }
         }
         return order;
     }
-//
-//        public Order changeOrderStatuses(Operation operation, OperationStatus newStatus) {
-//        Item item = operation.getItem();
-//        Order order = item.getOrder();
-//
-//        operation.setStatus(newStatus.name());
-//
-//        if(newStatus == OperationStatus.W_REALIZACJI) {
-//            item.setStatus(OperationStatus.W_REALIZACJI.name());
-//            order.setStatus(OrderStatus.W_REALIZACJI.name());
-//            disableOtherOperationsInStage(item, operation);
-//        } else if (newStatus == OperationStatus.ZROBIONE) {
-//            if(countNotDoneOperations(item) == 0) {
-//                item.setStatus(OperationStatus.ZROBIONE.name());
-//                order.setStatus(OrderStatus.GOTOWE.name());
-//
-//                return order;
-//            }
-//            if(stageOneOperations.getOperations().contains(operation.getName())) {
-//                int stageOneCounter = countStageOneOperations(item);
-//                if(stageOneCounter > 0) {
-//                    enableOtherOperationsInStage(item, operation);
-//                } else {
-//                    enableStageTwoOperations(item);
-//                }
-//            } else {
-//                enableOtherOperationsInStage(item, operation);
-//            }
-//
-//        }
-//
-//        return order;
-//    }
-
-//    private void disableOtherOperationsInStage(Item item, Operation operation) {
-//        if(stageOneOperations.getOperations().contains(operation.getName())) {
-//            for(Operation otherOperation : item.getOperations()) {
-//                if(stageOneOperations.getOperations().contains(otherOperation.getName()) && otherOperation != operation && !otherOperation.getStatus().equals(OperationStatus.ZROBIONE.name())) {
-//                    otherOperation.setStatus(OperationStatus.ZABLOKOWANE.name());
-//                }
-//            }
-//        } else {
-//            for(Operation otherOperation : item.getOperations()) {
-//                if(stageTwoOperations.getOperations().contains(otherOperation.getName()) && otherOperation != operation && !otherOperation.getStatus().equals(OperationStatus.ZROBIONE.name())) {
-//                    otherOperation.setStatus(OperationStatus.ZABLOKOWANE.name());
-//                }
-//            }
-//        }
-//    }
-//
-//    public int countNotDoneOperations(Item item) {
-//        int counter = 0;
-//        for(Operation operation : item.getOperations()) {
-//            if(!operation.getStatus().equals(OperationStatus.ZROBIONE.name())) {
-//                counter++;
-//            }
-//        }
-//        return counter;
-//    }
-//
-//    private int countStageOneOperations(Item item) {
-//        int counter = 0;
-//        for(Operation operation : item.getOperations()) {
-//            if(stageOneOperations.getOperations().contains(operation.getName()) && !operation.getStatus().equals(OperationStatus.ZROBIONE.name())) {
-//                counter++;
-//            }
-//        }
-//        return counter;
-//    }
-//
-//    private void enableOtherOperationsInStage(Item item, Operation operation) {
-//        if(stageOneOperations.getOperations().contains(operation.getName())) {
-//            for(Operation otherOperation : item.getOperations()) {
-//                if(stageOneOperations.getOperations().contains(otherOperation.getName()) && otherOperation != operation && otherOperation.getStatus().equals(OperationStatus.ZABLOKOWANE.name())) {
-//                    otherOperation.setStatus(OperationStatus.GOTOWE_DO_REALIZACJI.name());
-//                }
-//            }
-//        } else {
-//            for(Operation otherOperation : item.getOperations()) {
-//                if(stageTwoOperations.getOperations().contains(otherOperation.getName()) && otherOperation != operation && otherOperation.getStatus().equals(OperationStatus.ZABLOKOWANE.name())) {
-//                    otherOperation.setStatus(OperationStatus.GOTOWE_DO_REALIZACJI.name());
-//                }
-//            }
-//        }
-//    }
-//
-//    private void enableStageTwoOperations(Item item) {
-//        for(Operation otherOperation : item.getOperations()) {
-//            if(stageTwoOperations.getOperations().contains(otherOperation.getName()))
-//                otherOperation.setStatus(OperationStatus.GOTOWE_DO_REALIZACJI.name());
-//        }
-//    }
 
     public void prepareStatuses(Order order) {
         order.setStatus(OrderStatus.PRZYJĘTO.name());
-        for(Item item : order.getItems()) {
+        for (Item item : order.getItems()) {
             prepareItemStatuses(item);
         }
     }
@@ -145,29 +70,18 @@ public class StatusService {
         // enable first operation
         item.getOperations().get(0).setStatus(OperationStatus.GOTOWE_DO_REALIZACJI.name());
     }
-//        public void prepareItemStatuses(Item item) {
-//        Boolean stageOne = false;
-//        item.setStatus(OperationStatus.GOTOWE_DO_REALIZACJI.name());
-//        for(Operation operation : item.getOperations()) {
-//            if(stageOneOperations.getOperations().contains(operation.getName())) {
-//                stageOne = true;
-//            }
-//            operation.setStatus(OperationStatus.GOTOWE_DO_REALIZACJI.name());
-//        }
-//        if(stageOne) {
-//            disableStageTwoOperations(item);
-//        }
-//    }
-//
-//    public void disableStageTwoOperations(Item item) {
-//        for(Operation operation : item.getOperations()) {
-//            if(stageTwoOperations.getOperations().contains(operation.getName())) {
-//                disableOperation(operation);
-//            }
-//        }
-//    }
-//
-//    public void disableOperation(Operation operation) {
-//        operation.setStatus(OperationStatus.ZABLOKOWANE.name());
-//    }
+
+    private boolean isItLastOperationToDeliver(Order order) {
+        // there should be all items with operation WYDANE and status ZROBIONE
+        for(Item item : order.getItems()) {
+            for(Operation operation : item.getOperations()) {
+                if(operation.getName().equalsIgnoreCase(Operations.WYDANIE.name()) &&
+                    !operation.getStatus().equalsIgnoreCase(OperationStatus.ZROBIONE.name())) {
+                        return false;
+                }
+            }
+        }
+        return true;
+    }
+
 }
