@@ -91,7 +91,7 @@ public class MainController {
     @CrossOrigin(origins = "*", methods = RequestMethod.DELETE)
     @DeleteMapping("/item")
     void deleteItem(@RequestBody DeleteItemDto deleteItemDto) {
-        logger.info("/item/: Received delete request");
+        logger.info("/item/: Received delete request " + deleteItemDto);
         mainControllerService.deleteItem(deleteItemDto);
     }
 

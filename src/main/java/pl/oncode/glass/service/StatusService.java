@@ -32,6 +32,13 @@ public class StatusService {
 
         operation.setStatus(newStatus.name());
 
+        // check is this not a RESET operations request
+        if(operation.getName().equalsIgnoreCase(Operations.CIĘCIE.name()) &&
+            newStatus == OperationStatus.GOTOWE_DO_REALIZACJI) {
+            resetOperations(item);
+            updateOrderStatusAfterReset(order);
+        }
+
         if (newStatus == OperationStatus.ZROBIONE) {
 
             if (!operation.getName().equalsIgnoreCase(Operations.WYDANIE.name())) {
@@ -51,6 +58,29 @@ public class StatusService {
         return order;
     }
 
+    private void resetOperations(Item item) {
+        for(Operation operation : item.getOperations()) {
+            if(!operation.getName().equalsIgnoreCase(Operations.CIĘCIE.name())) {
+                operation.setStatus(OperationStatus.ZAPLANOWANE.name());
+            }
+        }
+    }
+
+    private void updateOrderStatusAfterReset(Order order) {
+        if(!order.getStatus().equalsIgnoreCase(OrderStatus.PRZYJĘTO.name())) {
+            // check if there are any items with the first operation with status different from GOTOWE_DO_REALIZACJI
+            // if yes leave the status W_RELIZACJI
+            // if no change status to PRZYJĘTO
+            order.setStatus(OrderStatus.PRZYJĘTO.name());
+
+            for(Item item : order.getItems()) {
+                if(!item.getOperations().get(0).getStatus().equalsIgnoreCase(OperationStatus.GOTOWE_DO_REALIZACJI.name())) {
+                    order.setStatus(OrderStatus.W_REALIZACJI.name());
+                }
+            }
+        }
+    }
+
     public void prepareStatuses(Order order) {
         order.setStatus(OrderStatus.PRZYJĘTO.name());
         prepareItemsStatuses(order);
@@ -64,6 +94,11 @@ public class StatusService {
         }
     }
 
+    public void prepareItemStatuses(Item item) {
+        // enable first operation
+        item.getOperations().get(0).setStatus(OperationStatus.GOTOWE_DO_REALIZACJI.name());
+    }
+
     public Order updateOrderStatus(Order newOrder) {
         if(newOrder.isContainingNewItems()) {
             prepareItemsStatuses(newOrder);
@@ -73,10 +108,6 @@ public class StatusService {
             }
         }
         return newOrder;
-    }
-    public void prepareItemStatuses(Item item) {
-        // enable first operation
-        item.getOperations().get(0).setStatus(OperationStatus.GOTOWE_DO_REALIZACJI.name());
     }
 
     private boolean isItLastOperationToDeliver(Order order) {
