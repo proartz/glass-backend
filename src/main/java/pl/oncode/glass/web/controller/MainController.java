@@ -48,9 +48,9 @@ public class MainController {
 
     @CrossOrigin
     @PostMapping("/order")
-    void addOrder(@Valid @RequestBody AddOrderDto addOrderDto) {
+    int addOrder(@Valid @RequestBody AddOrderDto addOrderDto) {
         logger.info("/order: " + addOrderDto);
-        mainControllerService.addOrder(addOrderDto);
+        return mainControllerService.addOrder(addOrderDto);
     }
 
     @CrossOrigin

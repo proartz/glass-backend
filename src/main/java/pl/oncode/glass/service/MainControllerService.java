@@ -52,10 +52,11 @@ public class MainControllerService {
         return FetchOrderDto.createFetchOrderDto(order);
     }
 
-    public void addOrder(AddOrderDto addOrderDto) {
+    public int addOrder(AddOrderDto addOrderDto) {
         Order order = AddOrderDto.createOrder(addOrderDto);
         statusService.prepareStatuses(order);
         databaseService.saveOrder(order);
+        return order.getId();
     }
 
     public List<ViewMaterialDto> viewMaterials() {
