@@ -9,6 +9,8 @@ import java.util.*;
 @Entity
 public class Item {
 
+    public enum itemStatus { NOWA, NORMALNA, USUNIĘTA };
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -154,7 +156,11 @@ public class Item {
     }
 
     public boolean isItemNew() {
-        return this.getId() == null;
+        return this.getStatus().equals(itemStatus.NOWA.name());
+    }
+
+    public boolean isItemToDelete() {
+        return this.getStatus().equals(itemStatus.USUNIĘTA.name());
     }
 
     public static class ItemBuilder {

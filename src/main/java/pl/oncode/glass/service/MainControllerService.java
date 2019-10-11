@@ -125,6 +125,7 @@ public class MainControllerService {
         Order newOrder = UpdateOrderDto.createOrder(updateOrderDto);
         Order order = statusService.updateOrderStatus(newOrder);
         databaseService.updateOrder(order);
+        deleteItems(order);
         order = databaseService.getOrder(order.getId());
 
         return FetchOrderDto.createFetchOrderDto(order);
@@ -142,8 +143,17 @@ public class MainControllerService {
         databaseService.saveMaterial(addMaterialDto.createMaterial());
     }
 
+    public void deleteItems(Order order) {
+        order.getItems().forEach((item -> {
+            if(item.isItemToDelete()) {
+                deleteItem(new DeleteItemDto(item.getId()));
+            }
+        }));
+    }
+
     public void deleteItem(DeleteItemDto deleteItemDto) {
         Item item = databaseService.getItem(deleteItemDto.getId());
+        logger.info("deleteItem: id=" + item.getId());
         databaseService.deleteItem(item);
     }
 }

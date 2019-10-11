@@ -95,6 +95,8 @@ public class StatusService {
     }
 
     public void prepareItemStatuses(Item item) {
+        // change item status, from NOWA to NORMALNA
+        item.setStatus(Item.itemStatus.NORMALNA.name());
         // enable first operation
         item.getOperations().get(0).setStatus(OperationStatus.GOTOWE_DO_REALIZACJI.name());
     }
