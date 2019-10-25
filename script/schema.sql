@@ -53,3 +53,14 @@ CREATE TABLE IF NOT EXISTS attachment (
     FOREIGN KEY (order_id)
     REFERENCES `order`(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS user (
+    id BIGINT AUTO_INCREMENT NOT NULL,
+    username VARCHAR(30) NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    active INT,
+    roles VARCHAR(100),
+    permissions VARCHAR(100),
+    PRIMARY KEY (id),
+    UNIQUE (id, username)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
