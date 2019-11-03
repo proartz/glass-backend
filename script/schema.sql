@@ -58,6 +58,8 @@ CREATE TABLE IF NOT EXISTS user (
     id BIGINT AUTO_INCREMENT NOT NULL,
     username VARCHAR(30) NOT NULL,
     password VARCHAR(100) NOT NULL,
+    firstname VARCHAR(30) NOT NULL,
+    lastname VARCHAR(30) NOT NULL,
     active INT,
     roles VARCHAR(100),
     permissions VARCHAR(100),

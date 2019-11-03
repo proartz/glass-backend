@@ -20,15 +20,23 @@ public class User {
     @NotEmpty(message = "Password can't be empty")
     private String password;
 
+    @NotEmpty(message = "First Name can't be empty")
+    private String firstname;
+
+    @NotEmpty(message = "Last Name can't be empty")
+    private String lastname;
+
     private int active;
 
     private String roles = "";
 
     private String permissions = "";
 
-    public User(String username, String password, String roles, String permissions) {
+    public User(String username, String password, String firstname, String lastname, String roles, String permissions) {
         this.username = username;
         this.password = password;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.roles = roles;
         this.permissions = permissions;
         this.active = 1;
@@ -46,6 +54,18 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public String getFullname() {
+        return this.firstname + " " + this.lastname;
     }
 
     public int getActive() {
