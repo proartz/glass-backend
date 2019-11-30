@@ -1,66 +1,45 @@
-package pl.oncode.glass.model;
+package pl.oncode.glass.web.dto.fetchUser;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import pl.oncode.glass.model.User;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Entity
-@Table( name = "user" )
-public class User {
+public class FetchUserDto {
 
-    @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
     private long id;
-
-    @NotEmpty(message = "Username can't be empty")
     private String username;
-
-    @NotEmpty(message = "Password can't be empty")
-    private String password;
-
-    @NotEmpty(message = "First Name can't be empty")
     private String firstname;
-
-    @NotEmpty(message = "Last Name can't be empty")
     private String lastname;
-
     private int active;
-
     private String roles = "";
-
     private String permissions = "";
 
-    public User(String username,
-                String password,
+    public FetchUserDto(long id,
+                String username,
                 String firstname,
                 String lastname,
+                int active,
                 String roles,
                 String permissions) {
+        this.id = id;
         this.username = username;
-        this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.active = active;
         this.roles = roles;
         this.permissions = permissions;
-        this.active = 1;
     }
 
-    protected User() {}
+    public FetchUserDto() {}
 
-    public long getId() {
-        return id;
-    }
+    public Long getId() {
+            return id;
+        }
 
     public String getUsername() {
         return username;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public String getFirstname() {
@@ -101,47 +80,64 @@ public class User {
         return new ArrayList<>();
     }
 
-    public static class UserBuilder {
+    public static FetchUserDto createFetchUserDto(User user) {
+        return new FetchUserDto.FetchUserDtoBuilder()
+                .setId(user.getId())
+                .setUsername(user.getUsername())
+                .setFirstname(user.getFirstname())
+                .setLastname(user.getLastname())
+                .setActive(user.getActive())
+                .setRoles(user.getRoles())
+                .setPermissions(user.getPermissions())
+                .createFetchUserDto();
+    }
+
+    public static class FetchUserDtoBuilder {
+        private long id;
         private String username;
-        private String password;
         private String firstname;
         private String lastname;
-        private String roles;
-        private String permissions;
+        private int active;
+        private String roles = "";
+        private String permissions = "";
 
-        public UserBuilder setUsername(String username) {
+        public FetchUserDtoBuilder setId(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public FetchUserDtoBuilder setUsername(String username) {
             this.username = username;
             return this;
         }
 
-        public UserBuilder setPassword(String password) {
-            this.password = password;
-            return this;
-        }
-
-        public UserBuilder setFirstname(String firstname) {
+        public FetchUserDtoBuilder setFirstname(String firstname) {
             this.firstname = firstname;
             return this;
         }
 
-        public UserBuilder setLastname(String lastname) {
+        public FetchUserDtoBuilder setLastname(String lastname) {
             this.lastname = lastname;
             return this;
         }
 
-        public UserBuilder setRoles(String roles) {
+        public FetchUserDtoBuilder setActive(int active) {
+            this.active = active;
+            return this;
+        }
+
+        public FetchUserDtoBuilder setRoles(String roles) {
             this.roles = roles;
             return this;
         }
 
-        public UserBuilder setPermissions(String permissions) {
+        public FetchUserDtoBuilder setPermissions(String permissions) {
             this.permissions = permissions;
             return this;
         }
 
-        public User createUser() {
-            return new User(username, password, firstname, lastname, roles, permissions);
+        public FetchUserDto createFetchUserDto() {
+            return new FetchUserDto(id, username, firstname, lastname, active, roles, permissions);
         }
     }
-
 }

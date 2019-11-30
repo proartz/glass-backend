@@ -4,7 +4,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.oncode.glass.model.User;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,9 +23,29 @@ public class DbInit implements CommandLineRunner {
         this.userDao.deleteAll();
 
         // Crete users
-        User dan = new User("dan",passwordEncoder.encode("dan123"), "Dan", "Kyoshek", "USER","");
-        User admin = new User("admin",passwordEncoder.encode("admin123"), "Admin", "God", "ADMIN","ACCESS_TEST1,ACCESS_TEST2");
-        User manager = new User("manager",passwordEncoder.encode("manager123"), "Manager", "Blach", "MANAGER","ACCESS_TEST1");
+        User dan = new User.UserBuilder()
+                .setUsername("dan")
+                .setPassword(passwordEncoder.encode("dan123"))
+                .setFirstname("Dan").setLastname("Kyoshek")
+                .setRoles("USER")
+                .setPermissions("")
+                .createUser();
+        User admin = new User.UserBuilder()
+                .setUsername("admin")
+                .setPassword(passwordEncoder.encode("admin123"))
+                .setFirstname("Admin")
+                .setLastname("God")
+                .setRoles("ADMIN")
+                .setPermissions("ACCESS_TEST1,ACCESS_TEST2")
+                .createUser();
+        User manager = new User.UserBuilder()
+                .setUsername("manager")
+                .setPassword(passwordEncoder.encode("manager123"))
+                .setFirstname("Manager")
+                .setLastname("Blach")
+                .setRoles("MANAGER")
+                .setPermissions("ACCESS_TEST1")
+                .createUser();
 
         List<User> users = Arrays.asList(dan,admin,manager);
 

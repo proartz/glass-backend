@@ -21,15 +21,31 @@ public class UserDao {
                 .getSingleResult();
     }
 
+    public User findById(long id) {
+        Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.id = :id");
+        return (User)query.setParameter("id", id)
+                .getSingleResult();
+    }
+
     public List<User> findAllUsers() {
         Query query = entityManager.createQuery("SELECT u FROM User u");
         return query.getResultList();
     }
 
     @Transactional
+    public void delete(User user) {
+        entityManager.remove(user);
+    }
+
+    @Transactional
     public void deleteAll() {
         Query query = entityManager.createQuery("DELETE FROM User");
         query.executeUpdate();
+    }
+
+    @Transactional
+    public void save(User user) {
+        entityManager.persist(user);
     }
 
     @Transactional
