@@ -1,9 +1,8 @@
 package pl.oncode.glass.model;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,21 +16,27 @@ public class User {
     private long id;
 
     @NotEmpty(message = "Username can't be empty")
+    @Size(max = 30, message = "Username can have maximum of 30 characters")
     private String username;
 
     @NotEmpty(message = "Password can't be empty")
+    @Size(max = 100, message = "Password can have maximum of 100 characters")
     private String password;
 
     @NotEmpty(message = "First Name can't be empty")
+    @Size(max = 30, message = "Firstname can have maximum of 30 characters")
     private String firstname;
 
     @NotEmpty(message = "Last Name can't be empty")
+    @Size(max = 30, message = "Lastname can have maximum of 30 characters")
     private String lastname;
 
     private int active;
 
+    @Size(max = 100, message = "Roles can have maximum of 30 characters")
     private String roles = "";
 
+    @Size(max = 100, message = "Username can have maximum of 30 characters")
     private String permissions = "";
 
     public User(String username,
