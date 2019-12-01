@@ -16,9 +16,10 @@ import pl.oncode.glass.web.dto.updateMaterial.UpdateMaterialDto;
 import pl.oncode.glass.web.dto.updateOrder.UpdateOrderDto;
 import pl.oncode.glass.web.dto.viewMaterial.ViewMaterialDto;
 import pl.oncode.glass.web.dto.viewOrders.ViewOrderDto;
-
 import javax.validation.Valid;
 import java.util.List;
+
+// Admin controller for the user management
 
 @CrossOrigin(methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PUT} )
 @RestController

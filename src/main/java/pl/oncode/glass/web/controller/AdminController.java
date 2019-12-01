@@ -3,8 +3,6 @@ package pl.oncode.glass.web.controller;
         import org.slf4j.Logger;
         import org.slf4j.LoggerFactory;
         import org.springframework.web.bind.annotation.*;
-        import pl.oncode.glass.dao.UserDao;
-        import pl.oncode.glass.model.User;
         import pl.oncode.glass.service.AdminControllerService;
         import pl.oncode.glass.web.dto.addUser.AddUserDto;
         import pl.oncode.glass.web.dto.deleteUser.DeleteUserDto;
@@ -13,25 +11,18 @@ package pl.oncode.glass.web.controller;
         import javax.validation.Valid;
         import java.util.List;
 
+
+
 @RestController
-@RequestMapping("api/public")
 @CrossOrigin
-public class PublicRestApiController {
-    private Logger logger = LoggerFactory.getLogger(PublicRestApiController.class);
+public class AdminController {
+
+    private Logger logger = LoggerFactory.getLogger(AdminController.class);
 
     private AdminControllerService adminControllerService;
 
-    private UserDao userDao;
-
-    public PublicRestApiController(AdminControllerService adminControllerService, UserDao userDao) {
+    public AdminController(AdminControllerService adminControllerService) {
         this.adminControllerService = adminControllerService;
-        this.userDao = userDao;
-    }
-
-    // Available to all authenticated users
-    @GetMapping("test")
-    public String test1(){
-        return "API Test";
     }
 
     @PostMapping("admin/user")
@@ -47,8 +38,6 @@ public class PublicRestApiController {
         adminControllerService.deleteUser(deleteUserDto);
     }
 
-
-    // Available to ROLE_ADMIN
     @GetMapping("admin/users")
     public List<FetchUserDto> users(){
         logger.info("/admin/users");
